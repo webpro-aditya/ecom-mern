@@ -1,0 +1,624 @@
+{
+	"info": {
+		"_postman_id": "262de45f-b851-48ac-af95-15e604c0ef66",
+		"name": "EcomPro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34311273",
+		"_collection_link": "https://brackets-dev-team.postman.co/workspace/Node-APIs~a0f3a2c4-51a8-4052-9ac2-6c96f34fec71/collection/34311273-262de45f-b851-48ac-af95-15e604c0ef66?action=share&source=collection_link&creator=34311273"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ashwin Kumar\",\r\n    \"email\": \"ashwin.kumar@kumar.com\",\r\n    \"password\": \"Pumpitup@098\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ashwin.kumar@kumar.com\",\r\n    \"password\": \"Pumpitup@098\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/logout",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"68babb34fe1fef36c73f410c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Manish Prakashh\",\r\n    \"email\": \"manish.prakashh@gmail.com\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"68ba8e81cc247ffb6e3d4020\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"68ba8e81cc247ffb6e3d4020\",\r\n    \"name\": \"Akash Kumar Singh\",\r\n    \"email\": \"akash.kumar@gmail.com\",\r\n    \"currentPassword\": \"Mypump@098\",\r\n    \"newPassword\": \"Mypump@098\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"Pumpitup@098\",\n    \"newPassword\": \"Pumpitup@098\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Simple Product \n/*\n{\n  \"name\": \"Basic T-Shirt\",\n  \"description\": \"A high-quality cotton T-shirt\",\n  \"images\": [\"tshirt.jpg\"],\n  \"price\": 499,\n  \"stock\": 100,\n  \"type\": \"simple\",\n  \"category\": \"68bfd0846ca0992303a06f28\"\n}\n*/\n\n// Varibale Product\n{\n  \"name\": \"Premium Hoodie 2\",\n  \"description\": \"Comfy hoodie with multiple sizes and colors\",\n  \"images\": [\"hoodie-front.jpg\", \"hoodie-back.jpg\"],\n  \"type\": \"variable\",\n  \"category\": \"68bfd0846ca0992303a06f28\",\n  \"variations\": [\n    {\n      \"sku\": \"HOODIE-BLACK-M\",\n      \"price\": 999,\n      \"stock\": 10,\n      \"attributes\": {\n        \"color\": \"Black\",\n        \"size\": \"M\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-BLACK-L\",\n      \"price\": 999,\n      \"stock\": 5,\n      \"attributes\": {\n        \"color\": \"Black\",\n        \"size\": \"L\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-RED-M\",\n      \"price\": 1099,\n      \"stock\": 7,\n      \"attributes\": {\n        \"color\": \"Red\",\n        \"size\": \"M\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-RED-L\",\n      \"price\": 1099,\n      \"stock\": 3,\n      \"attributes\": {\n        \"color\": \"Red\",\n        \"size\": \"L\"\n      }\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/products?page=1&limit=2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Clothing",
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": "498",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "1500",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "hoodie",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/68be6ff98cd2dd8bc204e4c4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"68be6ff98cd2dd8bc204e4c4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Simple Product\n{\n    \"name\": \"Updated iPhone 15\",\n    \"slug\": \"updated-iphone-15\",\n    \"description\": \"Updated description\",\n    \"images\": [\"https://example.com/new.jpg\"],\n    \"price\": 950,\n    \"stock\": 40,\n    \"type\": \"simple\",\n    \"category\": \"Smartphones\"\n}\n\n\n// Variable Product \n/*\n{\n    \"name\": \"Updated Hoodie\",\n    \"slug\": \"updated-hoodie\",\n    \"description\": \"Updated description for hoodie\",\n    \"type\": \"variable\",\n    \"images\": [\"new.jpg\"],\n    \"category\": \"Smartphones\",\n    \"variations\": [\n        {\n            \"sku\": \"HOODIE-BLK-M\",\n            \"attributes\": { \"color\": \"Black\", \"size\": \"M\" },\n            \"price\": 1200,\n            \"stock\": 15\n        },\n        {\n            \"sku\": \"HOODIE-BLK-L\",\n            \"attributes\": { \"color\": \"Black\", \"size\": \"L\" },\n            \"price\": 1250,\n            \"stock\": 8\n        }\n    ]\n}\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/update/68be6eed8cd2dd8bc204e4be",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"update",
+								"68be6eed8cd2dd8bc204e4be"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/delete/68be6eed8cd2dd8bc204e4be",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"delete",
+								"68be6eed8cd2dd8bc204e4be"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Parse the JSON response\r",
+					"const jsonData = pm.response.json();\r",
+					"\r",
+					"// Check if token exists\r",
+					"if (jsonData.token) {\r",
+					"    // Set the token to collection-level variable\r",
+					"    pm.collectionVariables.set(\"JWT_TOKEN\", jsonData.token);\r",
+					"    console.log(\"JWT_TOKEN saved:\", jsonData.token);\r",
+					"} else {\r",
+					"    console.warn(\"Token not found in response!\");\r",
+					"}\r",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		},
+		{
+			"key": "PORT",
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		},
+		{
+			"key": "JWT_TOKEN",
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		}
+	]
+}
