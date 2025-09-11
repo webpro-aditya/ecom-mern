@@ -299,6 +299,165 @@
 			]
 		},
 		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Home Appliances\",\r\n    \"description\": \"TV, Frid etc.\",\r\n    \"parent\": \"68bfd0846ca0992303a06f28\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/68c107a7e78fde7468aaa5a0",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"68c107a7e78fde7468aaa5a0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gaming Laptops\",\r\n    \"description\": \"High performance laptops for gaming\",\r\n    \"parent\": \"68bfd0846ca0992303a06f28\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/update/68c107a7e78fde7468aaa5a0",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"update",
+								"68c107a7e78fde7468aaa5a0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/delete/68c107a7e78fde7468aaa5a0",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"delete",
+								"68c107a7e78fde7468aaa5a0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Products",
 			"item": [
 				{
@@ -317,7 +476,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// Simple Product \n/*\n{\n  \"name\": \"Basic T-Shirt\",\n  \"description\": \"A high-quality cotton T-shirt\",\n  \"images\": [\"tshirt.jpg\"],\n  \"price\": 499,\n  \"stock\": 100,\n  \"type\": \"simple\",\n  \"category\": \"68bfd0846ca0992303a06f28\"\n}\n*/\n\n// Varibale Product\n{\n  \"name\": \"Premium Hoodie 2\",\n  \"description\": \"Comfy hoodie with multiple sizes and colors\",\n  \"images\": [\"hoodie-front.jpg\", \"hoodie-back.jpg\"],\n  \"type\": \"variable\",\n  \"category\": \"68bfd0846ca0992303a06f28\",\n  \"variations\": [\n    {\n      \"sku\": \"HOODIE-BLACK-M\",\n      \"price\": 999,\n      \"stock\": 10,\n      \"attributes\": {\n        \"color\": \"Black\",\n        \"size\": \"M\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-BLACK-L\",\n      \"price\": 999,\n      \"stock\": 5,\n      \"attributes\": {\n        \"color\": \"Black\",\n        \"size\": \"L\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-RED-M\",\n      \"price\": 1099,\n      \"stock\": 7,\n      \"attributes\": {\n        \"color\": \"Red\",\n        \"size\": \"M\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-RED-L\",\n      \"price\": 1099,\n      \"stock\": 3,\n      \"attributes\": {\n        \"color\": \"Red\",\n        \"size\": \"L\"\n      }\n    }\n  ]\n}\n",
+							"raw": "// Simple Product \n{\n  \"name\": \"Basic T-Shirt\",\n  \"description\": \"A high-quality cotton T-shirt\",\n  \"images\": [\"tshirt.jpg\"],\n  \"price\": 499,\n  \"stock\": 100,\n  \"type\": \"simple\",\n  \"category\": \"68bfd0846ca0992303a06f28\"\n}\n\n// Varibale Product\n/*{\n  \"name\": \"Apple iPhone 17\",\n  \"description\": \"This is a new laest iPhone from Apple\",\n  \"images\": [\"iphone17.jpg\", \"iphone17view.jpg\"],\n  \"type\": \"variable\",\n  \"category\": \"68bfd0846ca0992303a06f28\",\n  \"variations\": [\n    {\n      \"sku\": \"HOODIE-BLACK-M\",\n      \"price\": 999,\n      \"stock\": 10,\n      \"attributes\": {\n        \"color\": \"Black\",\n        \"size\": \"M\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-BLACK-L\",\n      \"price\": 999,\n      \"stock\": 5,\n      \"attributes\": {\n        \"color\": \"Black\",\n        \"size\": \"L\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-RED-M\",\n      \"price\": 1099,\n      \"stock\": 7,\n      \"attributes\": {\n        \"color\": \"Red\",\n        \"size\": \"M\"\n      }\n    },\n    {\n      \"sku\": \"HOODIE-RED-L\",\n      \"price\": 1099,\n      \"stock\": 3,\n      \"attributes\": {\n        \"color\": \"Red\",\n        \"size\": \"L\"\n      }\n    }\n  ]\n}*/\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -355,7 +514,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/products?page=1&limit=2",
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/products?category=Electronics",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -368,8 +527,7 @@
 							"query": [
 								{
 									"key": "category",
-									"value": "Clothing",
-									"disabled": true
+									"value": "Electronics"
 								},
 								{
 									"key": "minPrice",
@@ -388,11 +546,13 @@
 								},
 								{
 									"key": "page",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "limit",
-									"value": "2"
+									"value": "2",
+									"disabled": true
 								}
 							]
 						}
@@ -414,7 +574,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/68be6ff98cd2dd8bc204e4c4",
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/68bfdd79adce1b0a2822d9ab",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -423,7 +583,7 @@
 								"api",
 								"admin",
 								"product",
-								"68be6ff98cd2dd8bc204e4c4"
+								"68bfdd79adce1b0a2822d9ab"
 							],
 							"query": [
 								{
@@ -531,7 +691,7 @@
 			]
 		},
 		{
-			"name": "Categories",
+			"name": "Cart",
 			"item": [
 				{
 					"name": "Get All",
@@ -545,15 +705,100 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/categories",
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"port": "{{PORT}}",
 							"path": [
 								"api",
-								"admin",
-								"categories"
+								"user",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart/delete/68c27ac95fb0252af67af10a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart",
+								"delete",
+								"68c27ac95fb0252af67af10a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clear",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart/clear",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart",
+								"clear"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wishlist",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/wishlist",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"wishlist"
 							]
 						}
 					},
