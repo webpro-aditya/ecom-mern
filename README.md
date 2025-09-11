@@ -1,10 +1,7 @@
-<div align="center">
-
 # 🛒 E-Commerce API
 
-### Complete E-Commerce Backend Solution
-
-*A comprehensive RESTful API built with Node.js for modern e-commerce applications*
+> **Complete E-Commerce Backend Solution**  
+> *A comprehensive RESTful API built with Node.js for modern e-commerce applications*
 
 ---
 
@@ -44,12 +41,14 @@ A robust, scalable Node.js API that powers complete e-commerce functionality. Fr
 
 ## 🛠️ Tech Stack
 
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Database:** MongoDB/PostgreSQL
-- **Authentication:** JWT + bcrypt
-- **Payments:** Razorpay/Stripe/PayPal
-- **Documentation:** Swagger/OpenAPI
+| Category | Technology |
+|----------|------------|
+| **Runtime** | Node.js |
+| **Framework** | Express.js |
+| **Database** | MongoDB/PostgreSQL |
+| **Authentication** | JWT + bcrypt |
+| **Payments** | Razorpay/Stripe/PayPal |
+| **Documentation** | Swagger/OpenAPI |
 
 ## 📋 API Endpoints Overview
 
@@ -69,12 +68,14 @@ A robust, scalable Node.js API that powers complete e-commerce functionality. Fr
 
 ## 🎯 Key Features
 
-- **🔒 Secure Authentication** - JWT-based auth with password hashing
-- **🏪 Single-Vendor Ready** - Perfect for individual business owners
-- **📱 Mobile-First API** - RESTful design for any frontend
-- **⚡ High Performance** - Optimized queries and caching
-- **📈 Analytics Ready** - Built-in dashboard statistics
-- **💰 Payment Flexible** - Multiple gateway integration
+| Feature | Description |
+|---------|-------------|
+| 🔒 **Secure Authentication** | JWT-based auth with password hashing |
+| 🏪 **Single-Vendor Ready** | Perfect for individual business owners |
+| 📱 **Mobile-First API** | RESTful design for any frontend |
+| ⚡ **High Performance** | Optimized queries and caching |
+| 📈 **Analytics Ready** | Built-in dashboard statistics |
+| 💰 **Payment Flexible** | Multiple gateway integration |
 
 ## 📅 Development Timeline
 
@@ -119,8 +120,6 @@ This API is being designed with developers in mind:
 
 ---
 
-<sub>⭐ Star this repository to get notified when the API goes live!</sub>
+⭐ **Star this repository to get notified when the API goes live!**
 
 *Building the future of e-commerce APIs with ❤️*
-
-</div>
