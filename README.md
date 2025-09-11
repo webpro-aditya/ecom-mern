@@ -2,8 +2,6 @@
 
 # 🛒 E-Commerce API
 
-<img src="https://via.placeholder.com/500x250/22c55e/ffffff?text=Node.js+E-Commerce+API" alt="E-Commerce API Banner" width="500"/>
-
 ### Complete E-Commerce Backend Solution
 
 *A comprehensive RESTful API built with Node.js for modern e-commerce applications*
@@ -57,12 +55,12 @@ A robust, scalable Node.js API that powers complete e-commerce functionality. Fr
 
 | Module | Endpoints | Status |
 |--------|-----------|--------|
-| Authentication | 4 endpoints | 🔄 Completed |
-| User Profile | 3 endpoints | 🔄 Completed |
-| Products | 5 endpoints | ⏳ Completed |
-| Categories | 2 endpoints | ⏳ Completed |
-| Cart | 5 endpoints | ⏳ Completed |
-| Wishlist | 3 endpoints | ⏳ Completed |
+| Authentication | 4 endpoints | ✅ Completed |
+| User Profile | 3 endpoints | ✅ Completed |
+| Products | 5 endpoints | ✅ Completed |
+| Categories | 2 endpoints | ✅ Completed |
+| Cart | 5 endpoints | ✅ Completed |
+| Wishlist | 3 endpoints | ✅ Completed |
 | Orders | 5 endpoints | ⏳ Planned |
 | Payments | 2 endpoints | ⏳ Planned |
 | Admin Dashboard | 3 endpoints | ⏳ Planned |
@@ -82,12 +80,12 @@ A robust, scalable Node.js API that powers complete e-commerce functionality. Fr
 
 | Phase | Features | Status | Timeline |
 |-------|----------|--------|----------|
-| Phase 1 | Auth + User Management | 🔄 Active | Q4 2025 |
-| Phase 2 | Products + Categories | ⏳ Next | Q4 2025 |
-| Phase 3 | Cart + Wishlist | 📋 Planned | Q1 2026 |
-| Phase 4 | Orders + Payments | 📋 Planned | Q1 2026 |
-| Phase 5 | Admin + Analytics | 📋 Planned | Q1 2026 |
-| Phase 6 | Reviews + Coupons | 🎁 Bonus | Q2 2026 |
+| Phase 1 | Auth + User Management | ✅ Active | Q3 2025 |
+| Phase 2 | Products + Categories | ✅ Active | Q3 2025 |
+| Phase 3 | Cart + Wishlist | ✅ Active | Q3 2025 |
+| Phase 4 | Orders + Payments | 📋 Planned | Q4 2025 |
+| Phase 5 | Admin + Analytics | 📋 Planned | Q4 2025 |
+| Phase 6 | Reviews + Coupons | 🎁 Bonus | Q4 2025 |
 
 ## 📖 Documentation
 
@@ -108,8 +106,8 @@ Complete API documentation will include:
 
 ## 🔔 Stay Updated
 
-[![Watch Repository](https://img.shields.io/github/watchers/yourusername/ecommerce-api?style=social)](https://github.com/yourusername/ecommerce-api)
-[![Follow for Updates](https://img.shields.io/github/followers/yourusername?style=social)](https://github.com/yourusername)
+[![Watch Repository](https://img.shields.io/github/watchers/webpro-aditya/ecom-mern?style=social)](https://github.com/webpro-aditya/ecom-mern)
+[![Follow for Updates](https://img.shields.io/github/followers/webpro-aditya?style=social)](https://github.com/webpro-aditya)
 
 ## 🤝 For Developers
 
