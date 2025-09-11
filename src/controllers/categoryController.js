@@ -5,19 +5,23 @@ exports.createCategory = async (req, res) => {
     const { name, description, parent } = req.body;
 
     if (!name) {
-      return res.status(400).json({ success: false, message: "Category name is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Category name is required" });
     }
 
     // Check duplicate
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {
-      return res.status(400).json({ success: false, message: "Category already exists" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Category already exists" });
     }
 
     const newCategory = new Category({
       name,
       description,
-      parent: parent || null
+      parent: parent || null,
       // no need to pass slug, schema will handle it
     });
 
@@ -26,7 +30,7 @@ exports.createCategory = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Category created successfully",
-      category: newCategory
+      category: newCategory,
     });
   } catch (error) {
     console.error("Error in POST /categories:", error);
@@ -55,10 +59,15 @@ exports.getCategoryById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const category = await Category.findById(id).populate("parent", "name slug");
+    const category = await Category.findById(id).populate(
+      "parent",
+      "name slug"
+    );
 
     if (!category) {
-      return res.status(404).json({ success: false, message: "Category not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
     }
 
     res.json({
@@ -90,7 +99,9 @@ exports.updateCategory = async (req, res) => {
     }).populate("parent", "name slug");
 
     if (!updatedCategory) {
-      return res.status(404).json({ success: false, message: "Category not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
     }
 
     res.json({
@@ -111,7 +122,9 @@ exports.deleteCategory = async (req, res) => {
 
     const category = await Category.findById(id);
     if (!category) {
-      return res.status(404).json({ success: false, message: "Category not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
     }
 
     // Optional: check if this category has child categories

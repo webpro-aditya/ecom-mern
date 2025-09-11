@@ -53,12 +53,10 @@ exports.changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Both current and new passwords are required",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Both current and new passwords are required",
+      });
     }
 
     const user = await User.findById(req.user.id);
