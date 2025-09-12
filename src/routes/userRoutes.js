@@ -17,6 +17,14 @@ const {
   moveToCart,
 } = require("../controllers/wishlistController");
 
+const {
+  getOrders,
+  getMyOrders,
+  placeOrder,
+  rollbackOrderStock,
+  updateOrderStatus,
+} = require("../controllers/orderController");
+
 const router = express.Router();
 
 // Cart
@@ -31,5 +39,13 @@ router.get("/wishlist", authMiddleware, getWishlist);
 router.post("/wishlist/create", authMiddleware, addToWishlist);
 router.delete("/wishlist/delete/:productId", authMiddleware, removeFromWishlist);
 router.post("/wishlist/move-to-cart/:productId", authMiddleware, moveToCart);
+
+// Order
+router.get("/orders", authMiddleware, authorizeRole("admin"), getOrders);
+router.get("/orders/my", authMiddleware, getMyOrders);
+router.get("/order/:orderId", authMiddleware, getMyOrders);
+router.post("/order/place", authMiddleware, placeOrder);
+router.post("/order/:orderId/rollback", authMiddleware, rollbackOrderStock);
+router.put("/order/:orderId/status", authMiddleware, updateOrderStatus);
 
 module.exports = router;

@@ -60,7 +60,7 @@ A robust, scalable Node.js API that powers complete e-commerce functionality. Fr
 | Categories | 2 endpoints | ✅ Completed |
 | Cart | 5 endpoints | ✅ Completed |
 | Wishlist | 3 endpoints | ✅ Completed |
-| Orders | 5 endpoints | ⏳ Planned |
+| Orders | 5 endpoints | ⏳ InProgress |
 | Payments | 2 endpoints | ⏳ Planned |
 | Admin Dashboard | 3 endpoints | ⏳ Planned |
 | Reviews (Bonus) | 2 endpoints | 📋 Future |
@@ -84,7 +84,7 @@ A robust, scalable Node.js API that powers complete e-commerce functionality. Fr
 | Phase 1 | Auth + User Management | ✅ Active | Q3 2025 |
 | Phase 2 | Products + Categories | ✅ Active | Q3 2025 |
 | Phase 3 | Cart + Wishlist | ✅ Active | Q3 2025 |
-| Phase 4 | Orders + Payments | 📋 Planned | Q4 2025 |
+| Phase 4 | Orders + Payments | 📋 InProgress | Q4 2025 |
 | Phase 5 | Admin + Analytics | 📋 Planned | Q4 2025 |
 | Phase 6 | Reviews + Coupons | 🎁 Bonus | Q4 2025 |
 
