@@ -1,6 +1,6 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware");
-const authorizeRole = require("../middleware/authorizeRole");
+const authMiddleware = require("../middlewares/authMiddleware");
+const authorizeRole = require("../middlewares/authorizeRole");
 
 const {
     getProfile,

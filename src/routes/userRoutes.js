@@ -1,6 +1,6 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware");
-const authorizeRole = require("../middleware/authorizeRole");
+const authMiddleware = require("../middlewares/authMiddleware");
+const authorizeRole = require("../middlewares/authorizeRole");
 
 const {
   getCart,
@@ -25,6 +25,11 @@ const {
   updateOrderStatus,
 } = require("../controllers/orderController");
 
+const {
+  createPayment,
+  verifyPayment,
+} = require("../controllers/paymentController");
+
 const router = express.Router();
 
 // Cart
@@ -47,5 +52,9 @@ router.get("/order/:orderId", authMiddleware, getMyOrders);
 router.post("/order/place", authMiddleware, placeOrder);
 router.post("/order/:orderId/rollback", authMiddleware, rollbackOrderStock);
 router.put("/order/:orderId/status", authMiddleware, updateOrderStatus);
+
+// Payments
+router.post("/payments/create", authMiddleware, createPayment);
+router.post("/payments/verify", authMiddleware, verifyPayment);
 
 module.exports = router;

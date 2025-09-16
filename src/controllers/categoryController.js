@@ -22,7 +22,6 @@ exports.createCategory = async (req, res) => {
       name,
       description,
       parent: parent || null,
-      // no need to pass slug, schema will handle it
     });
 
     await newCategory.save();
