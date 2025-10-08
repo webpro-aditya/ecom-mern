@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { AuthProvider } from './context/AuthContext';
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
@@ -34,7 +35,9 @@ export default function App() {
           {/* Dashboard Layout */}
           <Route element={
             <ProtectedRoute>
-              <AppLayout />
+              <AuthProvider>
+                <AppLayout />
+              </AuthProvider>
             </ProtectedRoute>
           }>
             <Route index path="/admin/dashboard" element={<Home />} />

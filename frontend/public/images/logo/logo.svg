@@ -50,6 +50,4 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1624_24907" result="shape"/>
 </filter>
 </defs>
-
-  <text x="53.9" y="21.12" font-family="Inter, system-ui, Arial, sans-serif" font-size="13" font-weight="600" fill="#111827">EcomPro</text>
 </svg>
