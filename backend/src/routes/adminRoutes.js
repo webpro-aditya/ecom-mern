@@ -3,9 +3,11 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const authorizeRole = require("../middlewares/authorizeRole");
 
 const {
-    getProfile,
-    updateProfile,
-    changePassword 
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser
 } = require("../controllers/userController");
 const { 
     getProducts, 
@@ -25,9 +27,11 @@ const {
 const router = express.Router();
 
 // User Module
-router.get("/profile", authMiddleware, authorizeRole("admin"), getProfile);
-router.put("/profile", authMiddleware, authorizeRole("admin"), updateProfile);
-router.put("/password", authMiddleware, authorizeRole("admin"), changePassword);
+router.get("/users", authMiddleware, authorizeRole("admin"), getAllUsers);
+router.get("/user/:id", authMiddleware, authorizeRole("admin"), getUserById);
+router.post("/user/create", authMiddleware, authorizeRole("admin"), createUser);
+router.put("/user/update/:id", authMiddleware, authorizeRole("admin"), updateUser);
+router.delete("/user/delete/:id", authMiddleware, authorizeRole("admin"), deleteUser);
 
 // Products Module
 router.get("/products", authMiddleware, getProducts);
