@@ -19,11 +19,15 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
-import ProtectedRoute from "./components/common/ProtectedRoute";
+import ProtectedRoute from "./components/protect/ProtectedRoute";
 
 import UsersList from "./pages/Users/UsersList";
 import UserAdd from "./pages/Users/UserAdd";
 import UserEdit from "./pages/Users/UserEdit";
+
+import CategoriesList from './pages/Categories/CategoriesList';
+import CategoryAdd from './pages/Categories/CategoryAdd';
+import CategoryEdit from './pages/Categories/CategoryEdit';
 
 
 export default function App() {
@@ -47,28 +51,33 @@ export default function App() {
             <Route path="/admin/users/add" element={<UserAdd />} />
             <Route path="/admin/users/:id/edit" element={<UserEdit />} />
 
+            {/* Categories */}
+            <Route path="/admin/categories" element={<CategoriesList />} />
+            <Route path="/admin/category/add" element={<CategoryAdd />} />
+            <Route path="/admin/category/:id/edit" element={<CategoryEdit />} />
+
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
 
             {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
+            {/* <Route path="/form-elements" element={<FormElements />} /> */}
 
             {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
+            {/* <Route path="/basic-tables" element={<BasicTables />} /> */}
 
             {/* Ui Elements */}
-            <Route path="/alerts" element={<Alerts />} />
+            {/* <Route path="/alerts" element={<Alerts />} />
             <Route path="/avatars" element={<Avatars />} />
             <Route path="/badge" element={<Badges />} />
             <Route path="/buttons" element={<Buttons />} />
             <Route path="/images" element={<Images />} />
-            <Route path="/videos" element={<Videos />} />
+            <Route path="/videos" element={<Videos />} /> */}
 
             {/* Charts */}
-            <Route path="/line-chart" element={<LineChart />} />
-            <Route path="/bar-chart" element={<BarChart />} />
+            {/* <Route path="/line-chart" element={<LineChart />} />
+            <Route path="/bar-chart" element={<BarChart />} /> */}
           </Route>
 
           {/* Auth Layout */}

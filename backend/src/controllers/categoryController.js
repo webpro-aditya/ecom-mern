@@ -40,18 +40,45 @@ exports.createCategory = async (req, res) => {
 // Get All Categories
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await Category.find().populate("parent", "name slug");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const sortBy = req.query.sortBy || "createdAt";
+    const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
+    const search = req.query.search ? req.query.search.trim() : "";
+
+    const filter = {};
+
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { slug: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const totalCategories = await Category.countDocuments(filter);
+
+    const categories = await Category.find(filter)
+      .populate("parent", "name slug")
+      .sort({ [sortBy]: sortOrder })
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     res.json({
       success: true,
-      total: categories.length,
+      pagination: {
+        total: totalCategories,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCategories / limit),
+      },
       categories,
     });
   } catch (error) {
-    console.error("Error in GET /categories:", error);
+    console.error("Error fetching categories:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 
 // Get Single Category by ID
 exports.getCategoryById = async (req, res) => {
