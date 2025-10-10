@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
@@ -25,10 +25,9 @@ import UsersList from "./pages/Users/UsersList";
 import UserAdd from "./pages/Users/UserAdd";
 import UserEdit from "./pages/Users/UserEdit";
 
-import CategoriesList from './pages/Categories/CategoriesList';
-import CategoryAdd from './pages/Categories/CategoryAdd';
-import CategoryEdit from './pages/Categories/CategoryEdit';
-
+import CategoriesList from "./pages/Categories/CategoriesList";
+import CategoryAdd from "./pages/Categories/CategoryAdd";
+import CategoryEdit from "./pages/Categories/CategoryEdit";
 
 export default function App() {
   return (
@@ -37,13 +36,15 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           {/* Dashboard Layout */}
-          <Route element={
-            <ProtectedRoute>
-              <AuthProvider>
-                <AppLayout />
-              </AuthProvider>
-            </ProtectedRoute>
-          }>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AuthProvider>
+                  <AppLayout />
+                </AuthProvider>
+              </ProtectedRoute>
+            }
+          >
             <Route index path="/admin/dashboard" element={<Home />} />
 
             {/* Users */}

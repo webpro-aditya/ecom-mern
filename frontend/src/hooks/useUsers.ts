@@ -83,32 +83,33 @@ export function useUsers() {
   };
 
   const handleDeleteUser = async (userId: string): Promise<void> => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${import.meta.env.VITE_API_URL}admin/user/delete/${userId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}admin/user/delete/${userId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message || 'Failed to delete user.');
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Failed to delete user.");
+      }
+
+      setUsers((currentUsers) =>
+        currentUsers.filter((user) => user._id !== userId)
+      );
+      setTotal((currentTotal) => currentTotal - 1);
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Could not delete user. Please try again.");
     }
+  };
 
-    // On success, remove the user from the local state for an instant UI update
-    setUsers((currentUsers) => currentUsers.filter((user) => user._id !== userId));
-    setTotal((currentTotal) => currentTotal - 1);
-
-  } catch (error) {
-    console.error("Delete error:", error);
-    // Here you could set an error state to show a notification
-    alert('Could not delete user. Please try again.');
-  }
-};
-
-  // Return all state and handlers needed by the UI
   return {
     users,
     loading,

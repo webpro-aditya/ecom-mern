@@ -30,7 +30,6 @@ export function useCategories() {
   const [total, setTotal] = useState(0);
   const [searchDebounced, setSearchDebounced] = useState("");
 
-  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setSearchDebounced(search);
@@ -50,7 +49,9 @@ export function useCategories() {
 
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}admin/categories?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}&search=${searchDebounced}`,
+          `${
+            import.meta.env.VITE_API_URL
+          }admin/categories?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}&search=${searchDebounced}`,
           { signal, headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -84,7 +85,6 @@ export function useCategories() {
     setPage(1);
   };
 
-  // Delete category (toastr only)
   const handleDeleteCategory = async (categoryId: string): Promise<void> => {
     const token = localStorage.getItem("token");
     try {
@@ -110,7 +110,9 @@ export function useCategories() {
       toast.success("Category deleted successfully.");
     } catch (error: any) {
       console.error("Delete category error:", error);
-      toast.error(error.message || "Could not delete category. Please try again.");
+      toast.error(
+        error.message || "Could not delete category. Please try again."
+      );
     }
   };
 
