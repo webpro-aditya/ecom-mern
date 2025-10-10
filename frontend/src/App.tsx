@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import { AuthProvider } from "./context/AuthContext";
+import { Provider } from "react-redux";
+import { store } from "./store";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
@@ -31,7 +33,7 @@ import CategoryEdit from "./pages/Categories/CategoryEdit";
 
 export default function App() {
   return (
-    <>
+    <Provider store={store}>
       <Router>
         <ScrollToTop />
         <Routes>
@@ -89,6 +91,6 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </>
+    </Provider>
   );
 }

@@ -1,52 +1,61 @@
-import { useState, useEffect  } from "react";
+import { useState, useEffect } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { jwtDecode } from 'jwt-decode';
-import { useAuth } from '../../context/AuthContext';
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../store";
+import { fetchUser, logout } from "../../store/userSlice";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, loading, logout } = useAuth(); 
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  if (loading) {
-    return <div className="h-11 w-32 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />;
-  }
-  
-  if (!user) {
-    return null; 
-  }
+  const { user, token, loading } = useSelector(
+    (state: RootState) => state.user
+  );
 
-  function toggleDropdown() {
-    setIsOpen(!isOpen);
-  }
+  useEffect(() => {
+    if (token && !user) {
+      dispatch(fetchUser());
+    }
+  }, [token, user, dispatch]);
 
-  function closeDropdown() {
-    setIsOpen(false);
-  }
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  const closeDropdown = () => setIsOpen(false);
 
   async function handleLogout() {
     try {
       await axios.post(
-        import.meta.env.VITE_API_URL + "auth/logout",
+        `${import.meta.env.VITE_API_URL}auth/logout`,
         {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-    } catch (err) {}
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+
+    dispatch(logout());
     toast.success("Logged out successfully!");
     closeDropdown();
-    logout();
+    navigate("/admin/signin");
   }
 
-  const getFirstName = () => user?.name?.split(' ')[0] || 'Admin';
+  if (loading) {
+    return (
+      <div className="h-11 w-32 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
+    );
+  }
+
+  if (!user) return null;
+
+  const getFirstName = () => user?.name?.split(" ")[0] || "Admin";
 
   return (
     <div className="relative">
@@ -58,7 +67,9 @@ export default function UserDropdown() {
           <img src="/images/user/owner.jpg" alt="User" />
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">{getFirstName()}</span>
+        <span className="block mr-1 font-medium text-theme-sm">
+          {getFirstName()}
+        </span>
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
