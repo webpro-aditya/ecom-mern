@@ -13,15 +13,7 @@ export default function UserDropdown() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { user, token, loading } = useSelector(
-    (state: RootState) => state.user
-  );
-
-  useEffect(() => {
-    if (token && !user) {
-      dispatch(fetchUser());
-    }
-  }, [token, user, dispatch]);
+  const { user, token, loading } = useSelector((state: RootState) => state.user); 
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);

@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the user type
+// Types
 interface User {
   id: string;
   name: string;
@@ -8,7 +8,6 @@ interface User {
   role: string;
 }
 
-// Define the state shape
 interface UserState {
   user: User | null;
   token: string | null;
@@ -16,28 +15,34 @@ interface UserState {
   error: string | null;
 }
 
+const storedToken = localStorage.getItem("token");
+const storedUser = localStorage.getItem("user");
+
 const initialState: UserState = {
-  user: null,
-  token: localStorage.getItem('token') || null,
+  user: storedUser ? JSON.parse(storedUser) : null,
+  token: storedToken || null,
   loading: false,
   error: null,
 };
 
-// ✅ Login thunk
+// ✅ Login user
 export const loginUser = createAsyncThunk(
-  'user/login',
+  "user/login",
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Login failed');
+      if (!response.ok) throw new Error(data.message || "Login failed");
 
-      localStorage.setItem('token', data.token);
+      // store in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -45,21 +50,23 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// ✅ Fetch user details
+// ✅ Fetch current user using stored token
 export const fetchUser = createAsyncThunk(
-  'user/fetchUser',
+  "user/fetchUser",
   async (_, { getState, rejectWithValue }) => {
     const state = getState() as { user: UserState };
     const token = state.user.token;
 
-    if (!token) return rejectWithValue('No token found');
+    if (!token) return rejectWithValue("No token found");
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Failed to fetch user');
+      if (!response.ok) throw new Error(data.message || "Failed to fetch user");
+
+      localStorage.setItem("user", JSON.stringify(data.user));
       return data.user;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -68,13 +75,14 @@ export const fetchUser = createAsyncThunk(
 );
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     logout: (state) => {
       state.user = null;
       state.token = null;
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -94,10 +102,15 @@ const userSlice = createSlice({
         state.error = action.payload as string;
       })
       // fetch user
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
+        state.loading = false;
         state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state) => {
+        state.loading = false;
         state.user = null;
       });
   },
