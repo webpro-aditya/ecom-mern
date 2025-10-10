@@ -4,6 +4,7 @@ import PageMeta from "../../components/common/PageMeta";
 import UsersTable from "../../components/tables/UsersTable";
 import Pagination from "../../components/common/Pagination";
 import { useUsers } from "../../hooks/useUsers";
+import { Toaster } from "react-hot-toast";
 
 export default function UsersList() {
   const {
@@ -64,6 +65,13 @@ export default function UsersList() {
           onPageChange={setPage}
         />
       </ComponentCard>
+
+      {/* Global toast notifications */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        containerStyle={{ zIndex: 2147483647 }}
+      />
     </>
   );
 }

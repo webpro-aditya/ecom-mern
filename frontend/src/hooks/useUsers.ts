@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 interface User {
   _id: string;
@@ -61,6 +62,7 @@ export function useUsers() {
       } catch (error: any) {
         if (error.name !== "AbortError") {
           console.error("Failed to fetch users:", error);
+          toast.error(error.message || "Failed to fetch users.");
           setUsers([]);
         }
       } finally {
@@ -96,17 +98,18 @@ export function useUsers() {
       );
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Failed to delete user.");
+        toast.error(data.message || "Failed to delete user.");
       }
 
       setUsers((currentUsers) =>
         currentUsers.filter((user) => user._id !== userId)
       );
       setTotal((currentTotal) => currentTotal - 1);
+
+      toast.success("User deleted successfully.");
     } catch (error) {
       console.error("Delete error:", error);
-      alert("Could not delete user. Please try again.");
+      toast.error(error.message || "Could not delete user. Please try again.");
     }
   };
 
