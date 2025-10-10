@@ -4,6 +4,7 @@ import PageMeta from "../../components/common/PageMeta";
 import CategoriesAccordion from "../../components/tables/CategoriesAccordion";
 import Pagination from "../../components/common/Pagination";
 import { useCategories } from "../../hooks/useCategories";
+import { Toaster } from "react-hot-toast";
 
 export default function CategoriesList() {
   const {
@@ -20,6 +21,7 @@ export default function CategoriesList() {
     setPage,
     setLimit,
     handleSort,
+    handleDeleteCategory,
   } = useCategories();
 
   return (
@@ -45,6 +47,7 @@ export default function CategoriesList() {
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={25}>25</option>
+            <option value={500}>All</option>
           </select>
         </div>
 
@@ -54,6 +57,7 @@ export default function CategoriesList() {
           sortBy={sortBy}
           sortOrder={sortOrder}
           onSort={handleSort}
+          onDelete={handleDeleteCategory}
         />
 
         <Pagination
@@ -62,6 +66,13 @@ export default function CategoriesList() {
           onPageChange={setPage}
         />
       </ComponentCard>
+
+      {/* Global toast notifications */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        containerStyle={{ zIndex: 2147483647 }}
+      />
     </>
   );
 }

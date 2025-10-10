@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 interface Category {
   _id: string;
@@ -17,12 +18,11 @@ interface ApiResponse {
   categories: Category[];
 }
 
-// The custom hook
 export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(500);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [search, setSearch] = useState("");
@@ -30,6 +30,7 @@ export function useCategories() {
   const [total, setTotal] = useState(0);
   const [searchDebounced, setSearchDebounced] = useState("");
 
+  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setSearchDebounced(search);
@@ -38,6 +39,7 @@ export function useCategories() {
     return () => clearTimeout(timer);
   }, [search]);
 
+  // Fetch categories
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
@@ -45,27 +47,27 @@ export function useCategories() {
     const fetchCategories = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
+
       try {
         const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }admin/categories?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}&search=${searchDebounced}`,
+          `${import.meta.env.VITE_API_URL}admin/categories?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}&search=${searchDebounced}`,
           { signal, headers: { Authorization: `Bearer ${token}` } }
         );
-        if (!res.ok) throw new Error("Network response failed");
+
+        if (!res.ok) throw new Error("Failed to load categories.");
+
         const data: ApiResponse = await res.json();
         setCategories(data.categories || []);
         setTotal(data.pagination.total || 0);
         setTotalPages(data.pagination.totalPages || 0);
       } catch (error: any) {
         if (error.name !== "AbortError") {
-          console.error("Failed to fetch categories:", error);
+          console.error("Fetch categories error:", error);
+          toast.error(error.message || "Failed to fetch categories.");
           setCategories([]);
         }
       } finally {
-        if (!signal.aborted) {
-          setLoading(false);
-        }
+        if (!signal.aborted) setLoading(false);
       }
     };
 
@@ -73,6 +75,7 @@ export function useCategories() {
     return () => controller.abort();
   }, [page, limit, sortBy, sortOrder, searchDebounced]);
 
+  // Sorting
   const handleSort = (field: string) => {
     const newSortOrder =
       sortBy === field && sortOrder === "asc" ? "desc" : "asc";
@@ -81,33 +84,36 @@ export function useCategories() {
     setPage(1);
   };
 
-//   const handleDeleteUser = async (userId: string): Promise<void> => {
-//   try {
-//     const token = localStorage.getItem("token");
-//     const response = await fetch(`${import.meta.env.VITE_API_URL}admin/user/delete/${userId}`, {
-//       method: 'DELETE',
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
+  // Delete category (toastr only)
+  const handleDeleteCategory = async (categoryId: string): Promise<void> => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}admin/category/delete/${categoryId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-//     if (!response.ok) {
-//       const data = await response.json();
-//       throw new Error(data.message || 'Failed to delete user.');
-//     }
+      const data = await response.json();
 
-//     // On success, remove the user from the local state for an instant UI update
-//     setCategories((currentUsers) => currentUsers.filter((user) => user._id !== userId));
-//     setTotal((currentTotal) => currentTotal - 1);
+      if (!response.ok) {
+        toast.error(data.message || "Failed to delete category.");
+        return;
+      }
 
-//   } catch (error) {
-//     console.error("Delete error:", error);
-//     // Here you could set an error state to show a notification
-//     alert('Could not delete user. Please try again.');
-//   }
-// };
+      // Optimistically update state
+      setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
+      setTotal((prev) => Math.max(prev - 1, 0));
 
-  // Return all state and handlers needed by the UI
+      toast.success("Category deleted successfully.");
+    } catch (error: any) {
+      console.error("Delete category error:", error);
+      toast.error(error.message || "Could not delete category. Please try again.");
+    }
+  };
+
   return {
     categories,
     loading,
@@ -122,6 +128,6 @@ export function useCategories() {
     setPage,
     setLimit,
     handleSort,
-    // handleDeleteUser,
+    handleDeleteCategory,
   };
 }
