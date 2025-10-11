@@ -61,6 +61,14 @@ const AppSidebar: React.FC = () => {
             { name: "List", path: "/admin/categories" },
             { name: "Add", path: "/admin/category/add" },
           ],
+        },
+        {
+          icon: <ListIcon />,
+          name: "Products",
+          subItems: [
+            { name: "List", path: "/admin/products" },
+            { name: "Add", path: "/admin/product/add" },
+          ],
         }
       );
     }

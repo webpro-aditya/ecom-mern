@@ -26,6 +26,11 @@ import CategoriesList from "./pages/Categories/CategoriesList";
 import CategoryAdd from "./pages/Categories/CategoryAdd";
 import CategoryEdit from "./pages/Categories/CategoryEdit";
 
+// Products
+import ProductsList from "./pages/Products/ProductsList";
+import ProductAdd from "./pages/Products/ProductAdd";
+import ProductEdit from "./pages/Products/ProductEdit";
+
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
   const { token, user } = useSelector((state: RootState) => state.user);
@@ -39,7 +44,6 @@ function AppInit() {
   return null;
 }
 
-// ✅ Main App
 export default function App() {
   return (
     <Provider store={store}>
@@ -68,6 +72,11 @@ export default function App() {
             <Route path="/admin/categories" element={<CategoriesList />} />
             <Route path="/admin/category/add" element={<CategoryAdd />} />
             <Route path="/admin/category/:id/edit" element={<CategoryEdit />} />
+
+            {/* Products */}
+            <Route path="/admin/products" element={<ProductsList />} />
+            <Route path="/admin/product/add" element={<ProductAdd />} />
+            <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
 
             {/* Other pages */}
             <Route path="/profile" element={<UserProfiles />} />

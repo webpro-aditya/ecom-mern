@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-// Types
 interface User {
   id: string;
   name: string;
@@ -25,7 +24,6 @@ const initialState: UserState = {
   error: null,
 };
 
-// ✅ Login user
 export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
@@ -50,7 +48,6 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// ✅ Fetch current user using stored token
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (_, { getState, rejectWithValue }) => {
@@ -87,7 +84,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // login
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -101,7 +97,6 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // fetch user
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
       })

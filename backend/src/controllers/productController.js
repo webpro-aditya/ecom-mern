@@ -26,12 +26,10 @@ exports.getProducts = async (req, res) => {
       const categoryDoc = await Category.findOne(query);
 
       if (!categoryDoc) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "No product with this category found.",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "No product with this category found.",
+        });
       }
 
       filter.category = categoryDoc._id;
@@ -121,81 +119,116 @@ exports.createProduct = async (req, res) => {
       type,
       variations,
       category,
+      subcategory,
     } = req.body;
 
     if (!name || !type) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Name and type are required" });
+      return res.status(400).json({
+        success: false,
+        message: "Name and product type are required",
+      });
     }
 
-    // Resolve category to ObjectId
     let categoryId = null;
+    let subcategoryId = null;
+
     if (category) {
       const categoryDoc = await Category.findOne(
         mongoose.Types.ObjectId.isValid(category)
-          ? { _id: category }
-          : { slug: category }
+          ? { _id: category, parent: null }
+          : { slug: category, parent: null }
       );
+
       if (!categoryDoc) {
         return res
           .status(400)
-          .json({ success: false, message: "Invalid category" });
+          .json({ success: false, message: "Invalid parent category" });
       }
       categoryId = categoryDoc._id;
     }
 
+    if (subcategory) {
+      const subcategoryDoc = await Category.findOne(
+        mongoose.Types.ObjectId.isValid(subcategory)
+          ? { _id: subcategory, parent: categoryId }
+          : { slug: subcategory, parent: categoryId }
+      );
+
+      if (!subcategoryDoc) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid subcategory for given category",
+        });
+      }
+      subcategoryId = subcategoryDoc._id;
+    }
+
     const slug = slugify(name, { lower: true, strict: true });
 
-    let product = new Product({
+    const product = new Product({
       name,
       slug,
       description,
-      images,
       type,
       category: categoryId,
+      subcategory: subcategoryId,
       createdBy: req.user.id,
     });
 
     if (type === "simple") {
       if (!price)
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Price is required for simple product",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "Price is required for simple products",
+        });
+
+      if (!images || !Array.isArray(images) || images.length === 0)
+        return res.status(400).json({
+          success: false,
+          message: "At least one image is required for simple products",
+        });
+
       product.price = price;
       product.stock = stock || 0;
+      product.images = images;
     }
 
     if (type === "variable") {
-      if (
-        !variations ||
-        !Array.isArray(variations) ||
-        variations.length === 0
-      ) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Variations are required for variable product",
-          });
+      if (!Array.isArray(variations) || variations.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one variation is required for variable products",
+        });
       }
+
+      for (let variation of variations) {
+        if (
+          !variation.name ||
+          !variation.price ||
+          !Array.isArray(variation.images) ||
+          variation.images.length === 0
+        ) {
+          return res.status(400).json({
+            success: false,
+            message:
+              "Each variation must include name, price, and at least one image",
+          });
+        }
+      }
+
       product.variations = variations;
+      product.images = [];
     }
 
     await product.save();
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Product created successfully",
-        product,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      product,
+    });
   } catch (error) {
-    console.error("Error in /products:", error);
+    console.error("Error in POST /product/create", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -260,63 +293,118 @@ exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const {
       name,
-      slug,
       description,
-      category, // slug or _id
-      type,
       images,
-      price, // only for simple
-      stock, // only for simple
-      variations, // only for variable
+      price,
+      stock,
+      type,
+      variations,
+      category,
+      subcategory,
     } = req.body;
 
     let product = await Product.findById(id);
-    if (!product)
+    if (!product) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
+    }
 
-    // Resolve category
+    let categoryId = product.category;
+    let subcategoryId = product.subcategory;
+
     if (category) {
       const categoryDoc = await Category.findOne(
         mongoose.Types.ObjectId.isValid(category)
-          ? { _id: category }
-          : { slug: category }
+          ? { _id: category, parent: null }
+          : { slug: category, parent: null }
       );
-      if (!categoryDoc)
+
+      if (!categoryDoc) {
         return res
           .status(400)
-          .json({ success: false, message: "Invalid category" });
-      product.category = categoryDoc._id;
+          .json({ success: false, message: "Invalid parent category" });
+      }
+      categoryId = categoryDoc._id;
     }
 
-    // Update other fields
+    if (subcategory) {
+      const subcategoryDoc = await Category.findOne(
+        mongoose.Types.ObjectId.isValid(subcategory)
+          ? { _id: subcategory, parent: categoryId }
+          : { slug: subcategory, parent: categoryId }
+      );
+
+      if (!subcategoryDoc) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid subcategory for given category",
+        });
+      }
+      subcategoryId = subcategoryDoc._id;
+    }
+
     if (name) product.name = name;
-    if (slug) product.slug = slug;
     if (description) product.description = description;
     if (type) product.type = type;
-    if (images) product.images = images;
+    if (categoryId) product.category = categoryId;
+    if (subcategoryId) product.subcategory = subcategoryId;
 
     if (type === "simple") {
       if (price !== undefined) product.price = price;
       if (stock !== undefined) product.stock = stock;
-      product.variations = []; // clear variable variations if changing to simple
+
+      if (!images || !Array.isArray(images) || images.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one image is required for simple products",
+        });
+      }
+
+      product.images = images;
+      product.variations = [];
     }
 
-    if (type === "variable" && Array.isArray(variations)) {
+    if (type === "variable") {
+      if (!Array.isArray(variations) || variations.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one variation is required for variable products",
+        });
+      }
+
+      for (let v of variations) {
+        if (
+          !v.name ||
+          !v.price ||
+          !Array.isArray(v.images) ||
+          v.images.length === 0
+        ) {
+          return res.status(400).json({
+            success: false,
+            message:
+              "Each variation must include name, price, and at least one image",
+          });
+        }
+      }
+
       product.variations = variations.map((v) => ({
+        name: v.name,
         sku: v.sku,
-        attributes: v.attributes,
         price: v.price,
-        stock: v.stock,
+        stock: v.stock || 0,
+        images: v.images,
+        attributes: v.attributes || {},
       }));
+
       product.price = undefined;
       product.stock = undefined;
+      product.images = [];
     }
 
     await product.save();
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "Product updated successfully",
       product,
