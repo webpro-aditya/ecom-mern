@@ -7,10 +7,13 @@ const variationSchema = new mongoose.Schema(
     sku: { type: String, unique: true, sparse: true },
     price: { type: Number, required: true },
     stock: { type: Number, default: 0 },
-    attributes: {
-      type: Map, // { size: "M", color: "Red" }
-      of: String,
-    },
+    images: [String],
+    attributes: [
+      {
+        attribute: { type: mongoose.Schema.Types.ObjectId, ref: "Attribute" },
+        value: String,
+      },
+    ],
   },
   { _id: true }
 );
@@ -25,7 +28,8 @@ const productSchema = new mongoose.Schema(
     stock: { type: Number, default: 0 },
     type: { type: String, enum: ["simple", "variable"], default: "simple" },
     variations: [variationSchema],
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
+    subcategory: { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: null },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }

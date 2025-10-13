@@ -23,6 +23,16 @@ const {
     updateCategory,
     deleteCategory
 } = require("../controllers/categoryController");
+const {
+    getAttributes,
+    createAttribute,
+    getAttributeById,
+    updateAttribute,
+    deleteAttribute
+} = require("../controllers/attributeController");
+const {
+    uploadImages
+} = require("../controllers/uploadImageController");
 
 const router = express.Router();
 
@@ -46,5 +56,15 @@ router.post("/category/create", authMiddleware, authorizeRole("admin"), createCa
 router.get("/category/:id", authMiddleware, authorizeRole("admin", "vendor"), getCategoryById);
 router.put("/category/update/:id", authMiddleware, authorizeRole("admin"), updateCategory);
 router.delete("/category/delete/:id", authMiddleware, authorizeRole("admin"), deleteCategory);
+
+// Product Attributes
+router.get('/attributes', authMiddleware, authorizeRole("admin", "vendor"), getAttributes);
+router.post("/attribute/create", authMiddleware, authorizeRole("admin"), createAttribute);
+router.get("/attribute/:id", authMiddleware, authorizeRole("admin"), getAttributeById);
+router.put("/attribute/update/:id", authMiddleware, authorizeRole("admin"), updateAttribute);
+router.delete("/attribute/delete/:id", authMiddleware, authorizeRole("admin"), deleteAttribute);
+
+// Images Upload
+router.post("/images/upload", authMiddleware, authorizeRole("admin", "vendor"), uploadImages);
 
 module.exports = router;
