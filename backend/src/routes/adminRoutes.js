@@ -1,6 +1,7 @@
 const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
 const authorizeRole = require("../middlewares/authorizeRole");
+const uploadMiddleware = require("../middlewares/uploadMiddleware");
 
 const {
     getAllUsers,
@@ -65,6 +66,6 @@ router.put("/attribute/update/:id", authMiddleware, authorizeRole("admin"), upda
 router.delete("/attribute/delete/:id", authMiddleware, authorizeRole("admin"), deleteAttribute);
 
 // Images Upload
-router.post("/images/upload", authMiddleware, authorizeRole("admin", "vendor"), uploadImages);
+router.post("/images/upload", authMiddleware, authorizeRole("admin", "vendor"), uploadMiddleware, uploadImages);
 
 module.exports = router;

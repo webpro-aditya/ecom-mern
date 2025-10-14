@@ -15,10 +15,17 @@ exports.getProducts = async (req, res) => {
       search,
       page = 1,
       limit = 10,
+      type, // 👈 capture type filter from query
     } = req.query;
 
     let filter = {};
 
+    // ✅ filter by product type (simple or variable)
+    if (type) {
+      filter.type = type;
+    }
+
+    // ✅ category filter
     if (category) {
       const categoryQuery = mongoose.Types.ObjectId.isValid(category)
         ? { $or: [{ _id: category }, { slug: category }, { name: category }] }
@@ -39,6 +46,7 @@ exports.getProducts = async (req, res) => {
       filter.category = categoryDoc._id;
     }
 
+    // ✅ subcategory filter
     if (subcategory) {
       const subcategoryQuery = mongoose.Types.ObjectId.isValid(subcategory)
         ? { $or: [{ _id: subcategory }, { slug: subcategory }, { name: subcategory }] }
@@ -59,6 +67,7 @@ exports.getProducts = async (req, res) => {
       filter.subcategory = subcategoryDoc._id;
     }
 
+    // ✅ text search filter
     if (search) {
       filter.$or = [
         { name: { $regex: search, $options: "i" } },
@@ -66,6 +75,7 @@ exports.getProducts = async (req, res) => {
       ];
     }
 
+    // ✅ price range filter (both simple + variable)
     if (minPrice || maxPrice) {
       const simplePriceFilter = {};
       if (minPrice) simplePriceFilter.$gte = Number(minPrice);
@@ -81,6 +91,7 @@ exports.getProducts = async (req, res) => {
       ];
     }
 
+    // ✅ pagination
     const skip = (Number(page) - 1) * Number(limit);
 
     let products = await Product.find(filter)
@@ -92,6 +103,7 @@ exports.getProducts = async (req, res) => {
       .limit(Number(limit))
       .lean();
 
+    // ✅ post-filter variation prices
     if (minPrice || maxPrice) {
       const minP = minPrice ? Number(minPrice) : 0;
       const maxP = maxPrice ? Number(maxPrice) : Infinity;
@@ -235,8 +247,10 @@ exports.createProduct = async (req, res) => {
 
         const attrEntries = Object.entries(variation.attributes || {});
         const formattedAttributes = [];
+        let attrId = 0;
 
-        for (const [attrId, value] of attrEntries) {
+        for (const [attrE, value] of attrEntries) {
+          attrId = value.attribute.id;
           if (!mongoose.Types.ObjectId.isValid(attrId)) {
             return res.status(400).json({
               success: false,
@@ -487,8 +501,10 @@ exports.updateProduct = async (req, res) => {
 
         const attrEntries = Object.entries(variation.attributes || {});
         const formattedAttributes = [];
+        let attrId = '';
 
-        for (const [attrId, value] of attrEntries) {
+        for (const [attrE, value] of attrEntries) {
+          attrId = value.attribute.id;
           if (!mongoose.Types.ObjectId.isValid(attrId)) {
             return res.status(400).json({
               success: false,

@@ -1,47 +1,62 @@
+import { useState } from "react";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import PageMeta from "../../components/common/PageMeta";
-import UsersTable from "../../components/tables/UsersTable";
 import Pagination from "../../components/common/Pagination";
-import { useUsers } from "../../hooks/useUsers";
 import { Toaster } from "react-hot-toast";
+import ProductsTable from "../../components/tables/ProductsTable";
+import { useProducts } from "../../hooks/useProducts";
 
 export default function ProductsList() {
-  const {
-    users,
-    loading,
-    page,
-    limit,
-    sortBy,
-    sortOrder,
-    totalPages,
-    total,
-    search,
-    setSearch,
-    setPage,
-    setLimit,
-    handleSort,
-    handleDeleteUser,
-  } = useUsers();
+  const [activeTab, setActiveTab] = useState("simple");
+
+  // Simple Products
+  const simpleProducts = useProducts("simple");
+  // Variable Products
+  const variableProducts = useProducts("variable");
+
+  const tabConfig = {
+    simple: simpleProducts,
+    variable: variableProducts,
+  };
+
+  const current = tabConfig[activeTab];
 
   return (
     <>
-      <PageMeta title="Users List | Admin Dashboard" />
-      <PageBreadcrumb pageTitle="Users" />
+      <PageMeta title="Products | Admin Dashboard" />
+      <PageBreadcrumb pageTitle="Products" />
 
       <ComponentCard>
-        {/* Filters */}
+        {/* TABS */}
+        <div className="flex border-b border-slate-200 dark:border-slate-700">
+          {["simple", "variable"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-3 text-sm font-medium transition-colors ${
+                activeTab === tab
+                  ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400"
+                  : "text-slate-600 dark:text-slate-400 hover:text-blue-500"
+              }`}
+            >
+              {tab === "simple" ? "Simple Products" : "Variable Products"}
+            </button>
+          ))}
+        </div>
+
+        {/* FILTER BAR */}
         <div className="flex flex-col md:flex-row gap-4 p-4 border-b border-slate-200 dark:border-slate-700">
           <input
             type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name or email..."
+            value={current.search}
+            onChange={(e) => current.setSearch(e.target.value)}
+            placeholder={`Search ${activeTab} products...`}
             className="w-full md:w-1/3 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
           />
           <select
-            value={limit}
-            onChange={(e) => setLimit(Number(e.target.value))}
+            value={current.limit}
+            onChange={(e) => current.setLimit(Number(e.target.value))}
             className="w-full md:w-auto px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
           >
             <option value={5}>5</option>
@@ -50,23 +65,24 @@ export default function ProductsList() {
           </select>
         </div>
 
-        <UsersTable
-          users={users}
-          loading={loading}
-          onSort={handleSort}
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          onDelete={handleDeleteUser}
+        {/* PRODUCT TABLE */}
+        <ProductsTable
+          products={current.products}
+          loading={current.loading}
+          onSort={current.handleSort}
+          sortBy={current.sortBy}
+          sortOrder={current.sortOrder}
+          onDelete={current.handleDeleteProduct}
         />
 
         <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
+          currentPage={current.page}
+          totalPages={current.totalPages}
+          onPageChange={current.setPage}
         />
       </ComponentCard>
 
-      {/* Global toast notifications */}
+      {/* Toasts */}
       <Toaster
         position="top-right"
         reverseOrder={false}
