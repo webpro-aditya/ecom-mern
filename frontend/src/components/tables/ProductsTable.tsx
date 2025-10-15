@@ -3,7 +3,85 @@ import { Link } from "react-router-dom";
 import { EditIcon, DeleteIcon } from "../../icons";
 import ConfirmationModal from "../common/ConfirmationModal";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+interface Product {
+  _id: string;
+  name: string;
+  type: string;
+  price?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  stock?: number;
+  images?: string[];
+  category?: { name: string };
+}
+
+interface ProductsTableProps {
+  products: Product[];
+  loading: boolean;
+  onSort: (field: string) => void;
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+  onDelete: (id: string) => Promise<void>;
+}
+
+const SortIcon = ({
+  active,
+  direction,
+}: {
+  active: boolean;
+  direction: "asc" | "desc";
+}) => (
+  <svg
+    className={`w-4 h-4 ml-1 ${active ? "text-blue-500" : "text-gray-400"}`}
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    {direction === "asc" ? (
+      <path
+        d="M5 15l7-7 7 7"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ) : (
+      <path
+        d="M19 9l-7 7-7-7"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    )}
+  </svg>
+);
+
+const SkeletonRow = () => (
+  <tr className="animate-pulse">
+    <td className="p-4">
+      <div className="h-12 w-12 rounded-md bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+    <td className="p-4">
+      <div className="h-4 w-40 rounded bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+    <td className="p-4">
+      <div className="h-4 w-16 rounded bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+    <td className="p-4">
+      <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+    <td className="p-4">
+      <div className="h-4 w-16 rounded bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+    <td className="p-4">
+      <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+    <td className="p-4">
+      <div className="h-8 w-20 rounded-md bg-slate-200 dark:bg-slate-700"></div>
+    </td>
+  </tr>
+);
 
 export default function ProductsTable({
   products,
@@ -12,39 +90,20 @@ export default function ProductsTable({
   sortBy,
   sortOrder,
   onDelete,
-}) {
+}: ProductsTableProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState(null);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
-  const SortIcon = ({ active, direction }) => (
-    <svg
-      className={`w-4 h-4 ml-1 ${active ? "text-blue-500" : "text-gray-400"}`}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      {direction === "asc" ? (
-        <path
-          d="M5 15l7-7 7 7"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      ) : (
-        <path
-          d="M19 9l-7 7-7-7"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
-    </svg>
-  );
-
-  const SortableHeader = ({ field, children }) => (
+  const SortableHeader = ({
+    field,
+    children,
+  }: {
+    field: string;
+    children: React.ReactNode;
+  }) => (
     <th
-      onClick={() => onSort(field)}
       className="p-4 text-left text-sm font-semibold text-slate-500 dark:text-slate-400 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700"
+      onClick={() => onSort(field)}
     >
       <div className="flex items-center">
         {children}
@@ -53,7 +112,7 @@ export default function ProductsTable({
     </th>
   );
 
-  const handleOpenDeleteModal = (product) => {
+  const handleOpenDeleteModal = (product: Product) => {
     setProductToDelete(product);
     setIsModalOpen(true);
   };
@@ -69,14 +128,6 @@ export default function ProductsTable({
       handleCloseModal();
     }
   };
-
-  if (loading) {
-    return (
-      <div className="p-6 text-center text-slate-500 dark:text-slate-400">
-        Loading products...
-      </div>
-    );
-  }
 
   return (
     <div className="overflow-x-auto">
@@ -98,7 +149,9 @@ export default function ProductsTable({
         </thead>
 
         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-          {products.length === 0 ? (
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
+          ) : products.length === 0 ? (
             <tr>
               <td
                 colSpan={7}
@@ -111,24 +164,22 @@ export default function ProductsTable({
             products.map((p) => (
               <tr
                 key={p._id}
-                className="hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
               >
                 <td className="p-4">
-                  <div className="h-12 w-12 overflow-hidden rounded-md bg-slate-100 dark:bg-slate-700">
+                  <div className="h-12 w-12 overflow-hidden rounded-md bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
                     {p.images && p.images.length > 0 ? (
                       <img
-                        src={`${API_URL}${p.images[0]}`}
+                        src={`${BACKEND_URL}${p.images[0]}`}
                         alt={p.name}
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <span className="flex h-full w-full items-center justify-center text-slate-400 text-xs">
-                        No Img
-                      </span>
+                      <span className="text-xs text-slate-400">No Img</span>
                     )}
                   </div>
                 </td>
-                <td className="p-4 text-slate-700 dark:text-slate-300">
+                <td className="p-4 text-slate-700 dark:text-slate-300 font-medium">
                   {p.name}
                 </td>
                 <td className="p-4 capitalize text-slate-600 dark:text-slate-400">
@@ -150,14 +201,14 @@ export default function ProductsTable({
                     <Link
                       to={`/admin/product/${p._id}/edit`}
                       title="Edit"
-                      className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
+                      className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition"
                     >
                       <EditIcon />
                     </Link>
                     <button
                       onClick={() => handleOpenDeleteModal(p)}
                       title="Delete"
-                      className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
+                      className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition"
                     >
                       <DeleteIcon />
                     </button>
@@ -174,7 +225,7 @@ export default function ProductsTable({
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
-        message={`Are you sure you want to delete "${productToDelete?.name}"?`}
+        message={`Are you sure you want to delete "${productToDelete?.name}"? This action cannot be undone.`}
       />
     </div>
   );

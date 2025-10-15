@@ -247,10 +247,8 @@ exports.createProduct = async (req, res) => {
 
         const attrEntries = Object.entries(variation.attributes || {});
         const formattedAttributes = [];
-        let attrId = 0;
 
-        for (const [attrE, value] of attrEntries) {
-          attrId = value.attribute.id;
+        for (const [attrId, value] of attrEntries) {
           if (!mongoose.Types.ObjectId.isValid(attrId)) {
             return res.status(400).json({
               success: false,
@@ -501,10 +499,9 @@ exports.updateProduct = async (req, res) => {
 
         const attrEntries = Object.entries(variation.attributes || {});
         const formattedAttributes = [];
-        let attrId = '';
 
-        for (const [attrE, value] of attrEntries) {
-          attrId = value.attribute.id;
+        for (const [key, value] of attrEntries) {
+          let attrId = value.attribute.id;
           if (!mongoose.Types.ObjectId.isValid(attrId)) {
             return res.status(400).json({
               success: false,
@@ -521,8 +518,7 @@ exports.updateProduct = async (req, res) => {
           }
 
           formattedAttributes.push({
-            attribute: attrDoc._id,
-            value: value,
+            attrId: attrDoc.value
           });
         }
 
