@@ -1,125 +1,102 @@
-# 🛒 E-Commerce API
+# 🛒 E-Commerce MERN
 
-> **Complete E-Commerce Backend Solution**  
-> *A comprehensive RESTful API built with Node.js for modern e-commerce applications*
-
----
-
-## 🚀 What's Being Built
-
-A robust, scalable Node.js API that powers complete e-commerce functionality. From user authentication to order processing, this backend handles everything your online store needs.
-
-## ⚡ API Features
-
-### 🔐 Authentication & User Management
-- User registration and secure JWT authentication
-- Profile management and password updates
-- Protected routes with role-based access
-
-### 📦 Product & Inventory
-- Complete product CRUD operations
-- Advanced filtering (category, price, search)
-- Category management system
-- Single-vendor architecture
-
-### 🛍️ Shopping Experience
-- Dynamic shopping cart functionality
-- Wishlist management
-- Seamless checkout process
-- Order tracking and history
-
-### 💳 Payment Integration
-- Multiple payment gateway support
-- Secure payment verification
-- Transaction management
-
-### 📊 Admin Dashboard
-- Revenue and sales analytics
-- Order status management
-- User administration
-- Inventory insights
-
-## 🛠️ Tech Stack
-
-| Category | Technology |
-|----------|------------|
-| **Runtime** | Node.js |
-| **Framework** | Express.js |
-| **Database** | MongoDB/PostgreSQL |
-| **Authentication** | JWT + bcrypt |
-| **Payments** | Razorpay/Stripe/PayPal |
-| **Documentation** | Swagger/OpenAPI |
-
-## 📋 API Endpoints Overview
-
-| Module | Endpoints | Status |
-|--------|-----------|--------|
-| Authentication | 4 endpoints | ✅ Completed |
-| User Profile | 3 endpoints | ✅ Completed |
-| Products | 5 endpoints | ✅ Completed |
-| Categories | 2 endpoints | ✅ Completed |
-| Cart | 5 endpoints | ✅ Completed |
-| Wishlist | 3 endpoints | ✅ Completed |
-| Orders | 5 endpoints | ⏳ InProgress |
-| Payments | 2 endpoints | ⏳ Planned |
-| Admin Dashboard | 3 endpoints | ⏳ Planned |
-| Reviews (Bonus) | 2 endpoints | 📋 Future |
-| Coupons (Bonus) | 2 endpoints | 📋 Future |
-
-## 🎯 Key Features
-
-| Feature | Description |
-|---------|-------------|
-| 🔒 **Secure Authentication** | JWT-based auth with password hashing |
-| 🏪 **Single-Vendor Ready** | Perfect for individual business owners |
-| 📱 **Mobile-First API** | RESTful design for any frontend |
-| ⚡ **High Performance** | Optimized queries and caching |
-| 📈 **Analytics Ready** | Built-in dashboard statistics |
-| 💰 **Payment Flexible** | Multiple gateway integration |
-
-## 📅 Development Timeline
-
-| Phase | Features | Status | Timeline |
-|-------|----------|--------|----------|
-| Phase 1 | Auth + User Management | ✅ Active | Q3 2025 |
-| Phase 2 | Products + Categories | ✅ Active | Q3 2025 |
-| Phase 3 | Cart + Wishlist | ✅ Active | Q3 2025 |
-| Phase 4 | Orders + Payments | 📋 InProgress | Q4 2025 |
-| Phase 5 | Admin + Analytics | 📋 Planned | Q4 2025 |
-| Phase 6 | Reviews + Coupons | 🎁 Bonus | Q4 2025 |
-
-## 📖 Documentation
-
-Complete API documentation will include:
-- Interactive Swagger UI
-- Postman collection
-- Integration examples
-- Authentication guides
-- Database schema
-
-## 🔮 Coming Soon
-
-- **Comprehensive API Documentation**
-- **Postman Collection for Testing**
-- **Docker Configuration**
-- **Deployment Scripts**
-- **Frontend Integration Examples**
-
-## 🔔 Stay Updated
-
-[![Watch Repository](https://img.shields.io/github/watchers/webpro-aditya/ecom-mern?style=social)](https://github.com/webpro-aditya/ecom-mern)
-[![Follow for Updates](https://img.shields.io/github/followers/webpro-aditya?style=social)](https://github.com/webpro-aditya)
-
-## 🤝 For Developers
-
-This API is being designed with developers in mind:
-- Clear, consistent endpoint naming
-- Comprehensive error handling
-- Detailed response schemas
-- Easy local setup and deployment
+> Complete MERN E‑Commerce Application  
+> Backend + Store frontend + Admin panel (React + Vite)
 
 ---
 
-⭐ **Star this repository to get notified when the API goes live!**
+## 🚀 Overview
 
-*Building the future of e-commerce APIs with ❤️*
+A full-stack MERN e-commerce project:
+- Backend: Node.js + Express API (user auth, products, cart, orders, payments)
+- Store frontend: React (or legacy frontend folder)
+- Admin panel: React + Vite (newly added) for content & order management
+- Database: MongoDB (or PostgreSQL option)
+
+This repository is a monorepo with separate folders:
+- backend/       — API server
+- frontend/      — customer storefront
+- admin/         — admin panel (React + Vite)
+- .github/workflows/ci.yml — CI that runs tests for frontend and backend and merges dev → main on push to dev
+
+---
+
+## ⚡ Updated Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Runtime | Node.js |
+| Server | Express |
+| Database | MongoDB / Mongoose (Postgres option) |
+| Store Frontend | React (Create React App / Vite) |
+| Admin Panel | React + Vite |
+| Auth | JWT + bcrypt |
+| Payments | Stripe / Razorpay / PayPal |
+| CI | GitHub Actions (runs on push to dev, tests and merges dev → main) |
+| Docs | Swagger / OpenAPI |
+
+---
+
+## 🔐 Key Features
+
+- JWT-based authentication and role-based access (admin/customer)
+- Product CRUD, categories, filtering, pagination
+- Cart, wishlist, checkout and order management
+- Admin panel for product, order and user management (React + Vite)
+- Payment gateway integrations
+- API documentation (Swagger) and Postman collection (planned)
+
+---
+
+## 📁 Repository structure
+
+Example:
+- backend/
+  - package.json
+  - src/
+- frontend/
+  - package.json
+  - src/
+- .github/
+  - workflows/ci.yml
+- README.md
+
+---
+
+## 🚀 Local development
+
+Backend:
+- cd backend
+- npm i
+- npm run dev
+
+Store frontend:
+- cd frontend
+- npm i
+- npm run dev
+
+Tests:
+- cd backend && npm test
+- cd frontend && npm test
+- cd admin && npm test
+
+---
+
+## 📖 Roadmap
+
+- Complete orders & payments implementation (Q4 2025)
+- API docs (Swagger) & Postman collection
+- Docker compose for local dev
+- Deployment scripts and examples
+- End-to-end tests & performance tuning
+
+---
+
+## 🤝 Contributing
+
+- Fork → branch from dev → open PR targeting dev
+- CI validates tests; maintainers merge dev → main (CI also handles merge if enabled)
+
+---
+
+⭐ Star the repo for updates. Contact project maintainer for access or questions.  
