@@ -1,0 +1,86 @@
+name: CI - Test & Merge dev → main
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: write
+
+jobs:
+  frontend-test:
+    name: Test frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: |
+          if [ -f package-lock.json ]; then npm ci
+          elif [ -f yarn.lock ]; then yarn install
+          else npm install
+          fi
+      - name: Run frontend tests
+        working-directory: frontend
+        run: |
+          npm test --if-present
+
+  backend-test:
+    name: Test backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install backend dependencies
+        working-directory: backend
+        run: |
+          if [ -f package-lock.json ]; then npm ci
+          elif [ -f yarn.lock ]; then yarn install
+          else npm install
+          fi
+      - name: Run backend tests
+        working-directory: backend
+        run: |
+          npm test --if-present
+
+  merge-dev-to-main:
+    name: Merge dev into main
+    runs-on: ubuntu-latest
+    needs:
+      - frontend-test
+      - backend-test
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Fetch all branches
+        run: git fetch --all
+      - name: Checkout main
+        run: git checkout main
+      - name: Update main from origin
+        run: git pull origin main
+      - name: Merge dev into main
+        run: |
+          git merge --no-ff origin/dev -m "CI: merge dev into main"
+      - name: Push merged main
+        run: git push origin main
