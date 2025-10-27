@@ -45,7 +45,7 @@ export const useProducts = (productType) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}admin/product/${id}`,
+        `${import.meta.env.VITE_API_URL}admin/product/delete/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

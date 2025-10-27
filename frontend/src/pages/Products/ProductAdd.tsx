@@ -208,7 +208,10 @@ export default function ProductAdd() {
 
   const generateVariations = () => {
     const combos = generateCombinations(selectedAttributes);
-    if (!combos.length) return alert("Select attribute values first.");
+    if (!combos.length) {
+      setError("Select attribute values first.");
+      return;
+    }
 
     const variations = combos.map((attrs) => ({
       name: Object.values(attrs).join(" / "),
@@ -591,8 +594,10 @@ export default function ProductAdd() {
                             .map((v) => v.trim())
                             .filter(Boolean);
 
-                          if (!attrName || !values.length)
-                            return alert("Enter both name and values");
+                          if (!attrName || !values.length) {
+                            setError("Enter both name and values");
+                            return;
+                          }
 
                           await createAttribute(attrName, values);
                           nameEl.value = "";
@@ -833,10 +838,12 @@ export default function ProductAdd() {
                         type="button"
                         onClick={() => {
                           const attrKeys = Object.keys(selectedAttributes);
-                          if (!attrKeys.length)
-                            return alert(
+                          if (!attrKeys.length) {
+                            setError(
                               "Please select at least one attribute"
                             );
+                            return;
+                          }
 
                           const validAttrs = {};
                           attrKeys.forEach((key) => {
@@ -846,10 +853,12 @@ export default function ProductAdd() {
                             if (vals.length > 0) validAttrs[key] = vals;
                           });
 
-                          if (!Object.keys(validAttrs).length)
-                            return alert(
+                          if (!Object.keys(validAttrs).length) {
+                            setError(
                               "No valid attribute values to generate variations."
                             );
+                            return;
+                          }
 
                           const keys = Object.keys(validAttrs);
                           const buildCombos = (index, prefix = {}) => {
@@ -868,8 +877,10 @@ export default function ProductAdd() {
                           };
 
                           const combos = buildCombos(0);
-                          if (!combos.length)
-                            return alert("No variations generated.");
+                          if (!combos.length) {
+                            setError("No variations generated.");
+                            return;
+                          }
 
                           const variations = combos.map((attrs) => ({
                             name: Object.values(attrs).join(" / "),
