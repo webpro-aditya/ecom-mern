@@ -14,7 +14,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5050
-      MONGO_URI: "mongodb+srv://admin:kpwl6MRUmf8F0eeZ@backenddb.dnaf1.mongodb.net/mydb"
+      MONGO_URI: ${MONGO_URI}
     restart: always
 
   frontend:
