@@ -1,4 +1,4 @@
-# 🛒 E-Commerce MERN
+# 🛒 ECOM-PRO -- E-Commerce MERN
 
 > Complete MERN E‑Commerce Application  
 > Backend + Store frontend + Admin panel (React + Vite)
