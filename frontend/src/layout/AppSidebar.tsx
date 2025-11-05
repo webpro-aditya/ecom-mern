@@ -17,6 +17,7 @@ import {
   TableIcon,
   UserCircleIcon,
   UserIcon,
+  DocsIcon
 } from "../icons";
 
 // Define the structure for a navigation item
@@ -69,7 +70,14 @@ const AppSidebar: React.FC = () => {
             { name: "List", path: "/admin/products" },
             { name: "Add", path: "/admin/product/add" },
           ],
-        }
+        },
+        {
+          icon: <DocsIcon />,
+          name: "Orders",
+          subItems: [
+            { name: "List", path: "/admin/orders" }
+          ],
+        },
       );
     }
 

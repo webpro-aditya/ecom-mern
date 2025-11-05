@@ -31,6 +31,10 @@ import ProductsList from "./pages/Products/ProductsList";
 import ProductAdd from "./pages/Products/ProductAdd";
 import ProductEdit from "./pages/Products/ProductEdit";
 
+// Orders
+import OrdersList from "./pages/Orders/OrdersList";
+import OrderDetails from "./pages/Orders/OrderDetails";
+
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
   const { token, user } = useSelector((state: RootState) => state.user);
@@ -77,6 +81,10 @@ export default function App() {
             <Route path="/admin/products" element={<ProductsList />} />
             <Route path="/admin/product/add" element={<ProductAdd />} />
             <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
+
+            {/* Orders */}
+            <Route path="/admin/orders" element={<OrdersList />} />
+            <Route path="/admin/order/:id" element={<OrderDetails />} />
 
             {/* Other pages */}
             <Route path="/profile" element={<UserProfiles />} />
