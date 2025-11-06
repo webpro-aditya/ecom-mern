@@ -30,6 +30,8 @@ const productSchema = new mongoose.Schema(
     variations: [variationSchema],
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     subcategory: { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: null },
+    brand: { type: mongoose.Schema.Types.ObjectId, ref: "Brand" },
+    subbrand: { type: mongoose.Schema.Types.ObjectId, ref: "Brand", default: null },
     isFeatured: { type: Boolean, default: false },
     isActive: { type: Boolean, default: false },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

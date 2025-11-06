@@ -18,6 +18,13 @@ const {
     deleteBanner
 } = require("../controllers/bannerController");
 const {
+  createBrand,
+  getAllBrands,
+  getBrandById,
+  updateBrand,
+  deleteBrand,
+} = require("../controllers/brandController");
+const {
     createMenu,
     getAllMenus,
     getMenuById,
@@ -53,6 +60,13 @@ const {
   deleteTestimonial
 } = require("../controllers/testimonialController");
 const {
+  createSocialLink,
+  getAllSocialLinks,
+  getSocialLinkById,
+  updateSocialLink,
+  deleteSocialLink,
+} = require("../controllers/socialLinkController");
+const {
     uploadImages
 } = require("../controllers/uploadImageController");
 
@@ -71,6 +85,13 @@ router.get("/banner/:id", authMiddleware, authorizeRole("admin"), getBannerById)
 router.post("/banner/create", authMiddleware, authorizeRole("admin"), createBanner);
 router.put("/banner/update/:id", authMiddleware, authorizeRole("admin"), updateBanner);
 router.delete("/banner/delete/:id", authMiddleware, authorizeRole("admin"), deleteBanner);
+
+// Brands Module
+router.get("/brands", getAllBrands);
+router.get("/brand/:id", getBrandById);
+router.post("/brand/create", authMiddleware, authorizeRole("admin"), createBrand);
+router.put("/brand/update/:id", authMiddleware, authorizeRole("admin"), updateBrand);
+router.delete("/brand/delete/:id", authMiddleware, authorizeRole("admin"), deleteBrand);
 
 // Menu Module
 router.get("/menus", authMiddleware, authorizeRole("admin"), getAllMenus);
@@ -107,6 +128,12 @@ router.post("/testimonial/create", authMiddleware, authorizeRole("admin"), creat
 router.put("/testimonial/update/:id", authMiddleware, authorizeRole("admin"), updateTestimonial);
 router.delete("/testimonial/delete/:id", authMiddleware, authorizeRole("admin"), deleteTestimonial);
 
+// Social Links Module
+router.get("/social-links", getAllSocialLinks);
+router.get("/social-link/:id", getSocialLinkById);
+router.post("/social-link/create", authMiddleware, authorizeRole("admin"), createSocialLink);
+router.put("/social-link/update/:id", authMiddleware, authorizeRole("admin"), updateSocialLink);
+router.delete("/social-link/delete/:id", authMiddleware, authorizeRole("admin"), deleteSocialLink);
 
 // Images Upload
 router.post("/images/upload", authMiddleware, authorizeRole("admin", "vendor"), uploadMiddleware, uploadImages);
