@@ -15,6 +15,8 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import ProtectedRoute from "./components/protect/ProtectedRoute";
+import MainLayout from "./layout/MainLayout";
+import HomePage from "./pages/HomePage";
 
 // Users
 import UsersList from "./pages/Users/UsersList";
@@ -95,6 +97,17 @@ export default function App() {
           {/* Auth Layout */}
           <Route path="/admin/signin" element={<SignIn />} />
           <Route path="/admin/signup" element={<SignUp />} />
+
+          {/* Main App Layout */}
+          <Route
+            element={
+              <AuthProvider>
+                <MainLayout />
+              </AuthProvider>
+            }
+          >
+            <Route index path="/" element={<HomePage />} />
+          </Route>
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
