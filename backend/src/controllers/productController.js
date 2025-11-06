@@ -7,7 +7,7 @@ const Attribute = require("../models/Attribute");
 // Get All Products
 exports.getProducts = async (req, res) => {
   try {
-    const {
+     const {
       category,
       subcategory,
       minPrice,
@@ -15,14 +15,22 @@ exports.getProducts = async (req, res) => {
       search,
       page = 1,
       limit = 10,
-      type, // 👈 capture type filter from query
+      type,
+      isActive,
+      isFeatured,
     } = req.query;
 
     let filter = {};
 
-    // ✅ filter by product type (simple or variable)
-    if (type) {
-      filter.type = type;
+    if (type) filter.type = type;
+
+    // ✅ new filters
+    if (isActive !== undefined) {
+      filter.isActive = isActive === "true";
+    }
+
+    if (isFeatured !== undefined) {
+      filter.isFeatured = isFeatured === "true";
     }
 
     // ✅ category filter
@@ -146,6 +154,8 @@ exports.createProduct = async (req, res) => {
       variations,
       category,
       subcategory,
+      isFeatured,
+      isActive
     } = req.body;
 
     if (!name || !type) {
@@ -199,6 +209,8 @@ exports.createProduct = async (req, res) => {
       type,
       category: categoryId,
       subcategory: subcategoryId,
+      isFeatured: typeof isFeatured === "boolean" ? isFeatured : false,
+      isActive: typeof isActive === "boolean" ? isActive : true,
       createdBy: req.user.id,
     });
 
@@ -402,6 +414,8 @@ exports.updateProduct = async (req, res) => {
       variations,
       category,
       subcategory,
+      isActive, 
+      isFeatured, 
     } = req.body;
 
     let product = await Product.findById(id);
@@ -537,6 +551,9 @@ exports.updateProduct = async (req, res) => {
       product.price = undefined;
       product.stock = undefined;
     }
+
+    if (isActive !== undefined) product.isActive = isActive;
+    if (isFeatured !== undefined) product.isFeatured = isFeatured;
 
     const savedProduct = await product.save();
 
