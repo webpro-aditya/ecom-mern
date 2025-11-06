@@ -10,6 +10,20 @@ const {
     updateUser,
     deleteUser
 } = require("../controllers/userController");
+const {
+    getAllUBanners,
+    getBannerById,
+    createBanner,
+    updateBanner,
+    deleteBanner
+} = require("../controllers/bannerController");
+const {
+    createMenu,
+    getAllMenus,
+    getMenuById,
+    updateMenu,
+    deleteMenu
+} = require("../controllers/menuController");
 const { 
     getProducts, 
     createProduct, 
@@ -32,6 +46,13 @@ const {
     deleteAttribute
 } = require("../controllers/attributeController");
 const {
+  createTestimonial,
+  getAllTestimonials,
+  getTestimonialById,
+  updateTestimonial,
+  deleteTestimonial
+} = require("../controllers/testimonialController");
+const {
     uploadImages
 } = require("../controllers/uploadImageController");
 
@@ -43,6 +64,20 @@ router.get("/user/:id", authMiddleware, authorizeRole("admin"), getUserById);
 router.post("/user/create", authMiddleware, authorizeRole("admin"), createUser);
 router.put("/user/update/:id", authMiddleware, authorizeRole("admin"), updateUser);
 router.delete("/user/delete/:id", authMiddleware, authorizeRole("admin"), deleteUser);
+
+// Banners Module
+router.get("/banners", authMiddleware, authorizeRole("admin"), getAllUBanners);
+router.get("/banner/:id", authMiddleware, authorizeRole("admin"), getBannerById);
+router.post("/banner/create", authMiddleware, authorizeRole("admin"), createBanner);
+router.put("/banner/update/:id", authMiddleware, authorizeRole("admin"), updateBanner);
+router.delete("/banner/delete/:id", authMiddleware, authorizeRole("admin"), deleteBanner);
+
+// Menu Module
+router.get("/menus", authMiddleware, authorizeRole("admin"), getAllMenus);
+router.get("/menu/:id", authMiddleware, authorizeRole("admin"), getMenuById);
+router.post("/menu/create", authMiddleware, authorizeRole("admin"), createMenu);
+router.put("/menu/update/:id", authMiddleware, authorizeRole("admin"), updateMenu);
+router.delete("/menu/delete/:id", authMiddleware, authorizeRole("admin"), deleteMenu);
 
 // Products Module
 router.get("/products", authMiddleware, getProducts);
@@ -64,6 +99,14 @@ router.post("/attribute/create", authMiddleware, authorizeRole("admin"), createA
 router.get("/attribute/:id", authMiddleware, authorizeRole("admin"), getAttributeById);
 router.put("/attribute/update/:id", authMiddleware, authorizeRole("admin"), updateAttribute);
 router.delete("/attribute/delete/:id", authMiddleware, authorizeRole("admin"), deleteAttribute);
+
+// Testimonials Module
+router.get("/testimonials", authMiddleware, authorizeRole("admin"), getAllTestimonials);
+router.get("/testimonial/:id", authMiddleware, authorizeRole("admin"), getTestimonialById);
+router.post("/testimonial/create", authMiddleware, authorizeRole("admin"), createTestimonial);
+router.put("/testimonial/update/:id", authMiddleware, authorizeRole("admin"), updateTestimonial);
+router.delete("/testimonial/delete/:id", authMiddleware, authorizeRole("admin"), deleteTestimonial);
+
 
 // Images Upload
 router.post("/images/upload", authMiddleware, authorizeRole("admin", "vendor"), uploadMiddleware, uploadImages);
