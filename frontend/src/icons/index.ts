@@ -60,6 +60,7 @@ import { ReactComponent as NextPageIcon } from "./next-page-icon.svg?react";
 import { ReactComponent as LastPageIcon } from "./last-page-icon.svg?react";
 import { ReactComponent as EditIcon } from "./edit-icon.svg?react";
 import { ReactComponent as DeleteIcon } from "./delete-icon.svg?react";
+import { ReactComponent as DragIcon } from "./drag-icon.svg?react";
 
 export {
   ErrorHexaIcon,
@@ -124,4 +125,5 @@ export {
   LastPageIcon,
   EditIcon,
   DeleteIcon,
+  DragIcon
 };
