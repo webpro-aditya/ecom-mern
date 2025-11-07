@@ -33,6 +33,11 @@ import CategoriesList from "./pages/Categories/CategoriesList";
 import CategoryAdd from "./pages/Categories/CategoryAdd";
 import CategoryEdit from "./pages/Categories/CategoryEdit";
 
+// Brands
+import BrandsList from "./pages/Brands/BrandsList";
+import BrandAdd from "./pages/Brands/BrandAdd";
+import BrandEdit from "./pages/Brands/BrandEdit";
+
 // Products
 import ProductsList from "./pages/Products/ProductsList";
 import ProductAdd from "./pages/Products/ProductAdd";
@@ -88,6 +93,11 @@ export default function App() {
             <Route path="/admin/categories" element={<CategoriesList />} />
             <Route path="/admin/category/add" element={<CategoryAdd />} />
             <Route path="/admin/category/:id/edit" element={<CategoryEdit />} />
+
+            {/* Brands */}
+            <Route path="/admin/brands" element={<BrandsList />} />
+            <Route path="/admin/brand/add" element={<BrandAdd />} />
+            <Route path="/admin/brand/:id/edit" element={<BrandEdit />} />
 
             {/* Products */}
             <Route path="/admin/products" element={<ProductsList />} />

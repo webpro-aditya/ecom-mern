@@ -74,21 +74,57 @@ exports.createBrand = async (req, res) => {
 // ✅ Get All Brands (with nested subbrands)
 exports.getAllBrands = async (req, res) => {
   try {
-    const brands = await Brand.find().sort({ name: 1 }).lean();
+    // Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    const brandTree = brands
-      .filter((b) => !b.parent)
-      .map((main) => ({
-        ...main,
-        subbrands: brands.filter(
-          (sub) => sub.parent?.toString() === main._id.toString()
-        ),
-      }));
+    // Sorting
+    const sortBy = req.query.sortBy || "createdAt";
+    const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
+
+    // Search
+    const search = req.query.search ? req.query.search.trim() : "";
+
+    // Build filter
+    const filter = {};
+
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { slug: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    // Get all brands (since we need them to build hierarchy)
+    const allBrands = await Brand.find(filter)
+      .sort({ [sortBy]: sortOrder })
+      .lean();
+
+    // Count for pagination
+    const totalBrands = allBrands.length;
+
+    // Build brand tree (main + subbrands)
+    const mainBrands = allBrands.filter((b) => !b.parent);
+    const brandTree = mainBrands.map((main) => ({
+      ...main,
+      subbrands: allBrands.filter(
+        (sub) => sub.parent?.toString() === main._id.toString()
+      ),
+    }));
+
+    // Pagination slice (apply after hierarchy built)
+    const paginatedBrands = brandTree.slice((page - 1) * limit, page * limit);
 
     res.status(200).json({
       success: true,
-      total: brands.length,
-      data: brandTree,
+      pagination: {
+        total: totalBrands,
+        page,
+        limit,
+        totalPages: Math.ceil(totalBrands / limit),
+      },
+      data: paginatedBrands,
     });
   } catch (error) {
     console.error("Error in GET /brands:", error);

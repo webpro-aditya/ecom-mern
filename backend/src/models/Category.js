@@ -23,11 +23,16 @@ const categorySchema = new mongoose.Schema(
       ref: "Category",
       default: null,
     },
+    image: {
+      type: String,
+      trim: true,
+      default: "", // store relative or full image path
+    },
   },
   { timestamps: true }
 );
 
-// Auto-generate slug before saving
+// ✅ Auto-generate slug from name
 categorySchema.pre("validate", function (next) {
   if (this.name && (!this.slug || this.isModified("name"))) {
     this.slug = slugify(this.name, { lower: true, strict: true });
