@@ -72,6 +72,14 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
+          icon: <BoxCubeIcon />,
+          name: "Brands",
+          subItems: [
+            { name: "List", path: "/admin/brands" },
+            { name: "Add", path: "/admin/brand/add" },
+          ],
+        },
+        {
           icon: <ListIcon />,
           name: "Products",
           subItems: [
@@ -84,6 +92,26 @@ const AppSidebar: React.FC = () => {
           name: "Orders",
           subItems: [
             { name: "List", path: "/admin/orders" }
+          ],
+        },
+      );
+    }
+
+    if (user?.role === 'vendor') {
+      menuItems.push(
+        {
+          icon: <ListIcon />,
+          name: "Products",
+          subItems: [
+            { name: "List", path: "" },
+            { name: "Add", path: "" },
+          ],
+        },
+        {
+          icon: <DocsIcon />,
+          name: "Orders",
+          subItems: [
+            { name: "List", path: "" }
           ],
         },
       );

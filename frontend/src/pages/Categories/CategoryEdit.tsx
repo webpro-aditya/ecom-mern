@@ -3,96 +3,45 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
+import toast from "react-hot-toast";
 
-// Modern icons
+// --- SVG Icons ---
 const CategoryIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
   </svg>
 );
 
 const DescriptionIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
   </svg>
 );
 
 const ParentIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
   </svg>
 );
 
 const SlugIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
   </svg>
 );
 
-// Enhanced form loader
-const FormLoader = (): JSX.Element => (
-  <div className="p-6 md:p-8">
-    <div className="mb-6 space-y-2 animate-pulse">
-      <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-2/3"></div>
-      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
-    </div>
-    <div className="space-y-6 animate-pulse">
-      {[1, 2, 3, 4].map((i) => (
-        <div key={i}>
-          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/4 mb-2"></div>
-          <div className="h-11 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
-          <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mt-2"></div>
-        </div>
-      ))}
-      <div className="flex justify-end gap-3 pt-6 border-t border-slate-200 dark:border-slate-700">
-        <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-24"></div>
-        <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-32"></div>
-      </div>
-    </div>
+const ImageIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h18M3 19h18M4 5l7 7-7 7m16 0l-7-7 7-7" />
+  </svg>
+);
+
+// --- Loader ---
+const FormLoader = () => (
+  <div className="p-6 animate-pulse space-y-4">
+    {[...Array(5)].map((_, i) => (
+      <div key={i} className="h-10 bg-slate-200 dark:bg-slate-700 rounded" />
+    ))}
   </div>
 );
 
@@ -101,47 +50,45 @@ interface CategoryData {
   slug: string;
   description: string;
   parent: string | null;
+  image?: string;
 }
 
-export default function CategoryEdit(): JSX.Element {
+export default function CategoryEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [formData, setFormData] = useState<CategoryData>({
     name: "",
     slug: "",
     description: "",
     parent: "",
+    image: "",
   });
 
   const [parents, setParents] = useState<{ _id: string; name: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch category data
+  // ✅ Fetch category details
   useEffect(() => {
     const fetchCategory = async () => {
       setIsLoading(true);
-      setError(null);
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}admin/category/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}admin/category/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await res.json();
-
-        if (!res.ok)
-          throw new Error(data.message || "Failed to fetch category.");
+        if (!res.ok) throw new Error(data.message || "Failed to fetch category");
 
         setFormData({
           name: data.category.name,
           slug: data.category.slug,
           description: data.category.description || "",
           parent: data.category.parent?._id || "",
+          image: data.category.image || "",
         });
       } catch (err: any) {
         setError(err.message);
@@ -149,26 +96,19 @@ export default function CategoryEdit(): JSX.Element {
         setIsLoading(false);
       }
     };
-
     if (id) fetchCategory();
   }, [id]);
 
-  // Fetch available parent categories
+  // ✅ Fetch parent categories
   useEffect(() => {
     const fetchParents = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}admin/categories?limit=100`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}admin/categories?limit=100`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await res.json();
         if (data.success) {
-          const parentOnly = data.categories.filter(
-            (cat: any) => cat.parent === null && cat._id !== id
-          );
+          const parentOnly = data.categories.filter((cat: any) => cat.parent === null && cat._id !== id);
           setParents(parentOnly);
         }
       } catch (err) {
@@ -178,98 +118,88 @@ export default function CategoryEdit(): JSX.Element {
     fetchParents();
   }, [id]);
 
-  // Auto-generate slug when name changes
+  // ✅ Slug generation
   useEffect(() => {
     if (formData.name) {
-      const newSlug = formData.name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "");
+      const newSlug = formData.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
       setFormData((prev) => ({ ...prev, slug: newSlug }));
     }
   }, [formData.name]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
+  // ✅ Handle changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  // ✅ Handle image upload
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const uploadData = new FormData();
+    files.forEach((file) => uploadData.append("images", file));
+
+    try {
+      setUploading(true);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}admin/images/upload`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: uploadData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Image upload failed");
+
+      if (data.paths?.length) {
+        setFormData((prev) => ({ ...prev, image: data.paths[0] }));
+        toast.success("Image uploaded successfully!");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // ✅ Submit update
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSaving(true);
     setError(null);
+
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}admin/category/update/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      const data = await response.json();
-      if (!response.ok)
-        throw new Error(data.message || "Failed to update category.");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}admin/category/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to update category");
+
+      toast.success("Category updated successfully!");
       navigate("/admin/categories");
     } catch (err: any) {
+      toast.error(err.message);
       setError(err.message);
     } finally {
       setIsSaving(false);
     }
   };
 
+  // ✅ UI
   return (
     <>
       <PageMeta title="Edit Category | Admin Dashboard" />
       <PageBreadcrumb pageTitle="Edit Category" />
 
       <div className="mx-auto max-w-3xl">
-        {/* Header Section */}
-        {!isLoading && (
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-                Edit Category
-              </h2>
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Update category information:{" "}
-                <span className="font-medium text-blue-600 dark:text-blue-400">
-                  {formData.name || "Loading..."}
-                </span>
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Error Alert */}
         {error && (
           <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
-            <div className="flex items-start">
-              <svg
-                className="mt-0.5 h-5 w-5 text-red-600 dark:text-red-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <p className="ml-3 text-sm font-medium text-red-800 dark:text-red-200">
-                {error}
-              </p>
-            </div>
+            <p className="text-sm font-medium text-red-800 dark:text-red-200">{error}</p>
           </div>
         )}
 
@@ -278,13 +208,10 @@ export default function CategoryEdit(): JSX.Element {
             <FormLoader />
           ) : (
             <div className="p-6 md:p-8">
-              <form onSubmit={handleSubmit} noValidate className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Category Name */}
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
-                  >
+                  <label className="block mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                     Category Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -293,200 +220,117 @@ export default function CategoryEdit(): JSX.Element {
                     </div>
                     <input
                       type="text"
-                      id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-4 text-slate-900 placeholder-slate-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500 dark:focus:border-blue-500"
-                      placeholder="e.g., Electronics, Clothing, Books"
+                      className="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-4 text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                     />
                   </div>
-                  <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                    Choose a descriptive name for your category
-                  </p>
                 </div>
 
-                {/* Slug (auto-generated) */}
+                {/* Slug */}
                 <div>
-                  <label
-                    htmlFor="slug"
-                    className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
-                  >
-                    URL Slug
-                    <span className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                      Auto-generated
-                    </span>
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">URL Slug</label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
                       <SlugIcon />
                     </div>
                     <input
                       type="text"
-                      id="slug"
                       name="slug"
                       value={formData.slug}
                       readOnly
                       className="block w-full rounded-lg border border-slate-300 bg-slate-50 py-2.5 pl-11 pr-4 text-slate-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-400"
                     />
                   </div>
-                  <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                    This will be used in the URL (automatically created from
-                    name)
-                  </p>
                 </div>
 
-                {/* Parent Category */}
+                {/* Parent */}
                 <div>
-                  <label
-                    htmlFor="parent"
-                    className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
-                  >
-                    Parent Category
-                    <span className="ml-2 text-xs font-normal text-slate-500 dark:text-slate-400">
-                      (Optional)
-                    </span>
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">Parent Category</label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
                       <ParentIcon />
                     </div>
                     <select
-                      id="parent"
                       name="parent"
                       value={formData.parent || ""}
                       onChange={handleChange}
-                      className="block w-full appearance-none rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-10 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-blue-500"
+                      className="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-10 text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                     >
-                      <option value="">None (Top-level Category)</option>
+                      <option value="">None (Top-level category)</option>
                       {parents.map((p) => (
                         <option key={p._id} value={p._id}>
                           {p.name}
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                      <svg
-                        className="h-5 w-5 text-slate-400"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
                   </div>
-                  <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                    Leave empty to keep as a top-level category
-                  </p>
                 </div>
 
                 {/* Description */}
                 <div>
-                  <label
-                    htmlFor="description"
-                    className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
-                  >
-                    Description
-                    <span className="ml-2 text-xs font-normal text-slate-500 dark:text-slate-400">
-                      (Optional)
-                    </span>
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">Description</label>
                   <div className="relative">
                     <div className="pointer-events-none absolute left-3.5 top-3">
                       <DescriptionIcon />
                     </div>
                     <textarea
-                      id="description"
                       name="description"
                       value={formData.description}
                       onChange={handleChange}
                       rows={4}
-                      placeholder="Provide a brief description of this category..."
-                      className="block w-full resize-none rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-4 text-slate-900 placeholder-slate-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500 dark:focus:border-blue-500"
+                      className="block w-full resize-none rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-4 text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                     ></textarea>
                   </div>
-                  <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                    Help users understand what products belong in this category
-                  </p>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex items-center justify-end gap-3 border-t border-slate-200 pt-6 dark:border-slate-700">
+                {/* ✅ Image Upload */}
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Category Image</label>
+                  <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <ImageIcon />
+                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                        <span className="font-semibold">Click to upload</span> or drag file
+                      </p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">PNG, JPG, WEBP up to 5MB</p>
+                    </div>
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                  </label>
+
+                  {formData.image && (
+                    <div className="mt-4">
+                      <img
+                        src={`${import.meta.env.VITE_BACKEND_URL}${formData.image}`}
+                        alt="Category"
+                        className="h-24 rounded-md border border-slate-200 dark:border-slate-700"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-end gap-3 border-t border-slate-200 pt-6 dark:border-slate-700">
                   <Link
                     to="/admin/categories"
-                    className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                    className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
                   >
                     Cancel
                   </Link>
                   <button
                     type="submit"
-                    disabled={isSaving}
-                    className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-offset-slate-900"
+                    disabled={isSaving || uploading}
+                    className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {isSaving && (
-                      <svg
-                        className="-ml-1 mr-2 h-4 w-4 animate-spin"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                    )}
-                    {isSaving ? "Saving Changes..." : "Save Changes"}
+                    {isSaving ? "Saving..." : "Save Changes"}
                   </button>
                 </div>
               </form>
             </div>
           )}
         </ComponentCard>
-
-        {/* Info Box */}
-        {!isLoading && (
-          <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
-            <div className="flex">
-              <svg
-                className="h-5 w-5 flex-shrink-0 text-amber-600 dark:text-amber-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                  Important Note
-                </h3>
-                <p className="mt-1 text-sm text-amber-700 dark:text-amber-400">
-                  Changing the category name will automatically update its URL
-                  slug. This may affect existing links to products in this
-                  category.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

@@ -2,7 +2,7 @@ const Category = require("../models/Category");
 
 exports.createCategory = async (req, res) => {
   try {
-    const { name, description, parent } = req.body;
+    const { name, description, parent, image } = req.body;
 
     if (!name) {
       return res
@@ -10,7 +10,7 @@ exports.createCategory = async (req, res) => {
         .json({ success: false, message: "Category name is required" });
     }
 
-    // Check duplicate
+    // Check for duplicate
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {
       return res
@@ -22,6 +22,7 @@ exports.createCategory = async (req, res) => {
       name,
       description,
       parent: parent || null,
+      image: image || "",
     });
 
     await newCategory.save();
@@ -110,25 +111,36 @@ exports.getCategoryById = async (req, res) => {
 exports.updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, parent } = req.body;
+    const { name, description, parent, image } = req.body;
 
-    // Build update object
-    const updateData = {};
-    if (name) {
-      updateData.name = name;
-    }
-    if (description !== undefined) updateData.description = description;
-    if (parent !== undefined) updateData.parent = parent;
-
-    const updatedCategory = await Category.findByIdAndUpdate(id, updateData, {
-      new: true,
-    }).populate("parent", "name slug");
-
-    if (!updatedCategory) {
+    // Find the category
+    const category = await Category.findById(id);
+    if (!category) {
       return res
         .status(404)
         .json({ success: false, message: "Category not found" });
     }
+
+    // Check duplicate name (if changed)
+    if (name && name !== category.name) {
+      const duplicate = await Category.findOne({ name });
+      if (duplicate && duplicate._id.toString() !== id) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Category name already exists" });
+      }
+      category.name = name;
+    }
+
+    // Update other fields if provided
+    if (description !== undefined) category.description = description;
+    if (parent !== undefined) category.parent = parent || null;
+    if (image !== undefined) category.image = image;
+
+    // Slug will auto-update on save (see schema pre('validate'))
+    await category.save();
+
+    const updatedCategory = await Category.findById(id).populate("parent", "name slug");
 
     res.json({
       success: true,
@@ -140,6 +152,7 @@ exports.updateCategory = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 
 // // Delete Category
 exports.deleteCategory = async (req, res) => {
