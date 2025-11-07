@@ -1,0 +1,14 @@
+ <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={className}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8.25 6.75h.008v.008H8.25V6.75zm0 5.25h.008v.008H8.25V12zm0 5.25h.008v.008H8.25v-.008zm7.5-10.5h.008v.008h-.008V6.75zm0 5.25h.008v.008h-.008V12zm0 5.25h.008v.008h-.008v-.008z"
+      />
+    </svg>

@@ -3,24 +3,43 @@ const Banner = require("../models/Banner");
 // Create Banner
 exports.createBanner = async (req, res) => {
   try {
-    const { title, image, htmlContent, sequence, redirectUrl, isActive, startDate, endDate } = req.body;
+    const { title, image, htmlContent, redirectUrl, isActive, startDate, endDate } = req.body;
+
+    if (!title || !image) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and image are required fields",
+      });
+    }
+
+    const lastBanner = await Banner.findOne().sort({ sequence: -1 });
+
+    const nextSequence = lastBanner ? lastBanner.sequence + 1 : 1;
 
     const newBanner = new Banner({
-      title,
+      title: title.trim(),
       image,
-      htmlContent,
-      sequence,
-      redirectUrl,
-      isActive,
+      htmlContent: htmlContent || "",
+      sequence: nextSequence,
+      redirectUrl: redirectUrl || "",
+      isActive: typeof isActive === "boolean" ? isActive : true,
       startDate,
-      endDate
+      endDate,
     });
 
     await newBanner.save();
-    res.status(201).json({ success: true, message: "Banner created successfully", data: newBanner });
+
+    res.status(201).json({
+      success: true,
+      message: "Banner created successfully",
+      data: newBanner,
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server Error" });
+    console.error("Error in createBanner:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error. Unable to create banner.",
+    });
   }
 };
 
@@ -59,7 +78,6 @@ exports.updateBanner = async (req, res) => {
       title === undefined ||
       image === undefined ||
       htmlContent === undefined ||
-      sequence === undefined ||
       redirectUrl === undefined ||
       isActive === undefined ||
       startDate === undefined ||
@@ -77,7 +95,6 @@ exports.updateBanner = async (req, res) => {
         title,
         image,
         htmlContent,
-        sequence,
         redirectUrl,
         isActive,
         startDate,
@@ -114,3 +131,34 @@ exports.deleteBanner = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+// Update Sequence - drag drop
+exports.updateBannerSequences = async (req, res) => {
+  try {
+    const { sequences } = req.body;
+    if (!Array.isArray(sequences) || sequences.length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid sequence data" });
+    }
+
+    // sequences: [{ _id, sequence }, ...]
+    const bulkOps = sequences.map((b) => ({
+      updateOne: {
+        filter: { _id: b._id },
+        update: { $set: { sequence: b.sequence } },
+      },
+    }));
+
+    await Banner.bulkWrite(bulkOps);
+
+    res.json({
+      success: true,
+      message: "Banner sequences updated successfully",
+    });
+  } catch (err) {
+    console.error("Sequence update error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+

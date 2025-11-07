@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Badge from "../../components/ui/badge/Badge";
 import { EditIcon, DeleteIcon } from "../../icons";
 import ConfirmationModal from '../common/ConfirmationModal';
+import SkeletonRow from "../common/SkeletonRow";
 
 interface User {
   _id: string;
@@ -51,29 +52,6 @@ const SortIcon = ({
       />
     )}
   </svg>
-);
-
-const SkeletonRow = () => (
-  <tr className="animate-pulse">
-    <td className="p-4">
-      <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-32 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-40 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-6 w-16 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-8 w-20 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-  </tr>
 );
 
 export default function UsersTable({

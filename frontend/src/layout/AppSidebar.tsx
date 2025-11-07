@@ -56,6 +56,14 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
+          icon: <ListIcon />,
+          name: "Banners",
+          subItems: [
+            { name: "List", path: "/admin/banners" },
+            { name: "Add", path: "/admin/banner/add" },
+          ],
+        },
+        {
           icon: <BoxCubeIcon />,
           name: "Categories",
           subItems: [

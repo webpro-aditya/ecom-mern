@@ -23,6 +23,11 @@ import UsersList from "./pages/Users/UsersList";
 import UserAdd from "./pages/Users/UserAdd";
 import UserEdit from "./pages/Users/UserEdit";
 
+// Banners
+import BannersList from "./pages/Banners/BannersList";
+import BannerAdd from "./pages/Banners/BannerAdd";
+import BannerEdit from "./pages/Banners/BannerEdit";
+
 // Categories
 import CategoriesList from "./pages/Categories/CategoriesList";
 import CategoryAdd from "./pages/Categories/CategoryAdd";
@@ -73,6 +78,11 @@ export default function App() {
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/users/add" element={<UserAdd />} />
             <Route path="/admin/users/:id/edit" element={<UserEdit />} />
+
+            {/* Banners */}
+            <Route path="/admin/banners" element={<BannersList />} />
+            <Route path="/admin/banner/add" element={<BannerAdd />} />
+            <Route path="/admin/banners/:id/edit" element={<BannerEdit />} />
 
             {/* Categories */}
             <Route path="/admin/categories" element={<CategoriesList />} />

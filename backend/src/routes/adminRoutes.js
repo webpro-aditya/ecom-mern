@@ -15,7 +15,8 @@ const {
     getBannerById,
     createBanner,
     updateBanner,
-    deleteBanner
+    deleteBanner,
+    updateBannerSequences
 } = require("../controllers/bannerController");
 const {
   createBrand,
@@ -85,6 +86,7 @@ router.get("/banner/:id", authMiddleware, authorizeRole("admin"), getBannerById)
 router.post("/banner/create", authMiddleware, authorizeRole("admin"), createBanner);
 router.put("/banner/update/:id", authMiddleware, authorizeRole("admin"), updateBanner);
 router.delete("/banner/delete/:id", authMiddleware, authorizeRole("admin"), deleteBanner);
+router.put("/banner/update-sequences", authMiddleware, authorizeRole("admin"), updateBannerSequences);
 
 // Brands Module
 router.get("/brands", getAllBrands);
