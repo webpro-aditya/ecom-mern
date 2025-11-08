@@ -22,7 +22,7 @@ const authMiddleware = async (req, res, next) => {
     req.user = decoded; // attach user info
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Logged Out" });
   }
 };
 

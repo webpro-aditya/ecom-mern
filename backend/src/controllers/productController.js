@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const Product = require("../models/Product");
-const Category = require("../models/Category");
 const Attribute = require("../models/Attribute");
+const Brand = require("../models/Brand");
+const Category = require("../models/Category");
+const Product = require("../models/Product");
 
 // Get All Products
 exports.getProducts = async (req, res) => {
@@ -163,8 +164,8 @@ exports.createProduct = async (req, res) => {
       variations,
       category,
       subcategory,
-      brand,       // ✅ IDs only
-      subbrand,    // ✅ IDs only
+      brand,     
+      subbrand,
       isFeatured,
       isActive
     } = req.body;
@@ -484,14 +485,30 @@ exports.updateProduct = async (req, res) => {
 
         const formattedAttributes = [];
         const attrEntries = Object.entries(variation.attributes || {});
-        for (const [attrId, value] of attrEntries) {
-          if (!mongoose.Types.ObjectId.isValid(attrId)) {
-            return res.status(400).json({ success: false, message: `Invalid attribute ID: ${attrId}` });
+        let attrId = null;
+        console.log(attrEntries);
+        for (const [key, item] of attrEntries) {
+          const attrId = item?.attribute?.id;
+
+          if (!attrId || !mongoose.Types.ObjectId.isValid(attrId)) {
+            return res
+              .status(400)
+              .json({ success: false, message: `Invalid attribute ID: ${attrId}` });
           }
+
           const attrDoc = await Attribute.findById(attrId);
-          if (!attrDoc) return res.status(400).json({ success: false, message: `Attribute not found: ${attrId}` });
-          formattedAttributes.push({ attribute: attrDoc._id, value });
+          if (!attrDoc) {
+            return res
+              .status(400)
+              .json({ success: false, message: `Attribute not found: ${attrId}` });
+          }
+
+          formattedAttributes.push({
+            attribute: attrDoc._id,
+            value: item.value,
+          });
         }
+
 
         processedVariations.push({
           name: variation.name,
