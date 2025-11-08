@@ -9,6 +9,8 @@ export default function ProductAdd() {
 
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [subbrands, setSubbrands] = useState([]);
   const [attributes, setAttributes] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState({});
 
@@ -18,10 +20,14 @@ export default function ProductAdd() {
     type: "simple",
     category: "",
     subcategory: "",
+    brand: "",
+    subbrand: "",
     price: "",
     stock: "",
     images: [],
     variations: [],
+    isActive: true,
+    isFeatured: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -36,8 +42,11 @@ export default function ProductAdd() {
   const fetchInitialData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const [catRes, attrRes] = await Promise.all([
+      const [catRes, brandRes, attrRes] = await Promise.all([
         fetch(`${import.meta.env.VITE_API_URL}admin/categories`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(`${import.meta.env.VITE_API_URL}admin/brands`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
         fetch(`${import.meta.env.VITE_API_URL}admin/attributes`, {
@@ -46,9 +55,31 @@ export default function ProductAdd() {
       ]);
 
       const catData = await catRes.json();
+      const brandData = await brandRes.json();
       const attrData = await attrRes.json();
 
       if (catData.success) setCategories(catData.categories || []);
+
+      if (brandData.success) {
+        // ✅ Flatten brands and subbrands into one array
+        const allBrands = [];
+        brandData.data.forEach((b) => {
+          allBrands.push({
+            ...b,
+            subbrands: undefined, // remove nested array reference
+          });
+          if (Array.isArray(b.subbrands) && b.subbrands.length > 0) {
+            b.subbrands.forEach((sb) =>
+              allBrands.push({
+                ...sb,
+                isSubbrand: true,
+              })
+            );
+          }
+        });
+        setBrands(allBrands);
+      }
+
       if (attrData.success) setAttributes(attrData.attributes || []);
     } catch (err) {
       console.error("Error loading data:", err);
@@ -56,7 +87,7 @@ export default function ProductAdd() {
     }
   };
 
-  // Update subcategories dynamically when category changes
+  // Update subcategories when category changes
   useEffect(() => {
     if (!formData.category) {
       setSubcategories([]);
@@ -64,18 +95,33 @@ export default function ProductAdd() {
       return;
     }
 
-    // Subcategories = categories with parent equal to selected category ID
     const subs = categories.filter(
       (cat) => cat.parent && cat.parent._id === formData.category
     );
     setSubcategories(subs);
   }, [formData.category, categories]);
 
+  // Update subbrands when brand changes
+  useEffect(() => {
+    if (!formData.brand) {
+      setSubbrands([]);
+      setFormData((prev) => ({ ...prev, subbrand: "" }));
+      return;
+    }
+
+    const subs = brands.filter((b) => b.parent === formData.brand);
+    setSubbrands(subs);
+  }, [formData.brand, brands]);
+
   // Generic input handler
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, type, value, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
+
 
   // Upload helper
   const uploadFiles = async (files) => {
@@ -457,7 +503,10 @@ export default function ProductAdd() {
                               />
                             </svg>
                             <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
-                              <span className="font-semibold">Click to upload</span> or drag and drop
+                              <span className="font-semibold">
+                                Click to upload
+                              </span>{" "}
+                              or drag and drop
                             </p>
                             <p className="text-xs text-slate-500 dark:text-slate-400">
                               PNG, JPG or WEBP (MAX. 5MB)
@@ -481,7 +530,9 @@ export default function ProductAdd() {
                               className="group relative aspect-square overflow-hidden rounded-lg border-2 border-slate-200 dark:border-slate-700"
                             >
                               <img
-                                src={`${import.meta.env.VITE_BACKEND_URL}${img}`}
+                                src={`${
+                                  import.meta.env.VITE_BACKEND_URL
+                                }${img}`}
                                 alt={`Product ${i + 1}`}
                                 className="h-full w-full object-cover transition-transform group-hover:scale-110"
                               />
@@ -587,7 +638,8 @@ export default function ProductAdd() {
                         // Add new attribute handler (called from button)
                         async function handleAddNewAttribute() {
                           const nameEl = document.getElementById("newAttrName");
-                          const valEl = document.getElementById("newAttrValues");
+                          const valEl =
+                            document.getElementById("newAttrValues");
                           const attrName = nameEl.value.trim();
                           const values = valEl.value
                             .split(",")
@@ -728,38 +780,38 @@ export default function ProductAdd() {
                                         </div>
 
                                         <div className="flex flex-wrap gap-2">
-                                          {(selectedAttributes[attrId] || []).map(
-                                            (val) => (
-                                              <span
-                                                key={val}
-                                                className="inline-flex items-center gap-1.5 rounded-md bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                                          {(
+                                            selectedAttributes[attrId] || []
+                                          ).map((val) => (
+                                            <span
+                                              key={val}
+                                              className="inline-flex items-center gap-1.5 rounded-md bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                                            >
+                                              {val}
+                                              <button
+                                                type="button"
+                                                className="ml-0.5 hover:text-blue-900 dark:hover:text-blue-100"
+                                                onClick={() =>
+                                                  removeAttributeValue(
+                                                    attrId,
+                                                    val
+                                                  )
+                                                }
                                               >
-                                                {val}
-                                                <button
-                                                  type="button"
-                                                  className="ml-0.5 hover:text-blue-900 dark:hover:text-blue-100"
-                                                  onClick={() =>
-                                                    removeAttributeValue(
-                                                      attrId,
-                                                      val
-                                                    )
-                                                  }
+                                                <svg
+                                                  className="h-4 w-4"
+                                                  fill="currentColor"
+                                                  viewBox="0 0 20 20"
                                                 >
-                                                  <svg
-                                                    className="h-4 w-4"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                  >
-                                                    <path
-                                                      fillRule="evenodd"
-                                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                      clipRule="evenodd"
-                                                    />
-                                                  </svg>
-                                                </button>
-                                              </span>
-                                            )
-                                          )}
+                                                  <path
+                                                    fillRule="evenodd"
+                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                  />
+                                                </svg>
+                                              </button>
+                                            </span>
+                                          ))}
 
                                           <input
                                             type="text"
@@ -839,9 +891,7 @@ export default function ProductAdd() {
                         onClick={() => {
                           const attrKeys = Object.keys(selectedAttributes);
                           if (!attrKeys.length) {
-                            setError(
-                              "Please select at least one attribute"
-                            );
+                            setError("Please select at least one attribute");
                             return;
                           }
 
@@ -1163,7 +1213,7 @@ export default function ProductAdd() {
 
               {/* Category Card */}
               <ComponentCard>
-                <div className="p-6">
+                <div className="p-0">
                   <h3 className="mb-4 text-sm font-semibold text-slate-900 dark:text-white">
                     Product Organization
                   </h3>
@@ -1209,6 +1259,83 @@ export default function ProductAdd() {
                         </select>
                       </div>
                     )}
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Brand
+                      </label>
+                      <select
+                        name="brand"
+                        value={formData.brand}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-blue-500"
+                      >
+                        <option value="">Select Brand</option>
+                        {brands
+                          .filter((c) => !c.parent)
+                          .map((bran) => (
+                            <option key={bran._id} value={bran._id}>
+                              {bran.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+
+                    {subbrands.length > 0 && (
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          Subbrand
+                        </label>
+                        <select
+                          name="subbrand"
+                          value={formData.subbrand}
+                          onChange={handleChange}
+                          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-blue-500"
+                        >
+                          <option value="">Select Subbrand</option>
+                          {subbrands.map((sub) => (
+                            <option key={sub._id} value={sub._id}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </ComponentCard>
+
+              <ComponentCard>
+                <div className="p-0">
+                  <h3 className="mb-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    Status
+                  </h3>
+                  <div className="flex flex-col gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        name="isActive"
+                        checked={formData.isActive}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">
+                        Active Product
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        name="isFeatured"
+                        checked={formData.isFeatured}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">
+                        Featured Product
+                      </span>
+                    </label>
                   </div>
                 </div>
               </ComponentCard>

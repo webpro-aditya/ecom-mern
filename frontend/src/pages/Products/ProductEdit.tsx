@@ -10,6 +10,8 @@ export default function ProductEdit() {
 
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [subbrands, setSubbrands] = useState([]);
   const [attributes, setAttributes] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [loading, setLoading] = useState(false);
@@ -22,10 +24,14 @@ export default function ProductEdit() {
     type: "simple",
     category: "",
     subcategory: "",
+    brand: "",
+    subbrand: "",
     price: "",
     stock: "",
     images: [],
     variations: [],
+    isActive: false,
+    isFeatured: false
   });
 
   // ✅ Load initial data: categories, attributes, product
@@ -38,8 +44,11 @@ export default function ProductEdit() {
       const token = localStorage.getItem("token");
 
       // Fetch all required data in parallel
-      const [catRes, attrRes, prodRes] = await Promise.all([
+      const [catRes, brandRes, attrRes, prodRes] = await Promise.all([
         fetch(`${import.meta.env.VITE_API_URL}admin/categories`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(`${import.meta.env.VITE_API_URL}admin/brands`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
         fetch(`${import.meta.env.VITE_API_URL}admin/attributes`, {
@@ -50,13 +59,35 @@ export default function ProductEdit() {
         }),
       ]);
 
-      const [catData, attrData, prodData] = await Promise.all([
+      const [catData, brandData, attrData, prodData] = await Promise.all([
         catRes.json(),
+        brandRes.json(),
         attrRes.json(),
         prodRes.json(),
       ]);
 
       if (catData.success) setCategories(catData.categories || []);
+
+      if (brandData.success) {
+        // ✅ Flatten brands and subbrands into one array
+        const allBrands = [];
+        brandData.data.forEach((b) => {
+          allBrands.push({
+            ...b,
+            subbrands: undefined, // remove nested array reference
+          });
+          if (Array.isArray(b.subbrands) && b.subbrands.length > 0) {
+            b.subbrands.forEach((sb) =>
+              allBrands.push({
+                ...sb,
+                isSubbrand: true,
+              })
+            );
+          }
+        });
+        setBrands(allBrands);
+      }
+
       if (attrData.success) setAttributes(attrData.attributes || []);
 
       if (prodData.success && prodData.product) {
@@ -67,10 +98,14 @@ export default function ProductEdit() {
           type: product.type,
           category: product.category?._id || "",
           subcategory: product.subcategory?._id || "",
+          brand: product.brand?._id || "",
+          subbrand: product.subbrand?._id || "",
           price: product.price || "",
           stock: product.stock || "",
           images: product.images || [],
           variations: product.variations || [],
+          isActive: product.isActive,
+          isFeatured: product.isFeatured
         });
 
         // Prefill attribute selections if variations exist
@@ -108,11 +143,26 @@ export default function ProductEdit() {
     setSubcategories(subs);
   }, [formData.category, categories]);
 
+  useEffect(() => {
+    if (!formData.brand) {
+      setSubbrands([]);
+      setFormData((prev) => ({ ...prev, subbrand: "" }));
+      return;
+    }
+
+    const subs = brands.filter((b) => b.parent === formData.brand);
+    setSubbrands(subs);
+  }, [formData.brand, brands]);
+
   // ✅ Generic change handler
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, type, value, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
+
 
   // ✅ File upload helper
   const uploadFiles = async (files) => {
@@ -456,7 +506,9 @@ export default function ProductEdit() {
                               className="group relative aspect-square overflow-hidden rounded-lg border-2 border-slate-200 dark:border-slate-700"
                             >
                               <img
-                                src={`${import.meta.env.VITE_BACKEND_URL}${img}`}
+                                src={`${
+                                  import.meta.env.VITE_BACKEND_URL
+                                }${img}`}
                                 alt={`Product ${i + 1}`}
                                 className="h-full w-full object-cover transition-transform group-hover:scale-110"
                               />
@@ -489,197 +541,211 @@ export default function ProductEdit() {
               )}
 
               {/* Variations List */}
-              {formData.type === "variable" && formData.variations.length > 0 && (
-                <ComponentCard>
-                  <div className="p-6">
-                    <div className="mb-5 flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                        Product Variations
-                      </h3>
-                      <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                        {formData.variations.length} variations
-                      </span>
-                    </div>
+              {formData.type === "variable" &&
+                formData.variations.length > 0 && (
+                  <ComponentCard>
+                    <div className="p-6">
+                      <div className="mb-5 flex items-center justify-between">
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                          Product Variations
+                        </h3>
+                        <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                          {formData.variations.length} variations
+                        </span>
+                      </div>
 
-                    <div className="space-y-5">
-                      {formData.variations.map((v, i) => (
-                        <div
-                          key={i}
-                          className="relative rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"
-                        >
-                          {/* Remove Button */}
-                          <button
-                            type="button"
-                            onClick={() => removeVariation(i)}
-                            className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+                      <div className="space-y-5">
+                        {formData.variations.map((v, i) => (
+                          <div
+                            key={i}
+                            className="relative rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800"
                           >
-                            <svg
-                              className="h-5 w-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
+                            {/* Remove Button */}
+                            <button
+                              type="button"
+                              onClick={() => removeVariation(i)}
+                              className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                             >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </button>
+                              <svg
+                                className="h-5 w-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
 
-                          {/* Variation Label */}
-                          <div className="mb-4 flex items-center gap-2">
-                            <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-300">
-                              Variation {i + 1}
-                            </span>
-                            <span className="text-sm text-slate-600 dark:text-slate-400">
-                              {v.name || Object.values(v.attributes || {}).join(" / ")}
-                            </span>
-                          </div>
+                            {/* Variation Label */}
+                            <div className="mb-4 flex items-center gap-2">
+                              <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                Variation {i + 1}
+                              </span>
+                              <span className="text-sm text-slate-600 dark:text-slate-400">
+                                {v.name ||
+                                  Object.values(v.attributes || {}).join(" / ")}
+                              </span>
+                            </div>
 
-                          {/* Form Fields */}
-                          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                            <div>
-                              <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
-                                Name
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Variation name"
-                                value={v.name}
-                                onChange={(e) =>
-                                  handleVariationChange(i, "name", e.target.value)
-                                }
-                                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
-                                SKU
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="SKU"
-                                value={v.sku}
-                                onChange={(e) =>
-                                  handleVariationChange(i, "sku", e.target.value)
-                                }
-                                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
-                                Price
-                              </label>
-                              <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-500 dark:text-slate-400">
-                                  $
-                                </span>
+                            {/* Form Fields */}
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                              <div>
+                                <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
+                                  Name
+                                </label>
                                 <input
-                                  type="number"
-                                  placeholder="0.00"
-                                  value={v.price}
+                                  type="text"
+                                  placeholder="Variation name"
+                                  value={v.name}
                                   onChange={(e) =>
                                     handleVariationChange(
                                       i,
-                                      "price",
+                                      "name",
                                       e.target.value
                                     )
                                   }
-                                  step="0.01"
-                                  className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-7 pr-3 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
+                                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
+                                />
+                              </div>
+                              <div>
+                                <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
+                                  SKU
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="SKU"
+                                  value={v.sku}
+                                  onChange={(e) =>
+                                    handleVariationChange(
+                                      i,
+                                      "sku",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
+                                />
+                              </div>
+                              <div>
+                                <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
+                                  Price
+                                </label>
+                                <div className="relative">
+                                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-500 dark:text-slate-400">
+                                    $
+                                  </span>
+                                  <input
+                                    type="number"
+                                    placeholder="0.00"
+                                    value={v.price}
+                                    onChange={(e) =>
+                                      handleVariationChange(
+                                        i,
+                                        "price",
+                                        e.target.value
+                                      )
+                                    }
+                                    step="0.01"
+                                    className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-7 pr-3 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
+                                  />
+                                </div>
+                              </div>
+                              <div>
+                                <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
+                                  Stock
+                                </label>
+                                <input
+                                  type="number"
+                                  placeholder="0"
+                                  value={v.stock}
+                                  onChange={(e) =>
+                                    handleVariationChange(
+                                      i,
+                                      "stock",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
                                 />
                               </div>
                             </div>
-                            <div>
-                              <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">
-                                Stock
-                              </label>
-                              <input
-                                type="number"
-                                placeholder="0"
-                                value={v.stock}
-                                onChange={(e) =>
-                                  handleVariationChange(i, "stock", e.target.value)
-                                }
-                                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:focus:border-blue-500"
-                              />
-                            </div>
-                          </div>
 
-                          {/* Variation Images */}
-                          <div className="mt-5">
-                            <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
-                              Variation Images
-                            </label>
-                            <div className="flex items-start gap-3">
-                              <label className="flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-blue-500 dark:hover:bg-slate-700">
-                                <svg
-                                  className="h-8 w-8 text-slate-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M12 4v16m8-8H4"
-                                  />
-                                </svg>
-                                <input
-                                  type="file"
-                                  multiple
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleVariationImageUpload(i, e)
-                                  }
-                                  className="hidden"
-                                />
+                            {/* Variation Images */}
+                            <div className="mt-5">
+                              <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
+                                Variation Images
                               </label>
-
-                              {(v.images || []).map((img, j) => (
-                                <div
-                                  key={j}
-                                  className="group relative h-24 w-24 overflow-hidden rounded-lg border-2 border-slate-200 dark:border-slate-700"
-                                >
-                                  <img
-                                    src={`${
-                                      import.meta.env.VITE_BACKEND_URL
-                                    }${img}`}
-                                    alt={`Variation ${i + 1} - ${j + 1}`}
-                                    className="h-full w-full object-cover transition-transform group-hover:scale-110"
+                              <div className="flex items-start gap-3">
+                                <label className="flex h-24 w-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-blue-500 dark:hover:bg-slate-700">
+                                  <svg
+                                    className="h-8 w-8 text-slate-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                      d="M12 4v16m8-8H4"
+                                    />
+                                  </svg>
+                                  <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                      handleVariationImageUpload(i, e)
+                                    }
+                                    className="hidden"
                                   />
-                                  <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        removeVariationImage(i, j)
-                                      }
-                                      className="rounded-lg bg-red-600 p-1.5 text-white transition-colors hover:bg-red-700"
-                                    >
-                                      <svg
-                                        className="h-4 w-4"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
+                                </label>
+
+                                {(v.images || []).map((img, j) => (
+                                  <div
+                                    key={j}
+                                    className="group relative h-24 w-24 overflow-hidden rounded-lg border-2 border-slate-200 dark:border-slate-700"
+                                  >
+                                    <img
+                                      src={`${
+                                        import.meta.env.VITE_BACKEND_URL
+                                      }${img}`}
+                                      alt={`Variation ${i + 1} - ${j + 1}`}
+                                      className="h-full w-full object-cover transition-transform group-hover:scale-110"
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          removeVariationImage(i, j)
+                                        }
+                                        className="rounded-lg bg-red-600 p-1.5 text-white transition-colors hover:bg-red-700"
                                       >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </button>
+                                        <svg
+                                          className="h-4 w-4"
+                                          fill="currentColor"
+                                          viewBox="0 0 20 20"
+                                        >
+                                          <path
+                                            fillRule="evenodd"
+                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                            clipRule="evenodd"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </ComponentCard>
-              )}
+                  </ComponentCard>
+                )}
             </div>
 
             {/* Right Sidebar */}
@@ -784,6 +850,85 @@ export default function ProductEdit() {
                         </select>
                       </div>
                     )}
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Brand
+                      </label>
+                      <select
+                        name="brand"
+                        value={formData.brand}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-blue-500"
+                      >
+                        <option value="">Select Brand</option>
+                        {brands
+                          .filter((c) => !c.parent)
+                          .map((bran) => (
+                            <option key={bran._id} value={bran._id}>
+                              {bran.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+
+                    {subbrands.length > 0 && (
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          Subbrand
+                        </label>
+                        <select
+                          name="subbrand"
+                          value={formData.subbrand}
+                          onChange={handleChange}
+                          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-blue-500"
+                        >
+                          <option value="">Select Subbrand</option>
+                          {subbrands.map((sub) => (
+                            <option key={sub._id} value={sub._id}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </ComponentCard>
+
+              <ComponentCard>
+                <div className="p-0">
+                  <h3 className="mb-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    Status
+                  </h3>
+                  <div className="flex flex-col gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        name="isActive"
+                        checked={formData.isActive}
+                        onChange={handleChange}
+                        value={formData.isActive}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">
+                        Active Product
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        name="isFeatured"
+                        checked={formData.isFeatured}
+                        onChange={handleChange}
+                        value={formData.isFeatured}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">
+                        Featured Product
+                      </span>
+                    </label>
                   </div>
                 </div>
               </ComponentCard>
