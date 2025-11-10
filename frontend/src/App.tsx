@@ -47,6 +47,8 @@ import ProductEdit from "./pages/Products/ProductEdit";
 import OrdersList from "./pages/Orders/OrdersList";
 import OrderDetails from "./pages/Orders/OrderDetails";
 
+import SocialLinksManager from "./pages/SocialLinks/SocialLinksManager";
+
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
   const { token, user } = useSelector((state: RootState) => state.user);
@@ -107,6 +109,9 @@ export default function App() {
             {/* Orders */}
             <Route path="/admin/orders" element={<OrdersList />} />
             <Route path="/admin/order/:id" element={<OrderDetails />} />
+
+            {/* Social Links */}
+             <Route path="/admin/social-links" element={<SocialLinksManager />} />
 
             {/* Other pages */}
             <Route path="/profile" element={<UserProfiles />} />

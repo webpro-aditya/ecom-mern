@@ -94,6 +94,13 @@ const AppSidebar: React.FC = () => {
             { name: "List", path: "/admin/orders" }
           ],
         },
+        {
+          icon: <DocsIcon />,
+          name: "Social Links",
+          subItems: [
+            { name: "Manage", path: "/admin/social-links" }
+          ],
+        },
       );
     }
 
