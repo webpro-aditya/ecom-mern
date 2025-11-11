@@ -16,7 +16,23 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import ProtectedRoute from "./components/protect/ProtectedRoute";
 import MainLayout from "./layout/MainLayout";
+
+// UI Pages
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/ui/LoginPage";
+import RegisterPage from "./pages/ui/RegisterPage";
+import CartPage from "./pages/ui/CartPage";
+import WishlistPage from "./pages/ui/WishlistPage";
+import ContactUsPage from "./pages/ui/ContactUsPage";
+import CategoriesPage from "./pages/ui/CategoriesPage";
+import FAQsPage from "./pages/ui/FAQsPage";
+import SalePage from "./pages/ui/SalePage";
+import NewArrivalsPage from "./pages/ui/NewArrivalsPage";
+import PrivacyPolicyPage from "./pages/ui/PrivacyPolicyPage";
+import ReturnPolicyPage from "./pages/ui/ReturnPolicyPage";
+import ShippingPolicyPage from "./pages/ui/ShippingPolicyPage";
+import TermsConditionsPage from "./pages/ui/TermsConditionsPage";
+
 
 // Users
 import UsersList from "./pages/Users/UsersList";
@@ -132,6 +148,19 @@ export default function App() {
             }
           >
             <Route index path="/" element={<HomePage />} />
+            <Route index path="/login" element={<LoginPage />} />
+            <Route index path="/register" element={<RegisterPage />} />
+            <Route index path="/cart" element={<CartPage />} />
+            <Route index path="/wishlist" element={<WishlistPage />} />
+            <Route index path="/contact-us" element={<ContactUsPage />} />
+            <Route index path="/categories" element={<CategoriesPage />} />
+            <Route index path="/faq" element={<FAQsPage />} />
+            <Route index path="/sale" element={<SalePage />} />
+            <Route index path="/new-arrivals" element={<NewArrivalsPage />} />
+            <Route index path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route index path="/return-policy" element={<ReturnPolicyPage />} />
+            <Route index path="/shipping-policy" element={<ShippingPolicyPage />} />
+            <Route index path="/terms-and-conditions" element={<TermsConditionsPage />} />
           </Route>
 
           {/* Fallback Route */}

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-const PLACEHOLDER_IMAGE =
-  "https://via.placeholder.com/400x300.png?text=No+Image";
-
 // --- Types (for better code quality) ---
 interface Banner {
   _id: string;
@@ -433,7 +430,7 @@ const HomePage: React.FC = () => {
             <div className="md:w-1/2">
               {" "}
               <img
-                src="https://images.unsplash.com/photo-1483985988255-53778121c5de?w=600&h=400&fit=crop"
+                src="images/home/summer-sale.jpg"
                 alt="Sale Banner"
                 className="w-full rounded-2xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300"
               />{" "}
