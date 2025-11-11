@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 // Use your StatusBadge from previous answers for consistent status colors
 import { StatusBadge } from "../badges/StatusBadge";
+import SkeletonRow from "../common/SkeletonRow";
 
 export default function OrdersTable({
   orders,
@@ -19,7 +20,7 @@ export default function OrdersTable({
   return (
     <div className="p-0 overflow-x-auto">
       {loading ? (
-        <div className="p-8 text-center text-slate-600 dark:text-slate-400">Loading orders...</div>
+        Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
       ) : orders.length === 0 ? (
         <div className="p-8 text-center text-slate-600 dark:text-slate-400">No orders found.</div>
       ) : (

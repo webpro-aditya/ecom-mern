@@ -4,6 +4,7 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import { EditIcon, DeleteIcon } from "../../icons";
+import SkeletonRow from "../../components/common/SkeletonRow";
 
 export default function SocialLinksManager() {
   const [links, setLinks] = useState([]);
@@ -22,18 +23,14 @@ export default function SocialLinksManager() {
     isActive: true,
   });
 
-  // Fetch all links
   const fetchLinks = async () => {
     setLoading(true);
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}admin/social-links`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}admin/social-links`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       if (data.success) setLinks(data.data);
       else setError(data.message || "Failed to load social links");
@@ -49,7 +46,6 @@ export default function SocialLinksManager() {
     fetchLinks();
   }, []);
 
-  // Handle form input
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -58,11 +54,9 @@ export default function SocialLinksManager() {
     }));
   };
 
-  // Handle create/update
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-
     const isEdit = !!editing;
     const url = isEdit
       ? `${import.meta.env.VITE_API_URL}admin/social-link/update/${editing._id}`
@@ -93,7 +87,6 @@ export default function SocialLinksManager() {
     }
   };
 
-  // Handle delete (with modal)
   const openDeleteModal = (link) => {
     setLinkToDelete(link);
     setConfirmOpen(true);
@@ -121,7 +114,6 @@ export default function SocialLinksManager() {
     }
   };
 
-  // Handle edit button
   const handleEdit = (link) => {
     setEditing(link);
     setFormData({
@@ -134,7 +126,6 @@ export default function SocialLinksManager() {
     setShowModal(true);
   };
 
-  // Reset form
   const handleAddNew = () => {
     setEditing(null);
     setFormData({
@@ -171,111 +162,78 @@ export default function SocialLinksManager() {
           </div>
         )}
 
+        {/* Tile Grid View */}
         <ComponentCard>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
-              <thead className="bg-slate-50 dark:bg-slate-800/50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    Platform
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    URL
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    Icon
-                  </th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    Sequence
-                  </th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    Active
-                  </th>
-                  <th className="px-6 py-3 text-right text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-                {loading ? (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-6 py-5 text-center text-slate-500"
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
+          ) : links.length === 0 ? (
+            <div className="text-center py-10 text-slate-500">
+              No social links found.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {links.map((link) => (
+                <div
+                  key={link._id}
+                  className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all group"
+                >
+                  {/* Icon Circle */}
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mx-auto mb-4 text-3xl">
+                    <i className={link.icon}></i>
+                  </div>
+
+                  {/* Info */}
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                      {link.platform}
+                    </h3>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-blue-600 text-sm truncate hover:underline mt-1"
                     >
-                      Loading...
-                    </td>
-                  </tr>
-                ) : links.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-6 py-5 text-center text-slate-500"
+                      {link.url}
+                    </a>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Sequence: {link.sequence || "—"}
+                    </p>
+                    <span
+                      className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium ${
+                        link.isActive
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      }`}
                     >
-                      No social links found
-                    </td>
-                  </tr>
-                ) : (
-                  links.map((link) => (
-                    <tr key={link._id}>
-                      <td className="px-6 py-3 font-medium text-slate-900 dark:text-white">
-                        {link.platform}
-                      </td>
-                      <td className="px-6 py-3 text-slate-600 dark:text-slate-300">
-                        <a
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline"
-                        >
-                          {link.url}
-                        </a>
-                      </td>
-                      <td className="px-6 py-3 text-slate-600 dark:text-slate-300">
-                        <i className={link.icon}></i> {link.icon}
-                      </td>
-                      <td className="px-6 py-3 text-center text-slate-600 dark:text-slate-300">
-                        {link.sequence}
-                      </td>
-                      <td className="px-6 py-3 text-center">
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${
-                            link.isActive
-                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                          }`}
-                        >
-                          {link.isActive ? "Active" : "Inactive"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3 text-right">
-                        <div className="flex justify-end gap-3">
-                          <button
-                            onClick={() => handleEdit(link)}
-                            title="Edit"
-                            className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition"
-                          >
-                            <EditIcon />
-                          </button>
-                          <button
-                            onClick={() => openDeleteModal(link)}
-                            title="Delete"
-                            className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 transition"
-                          >
-                            <DeleteIcon />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      {link.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => handleEdit(link)}
+                      title="Edit"
+                      className="p-1.5 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50"
+                    >
+                      <EditIcon />
+                    </button>
+                    <button
+                      onClick={() => openDeleteModal(link)}
+                      title="Delete"
+                      className="p-1.5 rounded-md bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50"
+                    >
+                      <DeleteIcon />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </ComponentCard>
       </div>
 
-      {/* Create / Edit Modal */}
+      {/* Create/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-slate-900">
@@ -294,7 +252,7 @@ export default function SocialLinksManager() {
                   value={formData.platform}
                   onChange={handleChange}
                   required
-                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                 />
               </div>
 
@@ -308,7 +266,7 @@ export default function SocialLinksManager() {
                   value={formData.url}
                   onChange={handleChange}
                   required
-                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                 />
               </div>
 
@@ -322,7 +280,7 @@ export default function SocialLinksManager() {
                   value={formData.icon}
                   onChange={handleChange}
                   placeholder="e.g., fab fa-facebook"
-                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                 />
               </div>
 
@@ -335,7 +293,7 @@ export default function SocialLinksManager() {
                   name="sequence"
                   value={formData.sequence}
                   onChange={handleChange}
-                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                  className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                 />
               </div>
 
