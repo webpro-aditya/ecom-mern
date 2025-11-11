@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { EditIcon, DeleteIcon } from "../../icons";
 import ConfirmationModal from "../common/ConfirmationModal";
+import SkeletonRow from "../common/SkeletonRow";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -55,32 +56,6 @@ const SortIcon = ({
       />
     )}
   </svg>
-);
-
-const SkeletonRow = () => (
-  <tr className="animate-pulse">
-    <td className="p-4">
-      <div className="h-12 w-12 rounded-md bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-40 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-16 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-16 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-    <td className="p-4">
-      <div className="h-8 w-20 rounded-md bg-slate-200 dark:bg-slate-700"></div>
-    </td>
-  </tr>
 );
 
 export default function ProductsTable({

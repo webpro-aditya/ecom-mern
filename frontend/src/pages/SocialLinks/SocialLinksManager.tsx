@@ -4,6 +4,7 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import { EditIcon, DeleteIcon } from "../../icons";
+import SkeletonRow from "../../components/common/SkeletonRow";
 
 export default function SocialLinksManager() {
   const [links, setLinks] = useState([]);
@@ -164,7 +165,7 @@ export default function SocialLinksManager() {
         {/* Tile Grid View */}
         <ComponentCard>
           {loading ? (
-            <div className="text-center py-10 text-slate-500">Loading...</div>
+            Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
           ) : links.length === 0 ? (
             <div className="text-center py-10 text-slate-500">
               No social links found.
