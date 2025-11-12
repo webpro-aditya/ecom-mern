@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import toast from "react-hot-toast";
 
 export function useBanners() {
@@ -10,14 +12,13 @@ export function useBanners() {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
 
-  const token = localStorage.getItem("token");
 
   const fetchBanners = async () => {
     try {
       setLoading(true);
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}admin/banners?page=${page}&limit=${limit}&search=${search}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { credentials: "include" }
       );
 
       const data = await res.json();
@@ -44,7 +45,8 @@ export function useBanners() {
         `${import.meta.env.VITE_API_URL}admin/banner/delete/${id}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         }
       );
       const data = await res.json();
@@ -74,8 +76,9 @@ export function useBanners() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
           },
+          credentials: "include",
           body: JSON.stringify({ sequences }),
         }
       );

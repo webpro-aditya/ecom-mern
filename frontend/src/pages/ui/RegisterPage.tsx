@@ -10,7 +10,6 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Hook into auth register
-    console.log({ name, email, password });
   };
 
   return (

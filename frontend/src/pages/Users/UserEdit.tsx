@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -55,6 +57,7 @@ interface UserData {
 export default function UserEdit(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const token = useSelector((state: RootState) => state.user.token);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -71,11 +74,10 @@ export default function UserEdit(): JSX.Element {
       setIsLoading(true);
       setError(null);
       try {
-        const token = localStorage.getItem("token");
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}admin/user/${id}`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            credentials: "include",
           }
         );
         const data = await response.json();
@@ -125,15 +127,15 @@ export default function UserEdit(): JSX.Element {
       if (formData.password) {
         payload.password = formData.password;
       }
-      const token = localStorage.getItem("token");
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}admin/user/update/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
           },
+          credentials: "include",
           body: JSON.stringify(payload),
         }
       );

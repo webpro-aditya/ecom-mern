@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -56,7 +58,7 @@ interface CategoryData {
 export default function CategoryEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  
 
   const [formData, setFormData] = useState<CategoryData>({
     name: "",
@@ -78,7 +80,7 @@ export default function CategoryEdit() {
       setIsLoading(true);
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}admin/category/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch category");
@@ -104,7 +106,7 @@ export default function CategoryEdit() {
     const fetchParents = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}admin/categories?limit=100`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         });
         const data = await res.json();
         if (data.success) {
@@ -138,13 +140,17 @@ export default function CategoryEdit() {
     if (!files.length) return;
 
     const uploadData = new FormData();
-    files.forEach((file) => uploadData.append("images", file));
+    const maxSize = 5 * 1024 * 1024;
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+    const valid = files.filter((f) => allowed.includes(f.type) && f.size <= maxSize);
+    valid.forEach((file) => uploadData.append("images", file));
 
     try {
       setUploading(true);
       const res = await fetch(`${import.meta.env.VITE_API_URL}admin/images/upload`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
+        headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         body: uploadData,
       });
       const data = await res.json();
@@ -172,8 +178,9 @@ export default function CategoryEdit() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 

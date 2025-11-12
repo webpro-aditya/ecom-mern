@@ -98,6 +98,8 @@ export default function BrandsAccordion({
                     }
                     alt={brand.name}
                     className="h-10 w-10 rounded object-contain border border-slate-200 dark:border-slate-600"
+                    loading="lazy"
+                    decoding="async"
                   />
                 ) : (
                   <div className="h-10 w-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 text-xs">
@@ -192,6 +194,8 @@ export default function BrandsAccordion({
                             }
                             alt={child.name}
                             className="h-8 w-8 rounded object-contain border border-slate-200 dark:border-slate-600"
+                            loading="lazy"
+                            decoding="async"
                           />
                         ) : (
                           <div className="h-8 w-8 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs text-slate-500">

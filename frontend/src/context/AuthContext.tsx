@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../store';
+import { logout as logoutAction } from '../store/userSlice';
 
 // 1. Define the shape of the user profile and the context
 interface UserProfile {
@@ -8,7 +10,6 @@ interface UserProfile {
   name: string;
   email: string;
   role: string;
-  exp: number; // Token expiration timestamp
 }
 
 interface AuthContextType {
@@ -25,32 +26,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const reduxUser = useSelector((state: RootState) => state.user.user);
 
   const logout = () => {
-    localStorage.removeItem('token');
+    dispatch(logoutAction());
     setUser(null);
     navigate('/admin/signin');
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decodedToken = jwtDecode<UserProfile>(token);
-
-        // Check if the token is expired
-        if (decodedToken.exp * 1000 < Date.now()) {
-          logout();
-        } else {
-          setUser(decodedToken);
-        }
-      } catch (error) {
-        console.error('Invalid token found:', error);
-        logout();
-      }
-    }
+    setUser(reduxUser as UserProfile | null);
     setLoading(false);
-  }, []);
+  }, [reduxUser]);
 
   const value = { user, loading, logout };
 

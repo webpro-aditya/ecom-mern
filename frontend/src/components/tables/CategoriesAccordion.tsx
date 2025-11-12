@@ -100,6 +100,8 @@ export default function CategoriesAccordion({
                     }
                     alt={parent.name}
                     className="h-10 w-10 rounded object-cover border border-slate-200 dark:border-slate-600"
+                    loading="lazy"
+                    decoding="async"
                   />
                 ) : (
                   <div className="h-10 w-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 text-xs">
@@ -179,6 +181,8 @@ export default function CategoriesAccordion({
                             }
                             alt={child.name}
                             className="h-8 w-8 rounded object-cover border border-slate-200 dark:border-slate-600"
+                            loading="lazy"
+                            decoding="async"
                           />
                         ) : (
                           <div className="h-8 w-8 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs text-slate-500">

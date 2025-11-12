@@ -1,5 +1,19 @@
 const Banner = require("../models/Banner");
 
+function sanitizeHtmlServer(input = "") {
+  try {
+    let out = String(input);
+    out = out.replace(/<\s*script[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, "");
+    out = out.replace(/<\s*style[^>]*>[\s\S]*?<\s*\/\s*style\s*>/gi, "");
+    out = out.replace(/<\s*iframe[^>]*>[\s\S]*?<\s*\/\s*iframe\s*>/gi, "");
+    out = out.replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "");
+    out = out.replace(/\s(href|src)\s*=\s*("|')\s*javascript:[^"']*("|')/gi, "");
+    return out;
+  } catch (_) {
+    return "";
+  }
+}
+
 // Create Banner
 exports.createBanner = async (req, res) => {
   try {
@@ -19,7 +33,7 @@ exports.createBanner = async (req, res) => {
     const newBanner = new Banner({
       title: title.trim(),
       image,
-      htmlContent: htmlContent || "",
+      htmlContent: sanitizeHtmlServer(htmlContent || ""),
       sequence: nextSequence,
       redirectUrl: redirectUrl || "",
       isActive: typeof isActive === "boolean" ? isActive : true,
@@ -94,7 +108,7 @@ exports.updateBanner = async (req, res) => {
       {
         title,
         image,
-        htmlContent,
+        htmlContent: sanitizeHtmlServer(htmlContent || ""),
         redirectUrl,
         isActive,
         startDate,

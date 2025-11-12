@@ -83,11 +83,15 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
               className="dark:hidden"
               src="./images/logo/logo.svg"
               alt="Logo"
+              loading="lazy"
+              decoding="async"
             />
             <img
               className="hidden dark:block"
               src="./images/logo/logo-dark.svg"
               alt="Logo"
+              loading="lazy"
+              decoding="async"
             />
           </Link>
 

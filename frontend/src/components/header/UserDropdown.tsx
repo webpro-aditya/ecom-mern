@@ -13,21 +13,19 @@ export default function UserDropdown() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { user, token, loading } = useSelector((state: RootState) => state.user); 
+  const { user, loading } = useSelector((state: RootState) => state.user); 
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
 
   async function handleLogout() {
     try {
+      const match = document.cookie.match(/(?:^|; )csrfToken=([^;]+)/);
+      const csrfToken = match ? decodeURIComponent(match[1]) : "";
       await axios.post(
         `${import.meta.env.VITE_API_URL}auth/logout`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { withCredentials: true, headers: { "X-CSRF-Token": csrfToken } }
       );
     } catch (error) {
       console.error("Logout error:", error);

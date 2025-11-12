@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import { toast } from "react-hot-toast";
 
 interface Category {
@@ -45,14 +47,13 @@ export function useCategories() {
 
     const fetchCategories = async () => {
       setLoading(true);
-      const token = localStorage.getItem("token");
 
       try {
         const res = await fetch(
           `${
             import.meta.env.VITE_API_URL
           }admin/categories?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}&search=${searchDebounced}`,
-          { signal, headers: { Authorization: `Bearer ${token}` } }
+          { signal, credentials: "include" }
         );
 
         if (!res.ok) throw new Error("Failed to load categories.");
@@ -86,13 +87,13 @@ export function useCategories() {
   };
 
   const handleDeleteCategory = async (categoryId: string): Promise<void> => {
-    const token = localStorage.getItem("token");
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}admin/category/delete/${categoryId}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         }
       );
 

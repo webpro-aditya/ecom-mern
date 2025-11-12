@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -42,6 +44,7 @@ export default function SingleOrderView() {
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
 
   useEffect(() => {
     if (!id) return;
@@ -49,10 +52,9 @@ export default function SingleOrderView() {
     setError(null);
     const fetchOrder = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await fetch(
           `${import.meta.env.VITE_API_URL}user/order/${id}`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          { credentials: "include" }
         );
         const data = await res.json();
         if (!res.ok || !data.orders?.length)

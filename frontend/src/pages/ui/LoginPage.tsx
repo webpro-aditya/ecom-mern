@@ -9,7 +9,6 @@ const LoginPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Hook into auth login
-    console.log({ email, password });
   };
 
   return (

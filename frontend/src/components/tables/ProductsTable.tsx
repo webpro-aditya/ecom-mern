@@ -148,6 +148,8 @@ export default function ProductsTable({
                         src={`${BACKEND_URL}${p.images[0]}`}
                         alt={p.name}
                         className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <span className="text-xs text-slate-400">No Img</span>

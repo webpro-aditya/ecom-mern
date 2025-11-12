@@ -153,6 +153,8 @@ export default function BannersTable({
                                   src={`${BACKEND_URL}${banner.image}`}
                                   alt="banner"
                                   className="h-full w-full object-cover"
+                                  loading="lazy"
+                                  decoding="async"
                                 />
                               ) : (
                                 <span className="text-slate-400 text-sm flex items-center justify-center h-full">
@@ -166,7 +168,7 @@ export default function BannersTable({
                             <div
                               className="truncate"
                               dangerouslySetInnerHTML={{
-                                __html: banner.htmlContent,
+                                __html: sanitizeHtml(banner.htmlContent),
                               }}
                             />
                           </td>
@@ -218,4 +220,27 @@ export default function BannersTable({
       />
     </div>
   );
+}
+function sanitizeHtml(input: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, "text/html");
+  const walk = (node: any) => {
+    const block = ["SCRIPT", "STYLE", "IFRAME"];
+    if (block.includes(node.nodeName)) {
+      node.remove();
+      return;
+    }
+    if (node.attributes) {
+      Array.from(node.attributes).forEach((attr: any) => {
+        const name = attr.name.toLowerCase();
+        const value = String(attr.value || "").toLowerCase();
+        const isEvent = name.startsWith("on");
+        const isJsUrl = name === "href" || name === "src" ? value.startsWith("javascript:") : false;
+        if (isEvent || isJsUrl) node.removeAttribute(attr.name);
+      });
+    }
+    Array.from(node.childNodes).forEach(walk);
+  };
+  Array.from(doc.body.childNodes).forEach(walk);
+  return doc.body.innerHTML;
 }

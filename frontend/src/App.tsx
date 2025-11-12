@@ -23,11 +23,11 @@ import LoginPage from "./pages/ui/LoginPage";
 import RegisterPage from "./pages/ui/RegisterPage";
 import CartPage from "./pages/ui/CartPage";
 import WishlistPage from "./pages/ui/WishlistPage";
-import ContactUsPage from "./pages/ui/ContactUsPage";
 import CategoriesPage from "./pages/ui/CategoriesPage";
 import FAQsPage from "./pages/ui/FAQsPage";
 import SalePage from "./pages/ui/SalePage";
 import NewArrivalsPage from "./pages/ui/NewArrivalsPage";
+import ContactUsPage from "./pages/ui/ContactUsPage";
 import PrivacyPolicyPage from "./pages/ui/PrivacyPolicyPage";
 import ReturnPolicyPage from "./pages/ui/ReturnPolicyPage";
 import ShippingPolicyPage from "./pages/ui/ShippingPolicyPage";
@@ -67,13 +67,14 @@ import SocialLinksManager from "./pages/SocialLinks/SocialLinksManager";
 
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
-  const { token, user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (token && !user) {
+    fetch(`${import.meta.env.VITE_API_URL}csrf-token`, { credentials: "include" }).catch(() => {});
+    if (!user) {
       dispatch(fetchUser());
     }
-  }, [token, user, dispatch]);
+  }, [user, dispatch]);
 
   return null;
 }
@@ -152,11 +153,11 @@ export default function App() {
             <Route index path="/register" element={<RegisterPage />} />
             <Route index path="/cart" element={<CartPage />} />
             <Route index path="/wishlist" element={<WishlistPage />} />
-            <Route index path="/contact-us" element={<ContactUsPage />} />
             <Route index path="/categories" element={<CategoriesPage />} />
             <Route index path="/faq" element={<FAQsPage />} />
             <Route index path="/sale" element={<SalePage />} />
             <Route index path="/new-arrivals" element={<NewArrivalsPage />} />
+            <Route index path="/contact-us" element={<ContactUsPage />} />
             <Route index path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route index path="/return-policy" element={<ReturnPolicyPage />} />
             <Route index path="/shipping-policy" element={<ShippingPolicyPage />} />
