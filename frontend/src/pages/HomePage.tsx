@@ -173,7 +173,7 @@ const HomePage: React.FC = () => {
                   {/* Render HTML content from API */}
                   <div
                     className="text-xl mb-8 opacity-90 hero-content"
-                    dangerouslySetInnerHTML={{ __html: banner.htmlContent }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(banner.htmlContent) }}
                   />
 
                   {/* <div className="flex space-x-4"> */}
@@ -863,3 +863,26 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+function sanitizeHtml(input) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, "text/html");
+  const walk = (node) => {
+    const scriptsAndStyles = ["SCRIPT", "STYLE", "IFRAME" ];
+    if (scriptsAndStyles.includes(node.nodeName)) {
+      node.remove();
+      return;
+    }
+    if (node.attributes) {
+      Array.from(node.attributes).forEach((attr) => {
+        const name = attr.name.toLowerCase();
+        const value = String(attr.value || "").toLowerCase();
+        const isEvent = name.startsWith("on");
+        const isJsUrl = name === "href" || name === "src" ? value.startsWith("javascript:") : false;
+        if (isEvent || isJsUrl) node.removeAttribute(attr.name);
+      });
+    }
+    Array.from(node.childNodes).forEach(walk);
+  };
+  Array.from(doc.body.childNodes).forEach(walk);
+  return doc.body.innerHTML;
+}

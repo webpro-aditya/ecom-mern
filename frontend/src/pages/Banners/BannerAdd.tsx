@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -9,7 +11,7 @@ import "../../styles/datepicker.css";
 
 export default function BannerAdd() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = useSelector((state: RootState) => state.user.token);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -38,7 +40,10 @@ export default function BannerAdd() {
     if (!files.length) return;
 
     const uploadData = new FormData();
-    files.forEach((file) => uploadData.append("images", file));
+    const maxSize = 5 * 1024 * 1024;
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+    const valid = files.filter((f) => allowed.includes(f.type) && f.size <= maxSize);
+    valid.forEach((file) => uploadData.append("images", file));
 
     try {
       setUploading(true);
@@ -46,7 +51,8 @@ export default function BannerAdd() {
         `${import.meta.env.VITE_API_URL}admin/images/upload`,
         {
           method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
           body: uploadData,
         }
       );
@@ -86,8 +92,9 @@ export default function BannerAdd() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
           },
+          credentials: "include",
           body: JSON.stringify(payload),
         }
       );

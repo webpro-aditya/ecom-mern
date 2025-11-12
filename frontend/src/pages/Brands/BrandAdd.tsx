@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -32,7 +34,7 @@ const ImageIcon = () => (
 
 export default function BrandAdd() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = useSelector((state: RootState) => state.user.token);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -52,7 +54,7 @@ export default function BrandAdd() {
     const fetchBrands = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}admin/brands?limit=500`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         });
         const data = await res.json();
         if (data.success && data.data) {
@@ -78,13 +80,17 @@ export default function BrandAdd() {
     if (!files.length) return;
 
     const uploadData = new FormData();
-    files.forEach((file) => uploadData.append("images", file));
+    const maxSize = 5 * 1024 * 1024;
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+    const valid = files.filter((f) => allowed.includes(f.type) && f.size <= maxSize);
+    valid.forEach((file) => uploadData.append("images", file));
 
     try {
       setUploading(true);
       const res = await fetch(`${import.meta.env.VITE_API_URL}admin/images/upload`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
+        headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         body: uploadData,
       });
       const data = await res.json();
@@ -119,8 +125,9 @@ export default function BrandAdd() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 

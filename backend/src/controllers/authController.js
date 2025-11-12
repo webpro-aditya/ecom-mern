@@ -41,9 +41,15 @@ exports.login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      maxAge: 60 * 60 * 1000,
+    });
+
     res.json({
       message: "Login successful",
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -59,16 +65,7 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    const token = authHeader.split(" ")[1];
-
-    // decode to get expiry
-    const decoded = jwt.decode(token);
-    const expiry = new Date(decoded.exp * 1000);
-
-    // save token to blacklist
-    await BlacklistToken.create({ token, expiresAt: expiry });
-
+    res.clearCookie("token");
     res.json({ message: "Logged out successfully" });
   } catch (error) {
     console.error(error);

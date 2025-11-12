@@ -14,13 +14,10 @@ interface UserState {
   error: string | null;
 }
 
-const storedToken = localStorage.getItem("token");
-const storedUser = localStorage.getItem("user");
-
 const initialState: UserState = {
-  user: storedUser ? JSON.parse(storedUser) : null,
-  token: storedToken || null,
-  loading: false,
+  user: null,
+  token: null,
+  loading: true,
   error: null,
 };
 
@@ -28,45 +25,72 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}auth/login`, {
+      const base = `${import.meta.env.VITE_API_URL}`;
+      const url = `${base}auth/login`;
+      let response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
+        credentials: "include",
       });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Login failed");
-
-      // store in localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
       return data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      // Fallback to alternate host (swap localhost and 127.0.0.1)
+      try {
+        const base = `${import.meta.env.VITE_API_URL}`;
+        const altBase = base.includes("127.0.0.1")
+          ? base.replace("127.0.0.1", "localhost")
+          : base.replace("localhost", "127.0.0.1");
+        const response = await fetch(`${altBase}auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
+          credentials: "include",
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Login failed");
+        return data;
+      } catch (e2: any) {
+        return rejectWithValue(e2.message || error.message);
+      }
     }
   }
 );
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (_, { getState, rejectWithValue }) => {
-    const state = getState() as { user: UserState };
-    const token = state.user.token;
-
-    if (!token) return rejectWithValue("No token found");
-
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const base = `${import.meta.env.VITE_API_URL}`;
+      const url = `${base}auth/me`;
+      let response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
       });
+
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Failed to fetch user");
-
-      localStorage.setItem("user", JSON.stringify(data.user));
-      return data.user;
+      return data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      // Fallback to alternate host
+      try {
+        const base = `${import.meta.env.VITE_API_URL}`;
+        const altBase = base.includes("127.0.0.1")
+          ? base.replace("127.0.0.1", "localhost")
+          : base.replace("localhost", "127.0.0.1");
+        const response = await fetch(`${altBase}auth/me`, {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Failed to fetch user");
+        return data;
+      } catch (e2: any) {
+        return rejectWithValue(e2.message || error.message);
+      }
     }
   }
 );
@@ -78,8 +102,6 @@ const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -90,7 +112,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload.token;
+        state.token = null;
         state.user = action.payload.user;
       })
       .addCase(loginUser.rejected, (state, action) => {

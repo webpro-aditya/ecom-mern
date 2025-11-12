@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import toast from "react-hot-toast";
 
 export const useProducts = (productType) => {
@@ -14,7 +16,6 @@ export const useProducts = (productType) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
 
       const url = `${
         import.meta.env.VITE_API_URL
@@ -23,7 +24,7 @@ export const useProducts = (productType) => {
       )}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
 
       const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       });
       const data = await res.json();
 
@@ -43,12 +44,11 @@ export const useProducts = (productType) => {
 
   const handleDeleteProduct = async (id) => {
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}admin/product/delete/${id}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         }
       );
       const data = await res.json();

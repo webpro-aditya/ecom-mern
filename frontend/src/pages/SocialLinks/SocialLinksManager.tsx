@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -14,6 +16,7 @@ export default function SocialLinksManager() {
   const [editing, setEditing] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [linkToDelete, setLinkToDelete] = useState(null);
+  const token = useSelector((state: RootState) => state.user.token);
 
   const [formData, setFormData] = useState({
     platform: "",
@@ -27,9 +30,8 @@ export default function SocialLinksManager() {
     setLoading(true);
     setError("");
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(`${import.meta.env.VITE_API_URL}admin/social-links`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       });
       const data = await res.json();
       if (data.success) setLinks(data.data);
@@ -56,7 +58,6 @@ export default function SocialLinksManager() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     const isEdit = !!editing;
     const url = isEdit
       ? `${import.meta.env.VITE_API_URL}admin/social-link/update/${editing._id}`
@@ -70,8 +71,9 @@ export default function SocialLinksManager() {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -94,13 +96,13 @@ export default function SocialLinksManager() {
 
   const handleDeleteConfirm = async () => {
     if (!linkToDelete) return;
-    const token = localStorage.getItem("token");
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}admin/social-link/delete/${linkToDelete._id}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         }
       );
       const data = await res.json();

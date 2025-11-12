@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import toast from "react-hot-toast";
 
 export function useBrands() {
@@ -9,16 +11,13 @@ export function useBrands() {
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
 
-  const token = localStorage.getItem("token");
 
   const fetchBrands = async () => {
     try {
       setLoading(true);
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}admin/brands?page=${page}&limit=${limit}&search=${search}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { credentials: "include" }
       );
       const data = await res.json();
 
@@ -42,7 +41,8 @@ export function useBrands() {
         `${import.meta.env.VITE_API_URL}admin/brand/delete/${id}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         }
       );
       const data = await res.json();

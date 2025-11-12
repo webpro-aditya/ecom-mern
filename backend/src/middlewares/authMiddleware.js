@@ -3,12 +3,13 @@ const BlacklistToken = require("../models/BlacklistToken");
 
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
+  const cookieToken = req.cookies && req.cookies.token;
+  const headerToken = authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+  const token = cookieToken || headerToken;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
-
-  const token = authHeader.split(" ")[1];
 
   try {
     // check blacklist

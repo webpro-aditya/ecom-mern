@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import { toast } from "react-hot-toast";
 
 interface User {
@@ -46,13 +48,12 @@ export function useUsers() {
 
     const fetchUsers = async () => {
       setLoading(true);
-      const token = localStorage.getItem("token");
       try {
         const res = await fetch(
           `${
             import.meta.env.VITE_API_URL
           }admin/users?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}&search=${searchDebounced}`,
-          { signal, headers: { Authorization: `Bearer ${token}` } }
+          { signal, credentials: "include" }
         );
         if (!res.ok) throw new Error("Network response failed");
         const data: ApiResponse = await res.json();
@@ -86,19 +87,18 @@ export function useUsers() {
 
   const handleDeleteUser = async (userId: string): Promise<void> => {
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}admin/user/delete/${userId}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
         toast.error(data.message || "Failed to delete user.");
+        return;
       }
 
       setUsers((currentUsers) =>

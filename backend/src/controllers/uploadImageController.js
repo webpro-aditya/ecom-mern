@@ -8,6 +8,19 @@ exports.uploadImages = async (req, res) => {
       });
     }
 
+    const allowed = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "image/svg+xml",
+    ];
+
+    const invalid = req.files.find((f) => !allowed.includes(f.mimetype));
+    if (invalid) {
+      return res.status(400).json({ success: false, message: "Invalid file type" });
+    }
+
     const filePaths = req.files.map((file) =>
       file.path.replace(/\\/g, "/").replace(/^.*public\//, "")
     );

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
@@ -34,23 +36,22 @@ export default function ProductAdd() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
-  // Load categories + attributes on mount
-  useEffect(() => {
-    fetchInitialData();
-  }, []);
+// Load categories + attributes on mount (cookie-based auth)
+useEffect(() => {
+  fetchInitialData();
+}, []);
 
   const fetchInitialData = async () => {
     try {
-      const token = localStorage.getItem("token");
       const [catRes, brandRes, attrRes] = await Promise.all([
         fetch(`${import.meta.env.VITE_API_URL}admin/categories`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         }),
         fetch(`${import.meta.env.VITE_API_URL}admin/brands`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         }),
         fetch(`${import.meta.env.VITE_API_URL}admin/attributes`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         }),
       ]);
 
@@ -125,20 +126,20 @@ export default function ProductAdd() {
 
   // Upload helper
   const uploadFiles = async (files) => {
-    const token = localStorage.getItem("token");
+    const maxSize = 5 * 1024 * 1024;
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+    const valid = files.filter((f) => allowed.includes(f.type) && f.size <= maxSize);
+    if (valid.length === 0) throw new Error("Invalid files: only images up to 5MB allowed");
     const formData = new FormData();
-
-    // Append all selected files
-    files.forEach((file) => formData.append("images", file));
+    valid.forEach((file) => formData.append("images", file));
 
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}admin/images/upload`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
+          headers: { "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "" },
           body: formData,
         }
       );
@@ -284,15 +285,15 @@ export default function ProductAdd() {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}admin/product/create`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
           },
+          credentials: "include",
           body: JSON.stringify(formData),
         }
       );
@@ -559,7 +560,6 @@ export default function ProductAdd() {
                         // Create new attribute in DB
                         async function createAttribute(name, values) {
                           try {
-                            const token = localStorage.getItem("token");
                             const res = await fetch(
                               `${
                                 import.meta.env.VITE_API_URL
@@ -568,8 +568,9 @@ export default function ProductAdd() {
                                 method: "POST",
                                 headers: {
                                   "Content-Type": "application/json",
-                                  Authorization: `Bearer ${token}`,
+                                  "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
                                 },
+                                credentials: "include",
                                 body: JSON.stringify({
                                   name,
                                   options: values,
@@ -598,7 +599,6 @@ export default function ProductAdd() {
                         // Update existing attribute in DB
                         async function updateAttribute(attrId, name, values) {
                           try {
-                            const token = localStorage.getItem("token");
                             const res = await fetch(
                               `${
                                 import.meta.env.VITE_API_URL
@@ -607,8 +607,9 @@ export default function ProductAdd() {
                                 method: "PUT",
                                 headers: {
                                   "Content-Type": "application/json",
-                                  Authorization: `Bearer ${token}`,
+                                  "X-CSRF-Token": (document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)?.[1] && decodeURIComponent(document.cookie.match(/(?:^|; )csrfToken=([^;]+)/)![1])) || "",
                                 },
+                                credentials: "include",
                                 body: JSON.stringify({
                                   name,
                                   options: values,

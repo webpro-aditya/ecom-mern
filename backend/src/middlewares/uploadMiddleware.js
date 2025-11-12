@@ -18,7 +18,22 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const allowed = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/svg+xml",
+];
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (allowed.includes(file.mimetype)) return cb(null, true);
+    cb(new Error("Invalid file type"));
+  },
+});
 
 // ✅ Use req.files in controller
 const uploadMiddleware = upload.array("images", 10);

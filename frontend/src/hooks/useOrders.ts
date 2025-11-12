@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export interface Order {
   _id: string;
@@ -43,7 +45,6 @@ export function useOrders() {
     setError(null);
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem("token");
         const params = new URLSearchParams({
           limit: String(limit),
           page: String(page),
@@ -56,7 +57,7 @@ export function useOrders() {
         // Adjust URL according to your actual API spec (add any necessary params)
         const url = `${import.meta.env.VITE_API_URL}user/orders?${params.toString()}`;
         const res = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch orders");
