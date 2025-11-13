@@ -117,7 +117,6 @@ export default function BasicTableOne({
   totalPages = 1,
   onPageChange,
 }: BasicTableOneProps) {
-  console.log(totalPages);
   if (loading) {
     return (
       <div className="flex justify-center items-center py-10">

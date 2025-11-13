@@ -6,6 +6,7 @@ import { useSidebar } from "../context/SidebarContext";
 // Assume these icons are correctly imported
 import {
   BoxCubeIcon,
+  BoxIcon,
   CalenderIcon,
   ChevronDownIcon,
   GridIcon,
@@ -17,7 +18,13 @@ import {
   TableIcon,
   UserCircleIcon,
   UserIcon,
-  DocsIcon
+  DocsIcon,
+  ShootingStarIcon,
+  BannerIcon,
+  CategoriesIcon,
+  BrandTagIcon,
+  OrderCartIcon,
+  LinkChainIcon
 } from "../icons";
 
 // Define the structure for a navigation item
@@ -56,7 +63,7 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
-          icon: <ListIcon />,
+          icon: <BannerIcon />,
           name: "Banners",
           subItems: [
             { name: "List", path: "/admin/banners" },
@@ -64,7 +71,7 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
-          icon: <BoxCubeIcon />,
+          icon: <CategoriesIcon />,
           name: "Categories",
           subItems: [
             { name: "List", path: "/admin/categories" },
@@ -72,7 +79,7 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
-          icon: <BoxCubeIcon />,
+          icon: <BrandTagIcon />,
           name: "Brands",
           subItems: [
             { name: "List", path: "/admin/brands" },
@@ -80,7 +87,7 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
-          icon: <ListIcon />,
+          icon: <BoxIcon />,
           name: "Products",
           subItems: [
             { name: "List", path: "/admin/products" },
@@ -88,14 +95,14 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
-          icon: <DocsIcon />,
+          icon: <OrderCartIcon />,
           name: "Orders",
           subItems: [
             { name: "List", path: "/admin/orders" }
           ],
         },
         {
-          icon: <DocsIcon />,
+          icon: <LinkChainIcon />,
           name: "Social Links",
           subItems: [
             { name: "Manage", path: "/admin/social-links" }

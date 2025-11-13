@@ -20,6 +20,7 @@ const {
 const {
   getOrders,
   getMyOrders,
+  getOrderById,
   placeOrder,
   rollbackOrderStock,
   updateOrderStatus,
@@ -48,7 +49,7 @@ router.post("/wishlist/move-to-cart/:productId", authMiddleware, moveToCart);
 // Order
 router.get("/orders", authMiddleware, authorizeRole("admin"), getOrders);
 router.get("/orders/my", authMiddleware, getMyOrders);
-router.get("/order/:orderId", authMiddleware, getMyOrders);
+router.get("/order/:orderId", authMiddleware, getOrderById);
 router.post("/order/place", authMiddleware, placeOrder);
 router.post("/order/:orderId/rollback", authMiddleware, rollbackOrderStock);
 router.put("/order/:orderId/status", authMiddleware, updateOrderStatus);
