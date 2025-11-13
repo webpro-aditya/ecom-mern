@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const base = `${import.meta.env.VITE_API_URL}`;
+      const base = import.meta.env.PROD ? `${window.location.origin}/api/` : `${import.meta.env.VITE_API_URL}`;
       const url = `${base}auth/login`;
       let response = await fetch(url, {
         method: "POST",
@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk(
     } catch (error: any) {
       // Fallback to alternate host (swap localhost and 127.0.0.1)
       try {
-        const base = `${import.meta.env.VITE_API_URL}`;
+        const base = import.meta.env.PROD ? `${window.location.origin}/api/` : `${import.meta.env.VITE_API_URL}`;
         const altBase = base.includes("127.0.0.1")
           ? base.replace("127.0.0.1", "localhost")
           : base.replace("localhost", "127.0.0.1");
@@ -64,7 +64,7 @@ export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (_, { rejectWithValue }) => {
     try {
-      const base = `${import.meta.env.VITE_API_URL}`;
+      const base = import.meta.env.PROD ? `${window.location.origin}/api/` : `${import.meta.env.VITE_API_URL}`;
       const url = `${base}auth/me`;
       let response = await fetch(url, {
         method: "GET",
@@ -77,7 +77,7 @@ export const fetchUser = createAsyncThunk(
     } catch (error: any) {
       // Fallback to alternate host
       try {
-        const base = `${import.meta.env.VITE_API_URL}`;
+        const base = import.meta.env.PROD ? `${window.location.origin}/api/` : `${import.meta.env.VITE_API_URL}`;
         const altBase = base.includes("127.0.0.1")
           ? base.replace("127.0.0.1", "localhost")
           : base.replace("localhost", "127.0.0.1");

@@ -72,12 +72,24 @@ const {
 } = require("../controllers/uploadImageController");
 
 const router = express.Router();
+const {
+  validateUserCreate,
+  validateUserUpdate,
+  validateBrandCreate,
+  validateBrandUpdate,
+  validateMenuCreate,
+  validateMenuUpdate,
+  validateTestimonialCreate,
+  validateTestimonialUpdate,
+  validateSocialLinkCreate,
+  validateSocialLinkUpdate,
+} = require("../middlewares/validate");
 
 // User Module
 router.get("/users", authMiddleware, authorizeRole("admin"), getAllUsers);
 router.get("/user/:id", authMiddleware, authorizeRole("admin"), getUserById);
-router.post("/user/create", authMiddleware, authorizeRole("admin"), createUser);
-router.put("/user/update/:id", authMiddleware, authorizeRole("admin"), updateUser);
+router.post("/user/create", authMiddleware, authorizeRole("admin"), validateUserCreate, createUser);
+router.put("/user/update/:id", authMiddleware, authorizeRole("admin"), validateUserUpdate, updateUser);
 router.delete("/user/delete/:id", authMiddleware, authorizeRole("admin"), deleteUser);
 
 // Banners Module
@@ -91,15 +103,15 @@ router.put("/banner/update-sequences", authMiddleware, authorizeRole("admin"), u
 // Brands Module
 router.get("/brands", getAllBrands);
 router.get("/brand/:id", getBrandById);
-router.post("/brand/create", authMiddleware, authorizeRole("admin"), createBrand);
-router.put("/brand/update/:id", authMiddleware, authorizeRole("admin"), updateBrand);
+router.post("/brand/create", authMiddleware, authorizeRole("admin"), validateBrandCreate, createBrand);
+router.put("/brand/update/:id", authMiddleware, authorizeRole("admin"), validateBrandUpdate, updateBrand);
 router.delete("/brand/delete/:id", authMiddleware, authorizeRole("admin"), deleteBrand);
 
 // Menu Module
 router.get("/menus", authMiddleware, authorizeRole("admin"), getAllMenus);
 router.get("/menu/:id", authMiddleware, authorizeRole("admin"), getMenuById);
-router.post("/menu/create", authMiddleware, authorizeRole("admin"), createMenu);
-router.put("/menu/update/:id", authMiddleware, authorizeRole("admin"), updateMenu);
+router.post("/menu/create", authMiddleware, authorizeRole("admin"), validateMenuCreate, createMenu);
+router.put("/menu/update/:id", authMiddleware, authorizeRole("admin"), validateMenuUpdate, updateMenu);
 router.delete("/menu/delete/:id", authMiddleware, authorizeRole("admin"), deleteMenu);
 
 // Products Module
@@ -126,15 +138,15 @@ router.delete("/attribute/delete/:id", authMiddleware, authorizeRole("admin"), d
 // Testimonials Module
 router.get("/testimonials", authMiddleware, authorizeRole("admin"), getAllTestimonials);
 router.get("/testimonial/:id", authMiddleware, authorizeRole("admin"), getTestimonialById);
-router.post("/testimonial/create", authMiddleware, authorizeRole("admin"), createTestimonial);
-router.put("/testimonial/update/:id", authMiddleware, authorizeRole("admin"), updateTestimonial);
+router.post("/testimonial/create", authMiddleware, authorizeRole("admin"), validateTestimonialCreate, createTestimonial);
+router.put("/testimonial/update/:id", authMiddleware, authorizeRole("admin"), validateTestimonialUpdate, updateTestimonial);
 router.delete("/testimonial/delete/:id", authMiddleware, authorizeRole("admin"), deleteTestimonial);
 
 // Social Links Module
 router.get("/social-links", getAllSocialLinks);
 router.get("/social-link/:id", getSocialLinkById);
-router.post("/social-link/create", authMiddleware, authorizeRole("admin"), createSocialLink);
-router.put("/social-link/update/:id", authMiddleware, authorizeRole("admin"), updateSocialLink);
+router.post("/social-link/create", authMiddleware, authorizeRole("admin"), validateSocialLinkCreate, createSocialLink);
+router.put("/social-link/update/:id", authMiddleware, authorizeRole("admin"), validateSocialLinkUpdate, updateSocialLink);
 router.delete("/social-link/delete/:id", authMiddleware, authorizeRole("admin"), deleteSocialLink);
 
 // Images Upload

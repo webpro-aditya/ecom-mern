@@ -125,5 +125,15 @@ export {
   LastPageIcon,
   EditIcon,
   DeleteIcon,
-  DragIcon
+  DragIcon,
+  BannerIcon,
+  CategoriesIcon,
+  BrandTagIcon,
+  OrderCartIcon,
+  LinkChainIcon
 };
+import { ReactComponent as BannerIcon } from "./banner-icon.svg?react";
+import { ReactComponent as CategoriesIcon } from "./categories-icon.svg?react";
+import { ReactComponent as BrandTagIcon } from "./brand-tag-icon.svg?react";
+import { ReactComponent as OrderCartIcon } from "./order-cart-icon.svg?react";
+import { ReactComponent as LinkChainIcon } from "./link-chain-icon.svg?react";
