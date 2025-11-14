@@ -13,21 +13,21 @@ const CartPage: React.FC = () => {
   const subtotal = items.reduce((sum, it) => sum + it.price * it.qty, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-900">
       <PageMeta title="Cart | EcomPro" description="Your shopping cart at EcomPro" />
       <div className="container mx-auto px-6 py-10">
         <PageBreadcrumb pageTitle="Cart" />
 
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Shopping Cart</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6 dark:text-white">Shopping Cart</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white rounded-2xl shadow">
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow dark:bg-slate-800">
             <div className="divide-y">
               {items.map((item) => (
                 <div key={item.id} className="flex items-center gap-4 p-4">
                   <img src={item.image} alt={item.name} className="w-24 h-24 rounded object-cover" />
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                    <p className="text-gray-600">${item.price.toFixed(2)}</p>
+                    <h3 className="font-semibold text-gray-800 dark:text-white">{item.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">${item.price.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <button className="h-8 w-8 rounded bg-gray-100">-</button>
@@ -40,13 +40,13 @@ const CartPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6">
+          <div className="bg-white rounded-2xl shadow p-6 dark:bg-slate-800">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Order Summary</h3>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span>Shipping</span><span>$9.99</span></div>
-              <div className="flex justify-between"><span>Tax</span><span>$4.50</span></div>
-              <div className="border-t pt-2 flex justify-between font-semibold"><span>Total</span><span>${(subtotal + 9.99 + 4.5).toFixed(2)}</span></div>
+              <div className="flex justify-between text-gray-800 dark:text-white"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
+              <div className="flex justify-between text-gray-800 dark:text-white"><span>Shipping</span><span>$9.99</span></div>
+              <div className="flex justify-between text-gray-800 dark:text-white"><span>Tax</span><span>$4.50</span></div>
+              <div className="border-t pt-2 flex justify-between font-semibold text-gray-800 dark:text-white"><span>Total</span><span>${(subtotal + 9.99 + 4.5).toFixed(2)}</span></div>
             </div>
             <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700 transition-colors">Proceed to Checkout</button>
           </div>
