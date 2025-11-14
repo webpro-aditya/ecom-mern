@@ -1,22 +1,20 @@
 import React from "react";
+import { usePublicCategories } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 
 const CategoriesPage: React.FC = () => {
   const placeholder = import.meta.env.VITE_PLACEHOLDER_IMAGE || "https://via.placeholder.com/400x300.png?text=No+Image";
-  const sampleCategories = [
-    { id: "1", name: "Electronics", slug: "electronics" },
-    { id: "2", name: "Fashion", slug: "fashion" },
-    { id: "3", name: "Home & Living", slug: "home-living" },
-    { id: "4", name: "Sports", slug: "sports" },
-    { id: "5", name: "Beauty", slug: "beauty" },
-    { id: "6", name: "Kids", slug: "kids" },
-    { id: "7", name: "Automotive", slug: "automotive" },
-    { id: "8", name: "Books", slug: "books" },
-  ];
+  const { data, loading } = usePublicCategories();
+  const sampleCategories = (data?.categories || []).map((c, idx) => ({
+    id: String(idx + 1),
+    name: c.name,
+    slug: c.slug || c.name.toLowerCase().replace(/\s+/g, "-"),
+    image: c.image,
+  }));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-900">
       <PageMeta
         title="Categories | EcomPro"
         description="Browse product categories at EcomPro"
@@ -25,16 +23,19 @@ const CategoriesPage: React.FC = () => {
         <PageBreadcrumb pageTitle="Categories" />
 
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">Shop by Category</h1>
-          <p className="text-gray-600 text-lg">Discover our curated collections</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-3 dark:text-white">Shop by Category</h1>
+          <p className="text-gray-600 text-lg dark:text-gray-300">Discover our curated collections</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {sampleCategories.map((category) => (
             <a key={category.id} href={`/category/${category.slug}`} className="group cursor-pointer">
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2">
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2 dark:bg-slate-800">
                 <img
-                  src={placeholder}
+                  src={`${import.meta.env.VITE_BACKEND_URL}${category.image || placeholder}`}
                   alt={category.name}
                   className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
                 />
@@ -47,6 +48,7 @@ const CategoriesPage: React.FC = () => {
             </a>
           ))}
         </div>
+        )}
       </div>
     </div>
   );

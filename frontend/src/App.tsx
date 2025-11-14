@@ -148,11 +148,14 @@ export default function App() {
               </AuthProvider>
             }
           >
+            
+            <Route index path="/cart" element={<CartPage />} />
+            <Route index path="/wishlist" element={<WishlistPage />} />
+
+            
             <Route index path="/" element={<HomePage />} />
             <Route index path="/login" element={<LoginPage />} />
             <Route index path="/register" element={<RegisterPage />} />
-            <Route index path="/cart" element={<CartPage />} />
-            <Route index path="/wishlist" element={<WishlistPage />} />
             <Route index path="/categories" element={<CategoriesPage />} />
             <Route index path="/faq" element={<FAQsPage />} />
             <Route index path="/sale" element={<SalePage />} />

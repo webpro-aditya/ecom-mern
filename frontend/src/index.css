@@ -167,6 +167,26 @@ layer(base);
   --z-index-999999: 999999;
 }
 
+/* Dark mode overrides for common UI classes */
+@layer base {
+  .dark { color-scheme: dark; }
+  .dark body { background-color: #0b1220; }
+  .dark .bg-white { background-color: #1f2937; }
+  .dark .text-gray-800 { color: #e5e7eb; }
+  .dark .text-gray-700 { color: #e5e7eb; }
+  .dark .text-gray-600 { color: #cbd5e1; }
+  .dark .text-gray-500 { color: #94a3b8; }
+  .dark .border-gray-100 { border-color: #1f2937; }
+  .dark .border-gray-200 { border-color: #334155; }
+  .dark .border-gray-300 { border-color: #334155; }
+  .dark .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+  .dark input, .dark textarea, .dark select {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #e5e7eb;
+  }
+}
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
