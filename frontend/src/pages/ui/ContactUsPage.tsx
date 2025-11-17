@@ -2,6 +2,7 @@ import React from "react";
 import { usePublicContact } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import Preloader from "../../components/ui/Preloader";
 
 const ContactUsPage: React.FC = () => {
   const { data, loading } = usePublicContact();
@@ -27,7 +28,7 @@ const ContactUsPage: React.FC = () => {
           <div className="bg-white rounded-2xl shadow p-6 dark:bg-slate-800 dark:text-white">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Customer Support</h3>
             {loading ? (
-              <div>Loading...</div>
+              <div className="flex justify-center py-8"><Preloader /></div>
             ) : (
               <>
                 <p className="text-gray-600 dark:text-gray-300">📞 {contact?.phone}</p>

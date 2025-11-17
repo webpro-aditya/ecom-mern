@@ -2,6 +2,7 @@ import React from "react";
 import { usePublicPage } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import Preloader from "../../components/ui/Preloader";
 
 const TermsConditionsPage: React.FC = () => {
   const { data, loading } = usePublicPage("terms-and-conditions");
@@ -12,7 +13,7 @@ const TermsConditionsPage: React.FC = () => {
         <PageBreadcrumb pageTitle="Terms & Conditions" />
         <h1 className="text-3xl font-bold text-gray-800 mb-6 dark:text-white">Terms & Conditions</h1>
         {loading ? (
-          <div>Loading...</div>
+          <div className="flex justify-center py-12"><Preloader /></div>
         ) : (
           <div className="bg-white rounded-2xl shadow p-6 space-y-4 dark:bg-slate-800">
             <div

@@ -2,6 +2,7 @@ import React from "react";
 import { usePublicNewArrivals } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import Preloader from "../../components/ui/Preloader";
 
 const NewArrivalsPage: React.FC = () => {
   const { data, loading } = usePublicNewArrivals(12);
@@ -24,7 +25,7 @@ const NewArrivalsPage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div>Loading...</div>
+          <div className="flex justify-center py-12"><Preloader /></div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {products.map((p) => (
@@ -32,7 +33,7 @@ const NewArrivalsPage: React.FC = () => {
               <div className="relative">
                 <img src={p.image} alt={p.name} className="w-full h-64 object-cover" />
                 <div className="absolute top-4 right-4">
-                  <button className="bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-shadow">♥️</button>
+                  <button className="bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-shadow dark:bg-gray-800 dark:text-white">♥️</button>
                 </div>
               </div>
               <div className="p-6">

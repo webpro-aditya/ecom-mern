@@ -2,6 +2,7 @@ import React from "react";
 import { usePublicFAQs } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import Preloader from "../../components/ui/Preloader";
 
 const FAQsPage: React.FC = () => {
   const { data, loading } = usePublicFAQs();
@@ -14,7 +15,7 @@ const FAQsPage: React.FC = () => {
         <PageBreadcrumb pageTitle="FAQs" />
         <h1 className="text-3xl font-bold text-gray-800 mb-6 dark:text-white">Frequently Asked Questions</h1>
         {loading ? (
-          <div>Loading...</div>
+          <div className="flex justify-center py-12"><Preloader /></div>
         ) : (
           <div className="space-y-4">
             {faqs.map((f, i) => (
