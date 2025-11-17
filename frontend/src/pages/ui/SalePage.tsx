@@ -2,6 +2,7 @@ import React from "react";
 import { usePublicSaleProducts } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import Preloader from "../../components/ui/Preloader";
 
 const SalePage: React.FC = () => {
   const { data, loading } = usePublicSaleProducts(12);
@@ -25,13 +26,13 @@ const SalePage: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-300">Get up to 50% off on selected items</p>
           </div>
           <div className="flex items-center gap-3">
-            <select className="h-10 px-3 border rounded-lg text-sm">
+            <select className="h-10 px-3 border rounded-lg text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-white">
               <option>Sort by: Popular</option>
               <option>Sort by: Price Low to High</option>
               <option>Sort by: Price High to Low</option>
               <option>Sort by: Newest</option>
             </select>
-            <select className="h-10 px-3 border rounded-lg text-sm">
+            <select className="h-10 px-3 border rounded-lg text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-white">
               <option>Show: 8</option>
               <option>Show: 16</option>
               <option>Show: 24</option>
@@ -40,11 +41,11 @@ const SalePage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div>Loading...</div>
+          <div className="flex justify-center py-12"><Preloader /></div>
         ) : (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {products.map((p) => (
-            <div key={p.id} className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+            <div key={p.id} className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800">
               <div className="relative">
                 <img src={p.image} alt={p.name} className="w-full h-64 object-cover" />
                 <div className="absolute top-4 left-4">

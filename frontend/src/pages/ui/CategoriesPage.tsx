@@ -2,6 +2,7 @@ import React from "react";
 import { usePublicCategories } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import Preloader from "../../components/ui/Preloader";
 
 const CategoriesPage: React.FC = () => {
   const placeholder = import.meta.env.VITE_PLACEHOLDER_IMAGE || "https://via.placeholder.com/400x300.png?text=No+Image";
@@ -28,7 +29,7 @@ const CategoriesPage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div>Loading...</div>
+          <div className="flex justify-center py-12"><Preloader /></div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {sampleCategories.map((category) => (

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Preloader from "../components/ui/Preloader";
 
 // --- Types (unchanged, copy as-is) ---
 interface Banner {
@@ -118,9 +119,7 @@ const HomePage: React.FC = () => {
   // Loading/Error/no data states
   if (loading)
     return (
-      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900 dark:text-gray-100">
-        Loading...
-      </div>
+      <div className="flex justify-center py-12"><Preloader /></div>
     );
   if (error)
     return (

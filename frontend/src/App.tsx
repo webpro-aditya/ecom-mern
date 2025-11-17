@@ -32,6 +32,10 @@ import PrivacyPolicyPage from "./pages/ui/PrivacyPolicyPage";
 import ReturnPolicyPage from "./pages/ui/ReturnPolicyPage";
 import ShippingPolicyPage from "./pages/ui/ShippingPolicyPage";
 import TermsConditionsPage from "./pages/ui/TermsConditionsPage";
+import AccountAddressesPage from "./pages/ui/AccountAddressesPage";
+import AccountDashboardPage from "./pages/ui/AccountDashboardPage";
+import AccountOrdersPage from "./pages/ui/AccountOrdersPage";
+import AccountProfilePage from "./pages/ui/AccountProfilePage";
 
 
 // Users
@@ -165,6 +169,11 @@ export default function App() {
             <Route index path="/return-policy" element={<ReturnPolicyPage />} />
             <Route index path="/shipping-policy" element={<ShippingPolicyPage />} />
             <Route index path="/terms-and-conditions" element={<TermsConditionsPage />} />
+
+            <Route index path="/account/address" element={<AccountAddressesPage />} />
+            <Route index path="/account/dashboard" element={<AccountDashboardPage />} />
+            <Route index path="/account/orders" element={<AccountOrdersPage />} />
+            <Route index path="/account/profile" element={<AccountProfilePage />} />
           </Route>
 
           {/* Fallback Route */}
