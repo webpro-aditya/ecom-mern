@@ -4,6 +4,7 @@ const Attribute = require("../models/Attribute");
 const Brand = require("../models/Brand");
 const Category = require("../models/Category");
 const Product = require("../models/Product");
+const { delByPattern } = require("../config/redis");
 
 // Get All Products
 exports.getProducts = async (req, res) => {
@@ -295,6 +296,10 @@ exports.createProduct = async (req, res) => {
       .populate("subbrand", "name slug parent")  // ✅
       .populate("variations.attributes.attribute", "name slug type");
 
+    await delByPattern("cache:/api/public/products/new*");
+    await delByPattern("cache:/api/public/products/sale*");
+    await delByPattern("cache:/api/public/home*");
+
     res.status(201).json({
       success: true,
       message: "Product created successfully",
@@ -538,6 +543,10 @@ exports.updateProduct = async (req, res) => {
       .populate("subbrand", "name slug parent")  // ✅
       .populate("variations.attributes.attribute", "name slug type");
 
+    await delByPattern("cache:/api/public/products/new*");
+    await delByPattern("cache:/api/public/products/sale*");
+    await delByPattern("cache:/api/public/home*");
+
     res.status(200).json({
       success: true,
       message: "Product updated successfully",
@@ -573,6 +582,10 @@ exports.deleteProduct = async (req, res) => {
     }
 
     await product.deleteOne();
+
+    await delByPattern("cache:/api/public/products/new*");
+    await delByPattern("cache:/api/public/products/sale*");
+    await delByPattern("cache:/api/public/home*");
 
     res.json({
       success: true,

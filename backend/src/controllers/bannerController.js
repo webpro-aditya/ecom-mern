@@ -1,4 +1,5 @@
 const Banner = require("../models/Banner");
+const { delByPattern } = require("../config/redis");
 
 function sanitizeHtmlServer(input = "") {
   try {
@@ -42,6 +43,8 @@ exports.createBanner = async (req, res) => {
     });
 
     await newBanner.save();
+
+    await delByPattern("cache:/api/public/home*");
 
     res.status(201).json({
       success: true,
@@ -121,6 +124,8 @@ exports.updateBanner = async (req, res) => {
       return res.status(404).json({ success: false, message: "Banner not found" });
     }
 
+    await delByPattern("cache:/api/public/home*");
+
     res.status(200).json({
       success: true,
       message: "Banner updated successfully",
@@ -139,6 +144,9 @@ exports.deleteBanner = async (req, res) => {
     if (!banner) {
       return res.status(404).json({ success: false, message: "Banner not found" });
     }
+
+    await delByPattern("cache:/api/public/home*");
+
     res.status(200).json({ success: true, message: "Banner deleted successfully" });
   } catch (err) {
     console.error(err);
@@ -165,6 +173,8 @@ exports.updateBannerSequences = async (req, res) => {
     }));
 
     await Banner.bulkWrite(bulkOps);
+
+    await delByPattern("cache:/api/public/home*");
 
     res.json({
       success: true,

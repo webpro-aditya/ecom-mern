@@ -8,45 +8,76 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: Implement login logic
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-dark-900">
-      <PageMeta title="Login | EcomPro" description="Login to your EcomPro account" />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <PageMeta
+        title="Login | EcomPro"
+        description="Login to your EcomPro account"
+      />
+
       <div className="container mx-auto px-6 py-10">
         <PageBreadcrumb pageTitle="Login" />
-        <div className="max-w-md mx-auto bg-white rounded-2xl shadow p-6 dark:bg-slate-800 dark:text-white">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4 dark:text-white">Welcome Back</h1>
+
+        <div className="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow p-6">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+            Welcome Back
+          </h1>
+
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email */}
             <div>
-              <label className="block text-sm text-gray-600 mb-1 dark:text-gray-300">Email</label>
+              <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-11 px-3 border rounded-lg focus:outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                className="w-full h-11 px-3 border rounded-lg 
+                border-gray-300 dark:border-slate-700 
+                dark:bg-slate-900 dark:text-gray-100
+                focus:outline-none focus:border-blue-500"
                 required
               />
             </div>
+
+            {/* Password */}
             <div>
-              <label className="block text-sm text-gray-600 mb-1 dark:text-gray-300">Password</label>
+              <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                Password
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-11 px-3 border rounded-lg focus:outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                className="w-full h-11 px-3 border rounded-lg 
+                border-gray-300 dark:border-slate-700 
+                dark:bg-slate-900 dark:text-gray-100
+                focus:outline-none focus:border-blue-500"
                 required
               />
             </div>
-            <div className="flex items-center justify-between">
-              <label className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                <input type="checkbox" className="mr-2" /> Remember me
-              </label>
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-700">Forgot password?</a>
-            </div>
-            <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700 transition-colors">Login</button>
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700 transition-colors"
+            >
+              Login
+            </button>
+
+            {/* Register link */}
             <p className="text-sm text-center text-gray-600 dark:text-gray-300">
-              Don’t have an account? <a href="/register" className="text-blue-600 hover:text-blue-700">Register</a>
+              Don't have an account?{" "}
+              <a
+                href="/register"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              >
+                Create one
+              </a>
             </p>
           </form>
         </div>
