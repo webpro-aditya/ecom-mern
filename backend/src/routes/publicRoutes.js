@@ -1,4 +1,5 @@
 const express = require("express");
+const { cacheGet } = require("../middlewares/cacheMiddleware");
 
 const { getHomepageData } = require("../controllers/HomepageController");
 const {
@@ -12,13 +13,13 @@ const {
 
 const router = express.Router();
 
-// Categories
-router.get("/home", getHomepageData);
-router.get("/categories", getPublicCategories);
-router.get("/products/new", getNewArrivals);
-router.get("/products/sale", getSaleProducts);
-router.get("/faqs", getFAQs);
-router.get("/pages/:slug", getPageBySlug);
-router.get("/contact", getContactInfo);
+// Public endpoints (cached)
+router.get("/home", cacheGet(300), getHomepageData);
+router.get("/categories", cacheGet(600), getPublicCategories);
+router.get("/products/new", cacheGet(300), getNewArrivals);
+router.get("/products/sale", cacheGet(300), getSaleProducts);
+router.get("/faqs", cacheGet(1800), getFAQs);
+router.get("/pages/:slug", cacheGet(1800), getPageBySlug);
+router.get("/contact", cacheGet(1800), getContactInfo);
 
 module.exports = router;

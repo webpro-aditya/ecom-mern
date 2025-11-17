@@ -1,4 +1,5 @@
 const Testimonial = require("../models/Testimonial");
+const { delByPattern } = require("../config/redis");
 
 // Create Testimonial
 exports.createTestimonial = async (req, res) => {
@@ -25,6 +26,9 @@ exports.createTestimonial = async (req, res) => {
     });
 
     await newTestimonial.save();
+
+    await delByPattern("cache:/api/public/home*");
+
     res.status(201).json({
       success: true,
       message: "Testimonial created successfully",
@@ -105,6 +109,8 @@ exports.updateTestimonial = async (req, res) => {
       return res.status(404).json({ success: false, message: "Testimonial not found" });
     }
 
+    await delByPattern("cache:/api/public/home*");
+
     res.status(200).json({
       success: true,
       message: "Testimonial updated successfully",
@@ -123,6 +129,9 @@ exports.deleteTestimonial = async (req, res) => {
     if (!testimonial) {
       return res.status(404).json({ success: false, message: "Testimonial not found" });
     }
+
+    await delByPattern("cache:/api/public/home*");
+
     res.status(200).json({ success: true, message: "Testimonial deleted successfully" });
   } catch (err) {
     console.error(err);

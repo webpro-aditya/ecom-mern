@@ -1,4 +1,5 @@
 const Category = require("../models/Category");
+const { delByPattern } = require("../config/redis");
 
 exports.createCategory = async (req, res) => {
   try {
@@ -26,6 +27,9 @@ exports.createCategory = async (req, res) => {
     });
 
     await newCategory.save();
+
+    await delByPattern("cache:/api/public/categories*");
+    await delByPattern("cache:/api/public/home*");
 
     res.status(201).json({
       success: true,
@@ -140,6 +144,9 @@ exports.updateCategory = async (req, res) => {
     // Slug will auto-update on save (see schema pre('validate'))
     await category.save();
 
+    await delByPattern("cache:/api/public/categories*");
+    await delByPattern("cache:/api/public/home*");
+
     const updatedCategory = await Category.findById(id).populate("parent", "name slug");
 
     res.json({
@@ -176,6 +183,9 @@ exports.deleteCategory = async (req, res) => {
     }
 
     await category.deleteOne();
+
+    await delByPattern("cache:/api/public/categories*");
+    await delByPattern("cache:/api/public/home*");
 
     res.json({ success: true, message: "Category deleted successfully" });
   } catch (error) {

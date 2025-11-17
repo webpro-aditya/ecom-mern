@@ -18,16 +18,18 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://127.0.0.1:5173",
   "http://localhost:5173",
+  "http://127.0.0.1:3000",
+  "http://localhost:3000",
 ].filter(Boolean);
 
 const corsConfig = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    const isLocal = origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d{2,5})?$/.test(origin);
+    if (!origin || allowedOrigins.includes(origin) || isLocal) return callback(null, true);
     callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
   methods: ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
 };
 app.use(cors(corsConfig));
 app.options("*", cors(corsConfig));

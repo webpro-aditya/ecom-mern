@@ -1,6 +1,7 @@
 const SocialLink = require("../models/SocialLink");
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const { delByPattern } = require("../config/redis");
 
 // ✅ Create a Social Link
 exports.createSocialLink = async (req, res) => {
@@ -26,6 +27,8 @@ exports.createSocialLink = async (req, res) => {
     });
 
     const savedLink = await socialLink.save();
+
+    await delByPattern("cache:/api/public/home*");
 
     res.status(201).json({
       success: true,
@@ -116,6 +119,8 @@ exports.updateSocialLink = async (req, res) => {
 
     const updatedLink = await link.save();
 
+    await delByPattern("cache:/api/public/home*");
+
     res.json({
       success: true,
       message: "Social link updated successfully",
@@ -151,6 +156,8 @@ exports.deleteSocialLink = async (req, res) => {
     }
 
     await link.deleteOne();
+
+    await delByPattern("cache:/api/public/home*");
 
     res.json({ success: true, message: "Social link deleted successfully" });
   } catch (error) {
