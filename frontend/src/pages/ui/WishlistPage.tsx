@@ -19,41 +19,61 @@ const WishlistPage: React.FC = () => {
         description="Your saved items at EcomPro"
       />
 
-      <div className="container mx-auto px-6 py-10">
+      <div className="container mx-auto px-4 sm:px-6 py-10">
         <PageBreadcrumb pageTitle="Wishlist" />
 
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
           Your Wishlist
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Grid responsive: 1 → 2 → 3 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden"
+              className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row"
             >
+              {/* Image */}
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-32 h-32 sm:w-40 sm:h-40 object-cover"
+                className="w-full h-48 sm:w-40 sm:h-40 object-cover"
               />
 
-              <div className="p-4 flex-1">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-100">
-                  {item.name}
-                </h3>
+              {/* Content */}
+              <div className="p-4 flex flex-col justify-between flex-1">
+                <div>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-lg">
+                    {item.name}
+                  </h3>
 
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
-                  ${item.price.toFixed(2)}
-                </p>
+                  <p className="text-gray-600 dark:text-gray-300 mt-1 mb-4 text-sm sm:text-base">
+                    ${item.price.toFixed(2)}
+                  </p>
+                </div>
 
-                <div className="flex gap-3">
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors">
-                    Add to Cart
+                {/* Buttons */}
+                <div className="flex gap-3 mt-2">
+                  <button
+                    className="
+  flex items-center justify-center gap-2 
+  bg-blue-600 text-white px-4 py-2 rounded-full text-sm 
+  shadow-md hover:shadow-lg active:scale-95 
+  hover:bg-blue-700 transition-all w-full sm:w-auto
+"
+                  >
+                    🛒 Add to Cart
                   </button>
 
-                  <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 dark:hover:bg-red-500 transition-colors">
-                    Remove
+                  <button
+                    className="
+  flex items-center justify-center gap-2
+  bg-red-600 text-white px-4 py-2 rounded-full text-sm 
+  shadow-md hover:shadow-lg active:scale-95 
+  hover:bg-red-700 dark:hover:bg-red-500 transition-all w-full sm:w-auto
+"
+                  >
+                    ❌ Remove
                   </button>
                 </div>
               </div>

@@ -15,16 +15,17 @@ const ContactUsPage: React.FC = () => {
         description="Get in touch with EcomPro support"
       />
 
-      <div className="container mx-auto px-6 py-10">
+      <div className="container mx-auto px-4 sm:px-6 py-10">
         <PageBreadcrumb pageTitle="Contact Us" />
 
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
           Contact Us
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
           {/* FORM */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow p-6 dark:text-gray-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow p-5 sm:p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
               Send us a message
             </h3>
@@ -51,14 +52,14 @@ const ContactUsPage: React.FC = () => {
                 placeholder="Message"
               />
 
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              <button className="w-full sm:w-auto bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition">
                 Send Message
               </button>
             </form>
           </div>
 
-          {/* SUPPORT DETAILS */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow p-6 dark:text-gray-100">
+          {/* SUPPORT INFO */}
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow p-5 sm:p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
               Customer Support
             </h3>
@@ -68,19 +69,20 @@ const ContactUsPage: React.FC = () => {
                 <Preloader />
               </div>
             ) : (
-              <>
-                <p className="text-gray-700 dark:text-gray-300 mb-2">
+              <div className="space-y-2 text-sm sm:text-base">
+                <p className="text-gray-700 dark:text-gray-300">
                   📞 {contact?.phone}
                 </p>
-                <p className="text-gray-700 dark:text-gray-300 mb-2">
+                <p className="text-gray-700 dark:text-gray-300">
                   ✉️ {contact?.email}
                 </p>
                 <p className="text-gray-700 dark:text-gray-300">
                   {contact?.address}
                 </p>
-              </>
+              </div>
             )}
           </div>
+
         </div>
       </div>
     </div>
