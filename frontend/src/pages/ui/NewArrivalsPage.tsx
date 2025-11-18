@@ -30,7 +30,7 @@ const NewArrivalsPage: React.FC = () => {
 
         {/* Page Title */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
             Just In
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
@@ -54,7 +54,7 @@ const NewArrivalsPage: React.FC = () => {
                   <img
                     src={p.image}
                     alt={p.name}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-48 sm:h-56 md:h-64 object-cover"
                   />
 
                   {/* Wishlist Button */}

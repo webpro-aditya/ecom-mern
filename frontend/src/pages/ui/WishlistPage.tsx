@@ -35,7 +35,7 @@ const WishlistPage: React.FC = () => {
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-40 h-40 object-cover"
+                className="w-32 h-32 sm:w-40 sm:h-40 object-cover"
               />
 
               <div className="p-4 flex-1">

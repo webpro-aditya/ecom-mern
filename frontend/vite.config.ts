@@ -14,4 +14,8 @@ export default defineConfig({
     }),
   ],
   assetsInclude: ['**/*.woff', '**/*.woff2'],
+  server: {
+    host: true,
+    port: 5173,
+  },
 });

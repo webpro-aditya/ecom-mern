@@ -9,8 +9,6 @@ import { useOrders } from "../../hooks/useOrders";
 
 export default function OrdersList() {
   const ordersData = useOrders();
-  // You can expand this to include tab selection if needed in future
-  // const [activeTab, setActiveTab] = useState("all");
 
   return (
     <>

@@ -35,7 +35,7 @@ const CartPage: React.FC = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-24 h-24 rounded object-cover"
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded object-cover"
                   />
 
                   <div className="flex-1">

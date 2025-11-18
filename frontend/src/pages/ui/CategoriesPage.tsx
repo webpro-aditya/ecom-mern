@@ -57,7 +57,7 @@ const CategoriesPage: React.FC = () => {
                       category.image || placeholder
                     }`}
                     alt={category.name}
-                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
+                    className="w-full h-48 sm:h-56 md:h-64 object-cover transition-transform duration-300 group-hover:scale-110"
                   />
 
                   {/* Overlay */}
