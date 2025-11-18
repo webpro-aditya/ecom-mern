@@ -16,16 +16,18 @@ app.set("trust proxy", 1);
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  process.env.FRONTEND_LAN_URL,
   "http://127.0.0.1:5173",
   "http://localhost:5173",
   "http://127.0.0.1:3000",
   "http://localhost:3000",
+  "http://192.168.29.89:5050",
 ].filter(Boolean);
 
 const corsConfig = {
   origin: (origin, callback) => {
-    const isLocal = origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d{2,5})?$/.test(origin);
-    if (!origin || allowedOrigins.includes(origin) || isLocal) return callback(null, true);
+    const isLocalOrLan = origin && /^https?:\/\/(localhost|127\.0\.0\.1|10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|192\.168\.[0-9]{1,3}\.[0-9]{1,3}|172\.(1[6-9]|2[0-9]|3[0-1])\.[0-9]{1,3}\.[0-9]{1,3})(:\d{2,5})?$/.test(origin);
+    if (!origin || allowedOrigins.includes(origin) || isLocalOrLan) return callback(null, true);
     callback(new Error("Not allowed by CORS"));
   },
   credentials: true,

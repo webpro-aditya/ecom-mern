@@ -141,7 +141,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section (Dynamic) */}
-      <section className="relative h-[600px] overflow-hidden">
+      <section className="relative h-[320px] sm:h-[460px] md:h-[600px] overflow-hidden">
         {homeData.banners.map((banner, index) => (
           <div
             key={banner._id}
@@ -157,14 +157,14 @@ const HomePage: React.FC = () => {
                 })`,
               }}
             >
-              <div className="absolute inset-0 bg-opacity-40 dark:bg-opacity-60"></div>
+              <div className="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
               <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
                 <div className="max-w-2xl text-white">
-                  <h1 className="text-5xl md:text-6xl font-bold mb-4 animate-fade-in">
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 animate-fade-in">
                     {banner.title}
                   </h1>
                   <div
-                    className="text-xl mb-8 opacity-90 hero-content"
+                    className="text-base sm:text-lg md:text-xl mb-8 opacity-90 hero-content"
                     dangerouslySetInnerHTML={{
                       __html: sanitizeHtml(banner.htmlContent),
                     }}
