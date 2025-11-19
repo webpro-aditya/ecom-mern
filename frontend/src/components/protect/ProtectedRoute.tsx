@@ -7,9 +7,10 @@ import { fetchUser } from "../../store/userSlice";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  redirectTo?: string;
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, redirectTo = "/admin/signin" }: ProtectedRouteProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { user, loading } = useSelector((state: RootState) => state.user);
   const requestedRef = useRef(false);
@@ -29,7 +30,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!requestedRef.current) {
       return null;
     }
-    return <Navigate to="/admin/signin" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
 
   return <>{children}</>;

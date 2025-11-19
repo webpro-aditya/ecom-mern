@@ -1,21 +1,28 @@
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { store, RootState, AppDispatch } from "./store";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { Provider, useDispatch } from "react-redux";
+import { store, AppDispatch } from "./store";
 import { fetchUser } from "./store/userSlice";
 import { AuthProvider } from "./context/AuthContext";
 
-import SignIn from "./pages/AuthPages/SignIn";
-import SignUp from "./pages/AuthPages/SignUp";
-import NotFound from "./pages/OtherPage/NotFound";
+import { ScrollToTop } from "./components/common/ScrollToTop";
+import ProtectedRoute from "./components/protect/ProtectedRoute";
+
+// Dashboard Layout
+import AppLayout from "./layout/AppLayout";
+import Home from "./pages/Dashboard/Home";
+
 import UserProfiles from "./pages/UserProfiles";
 import Calendar from "./pages/Calendar";
 import Blank from "./pages/Blank";
-import AppLayout from "./layout/AppLayout";
-import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
-import ProtectedRoute from "./components/protect/ProtectedRoute";
+
+// UI Layout
 import MainLayout from "./layout/MainLayout";
+
+// Auth Pages
+import SignIn from "./pages/AuthPages/SignIn";
+import SignUp from "./pages/AuthPages/SignUp";
+import NotFound from "./pages/OtherPage/NotFound";
 
 // UI Pages
 import HomePage from "./pages/HomePage";
@@ -39,150 +46,168 @@ import AccountDashboardPage from "./pages/ui/AccountDashboardPage";
 import AccountOrdersPage from "./pages/ui/AccountOrdersPage";
 import AccountProfilePage from "./pages/ui/AccountProfilePage";
 
-
-// Users
+// Admin: Users
 import UsersList from "./pages/Users/UsersList";
 import UserAdd from "./pages/Users/UserAdd";
 import UserEdit from "./pages/Users/UserEdit";
 
-// Banners
+// Admin: Banners
 import BannersList from "./pages/Banners/BannersList";
 import BannerAdd from "./pages/Banners/BannerAdd";
 import BannerEdit from "./pages/Banners/BannerEdit";
 
-// Categories
+// Admin: Categories
 import CategoriesList from "./pages/Categories/CategoriesList";
 import CategoryAdd from "./pages/Categories/CategoryAdd";
 import CategoryEdit from "./pages/Categories/CategoryEdit";
 
-// Brands
+// Admin: Brands
 import BrandsList from "./pages/Brands/BrandsList";
 import BrandAdd from "./pages/Brands/BrandAdd";
 import BrandEdit from "./pages/Brands/BrandEdit";
 
-// Products
+// Admin: Products
 import ProductsList from "./pages/Products/ProductsList";
 import ProductAdd from "./pages/Products/ProductAdd";
 import ProductEdit from "./pages/Products/ProductEdit";
 
-// Orders
+// Admin: Orders
 import OrdersList from "./pages/Orders/OrdersList";
 import OrderDetails from "./pages/Orders/OrderDetails";
 
+// Admin: Social Links
 import SocialLinksManager from "./pages/SocialLinks/SocialLinksManager";
 
+/* -----------------------------------
+   AppInit - fetch user once
+------------------------------------ */
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}csrf-token`, { credentials: "include" }).catch(() => {});
-    if (!user) {
-      dispatch(fetchUser());
-    }
-  }, [user, dispatch]);
+    fetch(`${import.meta.env.VITE_API_URL}csrf-token`, {
+      credentials: "include",
+    }).catch(() => {});
+
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   return null;
 }
 
+/* -----------------------------------
+   Main Application
+------------------------------------ */
 export default function App() {
   return (
     <Provider store={store}>
       <Router>
-        <AppInit />
-        <ScrollToTop />
-        <Routes>
-          {/* Dashboard Layout */}
-          <Route
-            element={
-              <ProtectedRoute>
-                <AuthProvider>
+        <AuthProvider>
+          <AppInit />
+          <ScrollToTop />
+
+          <Routes>
+            {/* ADMIN ROUTES */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
                   <AppLayout />
-                </AuthProvider>
-              </ProtectedRoute>
-            }
-          >
-            <Route index path="/admin/dashboard" element={<Home />} />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="dashboard" element={<Home />} />
 
-            {/* Users */}
-            <Route path="/admin/users" element={<UsersList />} />
-            <Route path="/admin/users/add" element={<UserAdd />} />
-            <Route path="/admin/users/:id/edit" element={<UserEdit />} />
+              {/* Users */}
+              <Route path="users" element={<UsersList />} />
+              <Route path="users/add" element={<UserAdd />} />
+              <Route path="users/:id/edit" element={<UserEdit />} />
 
-            {/* Banners */}
-            <Route path="/admin/banners" element={<BannersList />} />
-            <Route path="/admin/banner/add" element={<BannerAdd />} />
-            <Route path="/admin/banners/:id/edit" element={<BannerEdit />} />
+              {/* Banners */}
+              <Route path="banners" element={<BannersList />} />
+              <Route path="banners/add" element={<BannerAdd />} />
+              <Route path="banners/:id/edit" element={<BannerEdit />} />
 
-            {/* Categories */}
-            <Route path="/admin/categories" element={<CategoriesList />} />
-            <Route path="/admin/category/add" element={<CategoryAdd />} />
-            <Route path="/admin/category/:id/edit" element={<CategoryEdit />} />
+              {/* Categories */}
+              <Route path="categories" element={<CategoriesList />} />
+              <Route path="categories/add" element={<CategoryAdd />} />
+              <Route path="categories/:id/edit" element={<CategoryEdit />} />
 
-            {/* Brands */}
-            <Route path="/admin/brands" element={<BrandsList />} />
-            <Route path="/admin/brand/add" element={<BrandAdd />} />
-            <Route path="/admin/brand/:id/edit" element={<BrandEdit />} />
+              {/* Brands */}
+              <Route path="brands" element={<BrandsList />} />
+              <Route path="brands/add" element={<BrandAdd />} />
+              <Route path="brands/:id/edit" element={<BrandEdit />} />
 
-            {/* Products */}
-            <Route path="/admin/products" element={<ProductsList />} />
-            <Route path="/admin/product/add" element={<ProductAdd />} />
-            <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
+              {/* Products */}
+              <Route path="products" element={<ProductsList />} />
+              <Route path="products/add" element={<ProductAdd />} />
+              <Route path="products/:id/edit" element={<ProductEdit />} />
 
-            {/* Orders */}
-            <Route path="/admin/orders" element={<OrdersList />} />
-            <Route path="/admin/order/:id" element={<OrderDetails />} />
+              {/* Orders */}
+              <Route path="orders" element={<OrdersList />} />
+              <Route path="order/:id" element={<OrderDetails />} />
 
-            {/* Social Links */}
-             <Route path="/admin/social-links" element={<SocialLinksManager />} />
+              {/* Social Links */}
+              <Route path="social-links" element={<SocialLinksManager />} />
 
-            {/* Other pages */}
-            <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
-          </Route>
+              {/* Misc */}
+              <Route path="profile" element={<UserProfiles />} />
+              <Route path="calendar" element={<Calendar />} />
+              <Route path="blank" element={<Blank />} />
+            </Route>
 
-          {/* Auth Layout */}
-          <Route path="/admin/signin" element={<SignIn />} />
-          <Route path="/admin/signup" element={<SignUp />} />
+            {/* AUTH ROUTES */}
+            <Route path="/admin/signin" element={<SignIn />} />
+            <Route path="/admin/signup" element={<SignUp />} />
 
-          {/* Main App Layout */}
-          <Route
-            element={
-              <AuthProvider>
-                <MainLayout />
-              </AuthProvider>
-            }
-          >
-            
-            <Route index path="/cart" element={<CartPage />} />
-            <Route index path="/wishlist" element={<WishlistPage />} />
+            {/* UI ROUTES */}
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
 
-            
-            <Route index path="/" element={<HomePage />} />
-            <Route index path="/login" element={<LoginPage />} />
-            <Route index path="/register" element={<RegisterPage />} />
-            <Route index path="/categories" element={<CategoriesPage />} />
-            <Route index path="/category/:slug" element={<CategoryProductsPage />} />
-            <Route index path="/product/:id" element={<ProductDetailsPage />} />
-            <Route index path="/faq" element={<FAQsPage />} />
-            <Route index path="/sale" element={<SalePage />} />
-            <Route index path="/new-arrivals" element={<NewArrivalsPage />} />
-            <Route index path="/contact" element={<ContactUsPage />} />
-            <Route index path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route index path="/return-policy" element={<ReturnPolicyPage />} />
-            <Route index path="/shipping-policy" element={<ShippingPolicyPage />} />
-            <Route index path="/terms-and-conditions" element={<TermsConditionsPage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route
+                path="/category/:slug"
+                element={<CategoryProductsPage />}
+              />
+              <Route path="/product/:id" element={<ProductDetailsPage />} />
 
-            <Route index path="/account/address" element={<AccountAddressesPage />} />
-            <Route index path="/account/dashboard" element={<AccountDashboardPage />} />
-            <Route index path="/account/orders" element={<AccountOrdersPage />} />
-            <Route index path="/account/profile" element={<AccountProfilePage />} />
-          </Route>
+              <Route path="/faq" element={<FAQsPage />} />
+              <Route path="/sale" element={<SalePage />} />
+              <Route path="/new-arrivals" element={<NewArrivalsPage />} />
 
-          {/* Fallback Route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+              <Route path="/contact" element={<ContactUsPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/return-policy" element={<ReturnPolicyPage />} />
+              <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsConditionsPage />}
+              />
+
+              {/* ACCOUNT ROUTES GROUPED */}
+              <Route
+                path="/account"
+                element={
+                  <ProtectedRoute redirectTo="/login">
+                    <Outlet />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="dashboard" element={<AccountDashboardPage />} />
+                <Route path="orders" element={<AccountOrdersPage />} />
+                <Route path="address" element={<AccountAddressesPage />} />
+                <Route path="profile" element={<AccountProfilePage />} />
+              </Route>
+            </Route>
+
+            {/* 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </Router>
     </Provider>
   );

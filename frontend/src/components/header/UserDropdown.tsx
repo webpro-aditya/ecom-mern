@@ -34,7 +34,12 @@ export default function UserDropdown() {
     dispatch(logout());
     toast.success("Logged out successfully!");
     closeDropdown();
-    navigate("/admin/signin");
+    const path = window.location.pathname;
+    if (path.startsWith("/admin")) {
+      navigate("/admin/signin");
+    } else {
+      navigate("/login");
+    }
   }
 
   if (loading) {

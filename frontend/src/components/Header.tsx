@@ -1,10 +1,35 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { RootState, AppDispatch } from "../store";
+import { logout as logoutAction } from "../store/userSlice";
 import { ThemeToggleButton } from "./common/ThemeToggleButton";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
   const cartItemCount = 3;
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const handleLogout = async () => {
+    try {
+      const match = document.cookie.match(/(?:^|; )csrfToken=([^;]+)/);
+      const csrfToken = match ? decodeURIComponent(match[1]) : "";
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}auth/logout`,
+        {},
+        { withCredentials: true, headers: { "X-CSRF-Token": csrfToken } }
+      );
+    } catch (error) {}
+    dispatch(logoutAction());
+    toast.success("Logged out successfully");
+    setIsAccountOpen(false);
+    navigate("/login");
+  };
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50 dark:bg-gray-900 dark:text-gray-200">
@@ -70,10 +95,33 @@ const Header: React.FC = () => {
               )}
             </Link>
 
-            <Link to="/account" className="flex flex-col items-center text-gray-600 dark:text-gray-300">
-              <span className="text-xl">👤</span>
-              <span className="text-xs mt-1">Account</span>
-            </Link>
+            <div className="relative">
+              <button
+                onClick={() => setIsAccountOpen((v) => !v)}
+                className="flex flex-col items-center text-gray-600 dark:text-gray-300"
+              >
+                <span className="text-xl">👤</span>
+                <span className="text-xs mt-1">Account</span>
+              </button>
+              {isAccountOpen && (
+                <div className="absolute right-0 mt-3 w-56 rounded-xl border border-gray-200 bg-white shadow-lg p-2 dark:bg-gray-900 dark:border-gray-800">
+                  {user ? (
+                    <div className="flex flex-col text-sm">
+                      <Link to="/account/dashboard" className="px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Dashboard</Link>
+                      <Link to="/account/orders" className="px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Orders</Link>
+                      <Link to="/account/address" className="px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Addresses</Link>
+                      <Link to="/account/profile" className="px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Profile</Link>
+                      <button onClick={handleLogout} className="mt-1 px-3 py-2 rounded text-left text-red-600 hover:bg-red-50 dark:hover:bg-gray-800">Logout</button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col text-sm">
+                      <Link to="/login" className="px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Login</Link>
+                      <Link to="/register" className="px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Register</Link>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile Hamburger */}
@@ -121,10 +169,17 @@ const Header: React.FC = () => {
                 )}
               </Link>
 
-              <Link to="/account" className="flex flex-col items-center">
-                <span className="text-xl">👤</span>
-                <span className="text-xs">Account</span>
-              </Link>
+              {user ? (
+                <div className="flex flex-col items-center">
+                  <span className="text-xl">👤</span>
+                  <span className="text-xs">Account</span>
+                </div>
+              ) : (
+                <Link to="/login" className="flex flex-col items-center">
+                  <span className="text-xl">👤</span>
+                  <span className="text-xs">Login</span>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Navigation */}
@@ -135,6 +190,22 @@ const Header: React.FC = () => {
               <li><Link to="/categories/fashion" className="block py-2">Fashion</Link></li>
               <li><Link to="/categories/home" className="block py-2">Home & Living</Link></li>
               <li><Link to="/sale" className="text-red-600 block py-2">🔥 Sale</Link></li>
+              {user ? (
+                <>
+                  <li><Link to="/account/dashboard" className="block py-2">Account Dashboard</Link></li>
+                  <li><Link to="/account/orders" className="block py-2">My Orders</Link></li>
+                  <li><Link to="/account/address" className="block py-2">My Addresses</Link></li>
+                  <li><Link to="/account/profile" className="block py-2">Profile</Link></li>
+                  <li>
+                    <button onClick={handleLogout} className="block w-full text-left py-2 text-red-600">Logout</button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li><Link to="/login" className="block py-2">Login</Link></li>
+                  <li><Link to="/register" className="block py-2">Register</Link></li>
+                </>
+              )}
             </ul>
           </div>
         )}
