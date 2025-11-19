@@ -1,14 +1,37 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { loginUser } from "../../store/userSlice";
+import { RootState, AppDispatch } from "../../store";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state: RootState) => state.user);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
+    }
+    const result = await dispatch(loginUser({ email, password }));
+    if (loginUser.fulfilled.match(result)) {
+      const { user } = result.payload;
+      if (user.role === "customer") {
+        toast.success(`Welcome back, ${user.name}!`);
+        navigate("/account/dashboard", { replace: true });
+      } else {
+        toast.error("This login is for customers. Use admin login for admin/vendor.");
+      }
+    } else {
+      toast.error((result.payload as string) || "Login failed");
+    }
   };
 
   return (
@@ -64,7 +87,8 @@ const LoginPage: React.FC = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700 transition-colors"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700 transition-colors disabled:opacity-50"
             >
               Login
             </button>
