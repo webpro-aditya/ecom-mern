@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Category = require("../models/Category");
 const Product = require("../models/Product");
 
@@ -89,6 +90,52 @@ exports.getContactInfo = async (req, res) => {
       address: "123 Commerce St, Suite 100, City, Country"
     }});
   } catch (err) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.getPublicProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const match = mongoose.Types.ObjectId.isValid(id) ? { _id: id } : { slug: id };
+    const product = await Product.findOne({ ...match, isActive: true })
+      .populate("category", "name slug")
+      .populate("subcategory", "name slug parent")
+      .populate("brand", "name slug")
+      .populate("subbrand", "name slug parent")
+      .populate("variations.attributes.attribute", "name slug type")
+      .lean();
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+    res.json({ success: true, product });
+  } catch (err) {
+    console.error("Error in GET /public/products/:id:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.getCategoryProducts = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 12);
+    const category = await Category.findOne({ slug }).lean();
+    if (!category) return res.status(404).json({ success: false, message: "Category not found" });
+
+    const skip = (page - 1) * limit;
+    const filter = { isActive: true, $or: [{ category: category._id }, { subcategory: category._id }] };
+    const [products, total] = await Promise.all([
+      Product.find(filter)
+        .select("name images price type createdAt")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Product.countDocuments(filter),
+    ]);
+
+    res.json({ success: true, page, totalPages: Math.ceil(total / limit), totalProducts: total, category, products });
+  } catch (err) {
+    console.error("Error in GET /public/category/:slug/products:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

@@ -1,0 +1,2464 @@
+{
+	"info": {
+		"_postman_id": "262de45f-b851-48ac-af95-15e604c0ef66",
+		"name": "EcomPro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34311273",
+		"_collection_link": "https://brackets-dev-team.postman.co/workspace/Ecom-APIs~a0f3a2c4-51a8-4052-9ac2-6c96f34fec71/collection/34311273-262de45f-b851-48ac-af95-15e604c0ef66?action=share&source=collection_link&creator=34311273"
+	},
+	"item": [
+		{
+			"name": "Attributes",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Color\",\n  \"options\": [\"Red\", \"Blue\", \"Green\", \"Black\"],\n  \"type\": \"select\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/attribute/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"attribute",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/attributes",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/attribute/68ea112e0031cd4f37d8b38a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"attribute",
+								"68ea112e0031cd4f37d8b38a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Color\",\n  \"options\": [\"Red\", \"Blue\", \"Green\", \"Black\", \"White\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/attribute/update/68ea112e0031cd4f37d8b38a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"attribute",
+								"update",
+								"68ea112e0031cd4f37d8b38a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/attribute/delete/68ea112e0031cd4f37d8b38a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"attribute",
+								"delete",
+								"68ea112e0031cd4f37d8b38a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ashwin Kumar\",\r\n    \"email\": \"ashwin.kumar@kumar.com\",\r\n    \"password\": \"Pumpitup@098\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ashwin.kumar@kumar.com\",\r\n    \"password\": \"Pumpitup@098\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/logout",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"68babb34fe1fef36c73f410c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Manish Prakashh\",\r\n    \"email\": \"manish.prakashh@gmail.com\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/auth/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Banners",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Summer Sale Banner\",\n  \"image\": \"https://example.com/uploads/banner1.jpg\",\n  \"htmlContent\": \"<h2>Big Summer Sale!</h2><p>Up to 50% off</p>\",\n  \"redirectUrl\": \"https://example.com/sale\",\n  \"isActive\": true,\n  \"startDate\": \"2025-06-01\",\n  \"endDate\": \"2025-06-30\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/banner/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"banner",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/banners",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"banners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/banner/690c48e8afaeab8d53a03d33",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"banner",
+								"690c48e8afaeab8d53a03d33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Summer Sale\",\n  \"image\": \"https://example.com/uploads/banner1_updated.jpg\",\n  \"htmlContent\": \"<h2>Updated Summer Deals!</h2><p>Save More</p>\",\n  \"redirectUrl\": \"https://example.com/updated-sale\",\n  \"isActive\": false,\n  \"startDate\": \"2025-06-10\",\n  \"endDate\": \"2025-07-10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/banner/update/690da4f34f1681776518a208",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"banner",
+								"update",
+								"690da4f34f1681776518a208"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Sequence",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sequences\": [\n    { \"_id\": \"690da23aaa00a44ef0a1f085\", \"sequence\": 4 },\n    { \"_id\": \"690da268aa00a44ef0a1f095\", \"sequence\": 3 },\n    { \"_id\": \"690da2b6aa00a44ef0a1f09d\", \"sequence\": 2 },\n    { \"_id\": \"690da4f34f1681776518a208\", \"sequence\": 1 }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/banner/update-sequences",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"banner",
+								"update-sequences"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/banner/delete/690c48e8afaeab8d53a03d33",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"banner",
+								"delete",
+								"690c48e8afaeab8d53a03d33"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Brands",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "/* Main Brand */\n{\n  \"name\": \"Nike\",\n  \"logo\": \"https://example.com/logos/nike.png\",\n  \"description\": \"Premium sports brand\",\n  \"isActive\": true\n}\n\n\n/* Subrand */\n/*\n{\n  \"name\": \"Air Jordan\",\n  \"parent\": \"690c7bb1709e981d5bdb9953\",\n  \"logo\": \"https://example.com/logos/airjordan.png\",\n  \"description\": \"Basketball shoes and apparel\",\n  \"isActive\": true\n}\n*/\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/brand/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"brand",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/brands",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/brand/nike",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"brand",
+								"nike"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Nike\",\n  \"logo\": \"https://example.com/logos/nike.png\",\n  \"description\": \"Premium sports brand\",\n  \"isActive\": true\n}\n\n/* Subrand */\n/*\n{\n  \"name\": \"Air Jordan\",\n  \"parent\": \"67381d23a7f918c59b91ad04\",\n  \"logo\": \"https://example.com/logos/airjordan.png\",\n  \"description\": \"Basketball shoes and apparel\",\n  \"isActive\": true\n}\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/brand/update/690c7c80709e981d5bdb9967",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"brand",
+								"update",
+								"690c7c80709e981d5bdb9967"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/brand/delete/690c7bb1709e981d5bdb9953",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"brand",
+								"delete",
+								"690c7bb1709e981d5bdb9953"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Simple Product\r\n\r\n{\r\n  \"productId\": \"68c282ade9a7a5948deee05e\",\r\n  \"quantity\": 3\r\n}\r\n\r\n// Variable Product\r\n/*\r\n{\r\n  \"productId\": \"68bfdd79adce1b0a2822d9ab\",\r\n  \"variationId\": \"68bfdd79adce1b0a2822d9af\",\r\n  \"quantity\": 2\r\n}\r\n*/\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart/update/68c27ac95fb0252af67af10a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart",
+								"update",
+								"68c27ac95fb0252af67af10a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart/delete/68c27ac95fb0252af67af10a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart",
+								"delete",
+								"68c27ac95fb0252af67af10a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clear",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/cart/clear",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"cart",
+								"clear"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Notebooks\",\r\n    \"description\": \"All kinds of notebooks\",\r\n    \"parent\": \"68e89df456fc4810a9a6eb9d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/categories?page=1&limit=10&sortBy=createdAt&sortOrder=desc&search",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								},
+								{
+									"key": "search",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/68e8b062bcdcfee37fd9c75b",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"68e8b062bcdcfee37fd9c75b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gaming Laptops\",\r\n    \"description\": \"High performance laptops for gaming\",\r\n    \"parent\": \"68bfd0846ca0992303a06f28\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/update/68c107a7e78fde7468aaa5a0",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"update",
+								"68c107a7e78fde7468aaa5a0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/category/delete/68c107a7e78fde7468aaa5a0",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"category",
+								"delete",
+								"68c107a7e78fde7468aaa5a0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menus",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "/* Main Menu Item */\n\n{\n  \"title\": \"Home\",\n  \"link\": \"/home\",\n  \"icon\": \"fa-home\",\n  \"sequence\": 1,\n  \"isActive\": true\n}\n\n/* Submenu Item */\n/*\n{\n  \"title\": \"About Us\",\n  \"link\": \"/about\",\n  \"icon\": \"fa-info\",\n  \"parent\": \"690c51610357f645e5965686\", \n  \"sequence\": 1,\n  \"isActive\": true\n}\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/menu/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"menu",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin//menus",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"",
+								"menus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin//menu/690c5586bca35293b7960cda",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"",
+								"menu",
+								"690c5586bca35293b7960cda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Home Updated\",\n  \"link\": \"/home-updated\",\n  \"icon\": \"fa-house\",\n  \"parent\": null,\n  \"sequence\": 2,\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin//menu/update/690c5586bca35293b7960cda",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"",
+								"menu",
+								"update",
+								"690c5586bca35293b7960cda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/menu/delete/690c5586bca35293b7960cda",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"menu",
+								"delete",
+								"690c5586bca35293b7960cda"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ordera",
+			"item": [
+				{
+					"name": "Get All - Admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/orders",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All - Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/orders/my",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"orders",
+								"my"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/order/68c409bccb8d858ba81208b6",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"order",
+								"68c409bccb8d858ba81208b6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Place",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// From Cart\n\n{\n  \"fromCart\": true,\n  \"shippingAddress\": {\n    \"fullName\": \"John Doe\",\n    \"address\": \"123 Street\",\n    \"city\": \"Delhi\",\n    \"state\": \"Delhi\",\n    \"zip\": \"110001\",\n    \"country\": \"India\",\n    \"phone\": \"9876543210\"\n  },\n  \"paymentMethod\": \"cod\"\n}\n\n\n// Direct Checkout - Simple Product\n/*\n{\n  \"fromCart\": false,\n  \"items\": [\n    { \"productId\": \"68c282ade9a7a5948deee05e\", \"quantity\": 2 }\n  ],\n  \"shippingAddress\": {\n    \"fullName\": \"Jane Doe\",\n    \"address\": \"456 Street\",\n    \"city\": \"Mumbai\",\n    \"state\": \"MH\",\n    \"zip\": \"400001\",\n    \"country\": \"India\",\n    \"phone\": \"9123456780\"\n  },\n  \"paymentMethod\": \"online\"\n}\n*/\n\n// Direct Checkout - Variable Product\n/*\n{\n  \"fromCart\": false,\n  \"items\": [\n    { \"productId\": \"68bfdd79adce1b0a2822d9ab\", \"variationId\": \"68bfdd79adce1b0a2822d9ae\", \"quantity\": 3 }\n  ],\n  \"shippingAddress\": {\n    \"fullName\": \"Aditya\",\n    \"address\": \"789 Lane\",\n    \"city\": \"Noida\",\n    \"state\": \"UP\",\n    \"zip\": \"201301\",\n    \"country\": \"India\",\n    \"phone\": \"9988776655\"\n  },\n  \"paymentMethod\": \"cod\"\n}\n*/\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/order/place",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"order",
+								"place"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rollback",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/order/68c3d43d0476102080554877/rollback",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"order",
+								"68c3d43d0476102080554877",
+								"rollback"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"cancelled\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/order/68c409bccb8d858ba81208b6/status",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"order",
+								"68c409bccb8d858ba81208b6",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 500,\r\n    \"currency\": \"INR\",\r\n    \"orderId\": \"68c409bccb8d858ba81208b6\",\r\n    \"receipt\": \"receipt_68c409bccb8d858ba81208b6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/payments/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"payments",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"razorpayOrderId\": \"order_RIBdc4h5kQTsW7\",\r\n    \"razorpayPaymentId\": \"\",\r\n    \"razorpaySignature\": \"\",\r\n    \"orderId\": \"66f0ab1234f567890c1d2ef3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/payments/verify",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"payments",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Simple Product \n/*\n{\n  \"name\": \"Basic T-Shirt\",\n  \"description\": \"A high-quality cotton T-shirt\",\n  \"images\": [\"tshirt.jpg\"],\n  \"price\": 499,\n  \"stock\": 100,\n  \"type\": \"simple\",\n  \"category\": \"68e8b062bcdcfee37fd9c75b\",\n  \"subcategory\": \"68e8b075bcdcfee37fd9c76b\",\n  \"brand\": \"67381d23a7f918c59b91ad04\",\n  \"subbrand\": \"67381e77a7f918c59b91af11\",\n  \"isActive\": true,\n  \"isFeatured\": false\n}\n*/\n\n// Varibale Product\n\n{\n  \"name\": \"Whirlpool Washing Machine\",\n  \"description\": \"This is an awesome washing machine.\",\n  \"type\": \"variable\",\n  \"category\": \"68bfd0846ca0992303a06f28\",\n  \"subcategory\": \"68ef8dffa21738f688f783b7\",\n  \"brand\": \"690dcbe22463a76298df641d\",\n  \"subbrand\": \"690dcc062463a76298df6426\",\n  \"isActive\": true,\n  \"isFeatured\": false,\n  \"variations\": [\n    {\n      \"name\": \"Whirlpool Black 8Kg WM\",\n      \"sku\": \"WHIR-BK-8KG\",\n      \"price\": 999,\n      \"stock\": 10,\n      \"images\": [\"whirlpol-black.jpg\", \"whirlpol-black2.jpg\"],\n      \"attributes\": {\n        \"68ee3a50f94ba0029901b115\": \"Black\"\n        // \"68ec9572f9f88ddcc8284dd0\": \"8Kg\"\n      }\n    },\n    {\n      \"name\": \"Whirlpool Blue 8Kg WM\",\n      \"sku\": \"WHIR-WHI-8KG\",\n      \"price\": 999,\n      \"stock\": 5,\n      \"images\": [\"whirlpol-white.jpg\", \"whirlpol-white2.jpg\"],\n      \"attributes\": {\n        \"68ee3a50f94ba0029901b115\": \"Blue\"\n        // \"68ec9572f9f88ddcc8284dd0\": \"8Kg\"\n      }\n    },\n    {\n      \"name\": \"Whirlpool Green 5Kg WM\",\n      \"sku\": \"WHIR-WHI-5KG\",\n      \"price\": 1099,\n      \"stock\": 7,\n      \"images\": [\"whirlpol-white.jpg\", \"whirlpol-white2.jpg\"],\n      \"attributes\": {\n       \"68ee3a50f94ba0029901b115\": \"Green\"\n        // \"68ec9572f9f88ddcc8284dd0\": \"5Kg\"\n      }\n    }\n  ]\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/products",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"products"
+							],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "498",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "1500",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "hoodie",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "isFeatured",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "brand",
+									"value": "nike",
+									"disabled": true
+								},
+								{
+									"key": "subbrand",
+									"value": "subbrand=air-jordan",
+									"disabled": true
+								},
+								{
+									"key": "isActive",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "electronics",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/690c74dbb1f9f328af6dd9c4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"690c74dbb1f9f328af6dd9c4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Simple Product\n{\n    \"name\": \"Advanced T-Shirt1\",\n    \"slug\": \"advanced-tshirt\",\n    \"description\": \"Updated description of advanced tshirt\",\n    \"images\": [\"advanced-tshirt.jpg\", \"advanced-tshirt1.jpg\"],\n    \"price\": 9500,\n    \"stock\": 40,\n    \"type\": \"simple\",\n    \"category\": \"68e8b062bcdcfee37fd9c75b\",\n    \"subcategory\": \"68e8b075bcdcfee37fd9c76b\",\n    \"brand\": \"67381d23a7f918c59b91ad04\",\n    \"subbrand\": \"67381e77a7f918c59b91af11\",\n    \"isActive\": true,\n    \"isFeatured\": false\n}\n\n\n// Variable Product \n/*\n{\n  \"name\": \"Whirlpool Washing Machine1\",\n  \"description\": \"This is an awesome washing machine.1\",\n  \"type\": \"variable\",\n  \"category\": \"68bfd0846ca0992303a06f28\",\n  \"subcategory\": \"68e89b8756fc4810a9a6eb3a\",\n  \"brand\": \"67381d23a7f918c59b91ad04\",\n  \"subbrand\": \"67381e77a7f918c59b91af11\",\n  \"isActive\": true,\n  \"isFeatured\": false,\n  \"variations\": [\n    {\n      \"name\": \"Whirlpool Black 8Kg WM1\",\n      \"sku\": \"WHIR-BK-8KG\",\n      \"price\": 999,\n      \"stock\": 10,\n      \"images\": [\"whirlpol-black.jpg\", \"whirlpol-black2.jpg\"],\n      \"attributes\": {\n        \"68ec948cf9f88ddcc8284dc2\": \"Black\",\n        \"68ec9572f9f88ddcc8284dd0\": \"8Kg\"\n      }\n    },\n    {\n      \"name\": \"Whirlpool Blue 8Kg WM2\",\n      \"sku\": \"WHIR-WHI-8KG\",\n      \"price\": 999,\n      \"stock\": 5,\n      \"images\": [\"whirlpol-white.jpg\", \"whirlpol-white2.jpg\"],\n      \"attributes\": {\n        \"68ec948cf9f88ddcc8284dc2\": \"Blue\",\n        \"68ec9572f9f88ddcc8284dd0\": \"8Kg\"\n      }\n    },\n    {\n      \"name\": \"Whirlpool Green 5Kg WM3\",\n      \"sku\": \"WHIR-WHI-5KG\",\n      \"price\": 1099,\n      \"stock\": 7,\n      \"images\": [\"whirlpol-white.jpg\", \"whirlpol-white2.jpg\"],\n      \"attributes\": {\n       \"68ec948cf9f88ddcc8284dc2\": \"Green\",\n        \"68ec9572f9f88ddcc8284dd0\": \"5Kg\"\n      }\n    }\n  ]\n}\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/update/690c74dbb1f9f328af6dd9c4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"update",
+								"690c74dbb1f9f328af6dd9c4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/product/delete/690c74dbb1f9f328af6dd9c4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"product",
+								"delete",
+								"690c74dbb1f9f328af6dd9c4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Socail Links",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"platform\": \"Facebook\",\n  \"url\": \"https://facebook.com/mybrand\",\n  \"icon\": \"fab fa-facebook\",\n  \"sequence\": 1,\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/social-link/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"social-link",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/social-links?isActive=true",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"social-links"
+							],
+							"query": [
+								{
+									"key": "isActive",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/social-link/facebook",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"social-link",
+								"facebook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"platform\": \"Facebook Page\",\n  \"url\": \"https://facebook.com/newpage\",\n  \"icon\": \"fab fa-facebook-f\",\n  \"sequence\": 2,\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/social-link/update/691184cd6849801f0036dda0",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"social-link",
+								"update",
+								"691184cd6849801f0036dda0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/social-link/delete/690c88943aac84e142ab9e37",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"social-link",
+								"delete",
+								"690c88943aac84e142ab9e37"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Testimonials",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Aditya Sharma\",\n  \"image\": \"https://example.com/uploads/aditya.jpg\",\n  \"text\": \"Amazing service! I loved the quick delivery and quality.\",\n  \"rating\": 5,\n  \"verifiedPurchase\": true,\n  \"designation\": \"Web Developer\",\n  \"isActive\": true,\n  \"sequence\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/testimonial/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"testimonial",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/testimonials",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"testimonials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/testimonial/690c58866faaf1046b1d2fb7",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"testimonial",
+								"690c58866faaf1046b1d2fb7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Aditya Sharma Updated\",\n  \"image\": \"https://example.com/uploads/aditya_new.jpg\",\n  \"text\": \"Updated testimonial — still impressed!\",\n  \"rating\": 4,\n  \"verifiedPurchase\": true,\n  \"designation\": \"Senior Developer\",\n  \"isActive\": true,\n  \"sequence\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/testimonial/update/690c58866faaf1046b1d2fb7",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"testimonial",
+								"update",
+								"690c58866faaf1046b1d2fb7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/testimonial/delete/690c58866faaf1046b1d2fb7",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"testimonial",
+								"delete",
+								"690c58866faaf1046b1d2fb7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Virat Kohli\",\n    \"email\": \"viratkohli@india.com\",\n    \"password\": \"securepassword123\",\n    \"role\": \"vendor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/user/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"user",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/users?page=1&limit=10&sortBy=createdAt&sortOrder=desc&search=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/user/68be67072e7090dcaa583f12",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"user",
+								"68be67072e7090dcaa583f12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Updated\",\n    \"email\": \"john_updated@example.com\",\n    \"role\": \"\",\n    \"password\": \"newpassword456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/user/update/68e4aa92155ea5135767b640",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"user",
+								"update",
+								"68e4aa92155ea5135767b640"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/admin/user/delete/68e4aa92155ea5135767b640",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"admin",
+								"user",
+								"delete",
+								"68e4aa92155ea5135767b640"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wishlist",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/wishlist",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"wishlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": \"68bfdd79adce1b0a2822d9ab\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/wishlist/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"wishlist",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/wishlist/delete/68bfdd79adce1b0a2822d9ab",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"wishlist",
+								"delete",
+								"68bfdd79adce1b0a2822d9ab"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move To Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/user/wishlist/move-to-cart/68bfdd79adce1b0a2822d9ab",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"user",
+								"wishlist",
+								"move-to-cart",
+								"68bfdd79adce1b0a2822d9ab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UI APIs",
+			"item": [
+				{
+					"name": "Homepage",
+					"item": [
+						{
+							"name": "Get Homepage Data",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}:{{PORT}}/api/public/home",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"port": "{{PORT}}",
+									"path": [
+										"api",
+										"public",
+										"home"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}:{{PORT}}/api/public/categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"public",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Parse the JSON response\r",
+					"const jsonData = pm.response.json();\r",
+					"\r",
+					"// Check if token exists\r",
+					"if (jsonData.token) {\r",
+					"    // Set the token to collection-level variable\r",
+					"    pm.collectionVariables.set(\"JWT_TOKEN\", jsonData.token);\r",
+					"    console.log(\"JWT_TOKEN saved:\", jsonData.token);\r",
+					"} else {\r",
+					"    console.warn(\"Token not found in response!\");\r",
+					"}\r",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": ""
+		},
+		{
+			"key": "PORT",
+			"value": ""
+		},
+		{
+			"key": "JWT_TOKEN",
+			"value": ""
+		}
+	]
+}

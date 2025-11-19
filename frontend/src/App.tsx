@@ -27,6 +27,8 @@ import CategoriesPage from "./pages/ui/CategoriesPage";
 import FAQsPage from "./pages/ui/FAQsPage";
 import SalePage from "./pages/ui/SalePage";
 import NewArrivalsPage from "./pages/ui/NewArrivalsPage";
+import CategoryProductsPage from "./pages/ui/CategoryProductsPage";
+import ProductDetailsPage from "./pages/ui/ProductDetailsPage";
 import ContactUsPage from "./pages/ui/ContactUsPage";
 import PrivacyPolicyPage from "./pages/ui/PrivacyPolicyPage";
 import ReturnPolicyPage from "./pages/ui/ReturnPolicyPage";
@@ -161,10 +163,12 @@ export default function App() {
             <Route index path="/login" element={<LoginPage />} />
             <Route index path="/register" element={<RegisterPage />} />
             <Route index path="/categories" element={<CategoriesPage />} />
+            <Route index path="/category/:slug" element={<CategoryProductsPage />} />
+            <Route index path="/product/:id" element={<ProductDetailsPage />} />
             <Route index path="/faq" element={<FAQsPage />} />
             <Route index path="/sale" element={<SalePage />} />
             <Route index path="/new-arrivals" element={<NewArrivalsPage />} />
-            <Route index path="/contact-us" element={<ContactUsPage />} />
+            <Route index path="/contact" element={<ContactUsPage />} />
             <Route index path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route index path="/return-policy" element={<ReturnPolicyPage />} />
             <Route index path="/shipping-policy" element={<ShippingPolicyPage />} />
