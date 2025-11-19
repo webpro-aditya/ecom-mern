@@ -48,3 +48,12 @@ export function usePublicContact() {
   return useFetch<{ success: boolean; contact: { email: string; phone: string; address: string } }>("contact");
 }
 
+
+export function usePublicProduct(id: string) {
+  return useFetch<{ success: boolean; product: any }>(`products/${id}`);
+}
+
+export function usePublicCategoryProducts(slug: string, page = 1, limit = 12) {
+  return useFetch<{ success: boolean; category: any; products: any[]; page: number; totalPages: number; totalProducts: number }>(`category/${slug}/products?page=${page}&limit=${limit}`);
+}
+
