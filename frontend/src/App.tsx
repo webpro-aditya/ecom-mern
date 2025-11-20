@@ -45,6 +45,7 @@ import AccountAddressesPage from "./pages/ui/AccountAddressesPage";
 import AccountDashboardPage from "./pages/ui/AccountDashboardPage";
 import AccountOrdersPage from "./pages/ui/AccountOrdersPage";
 import AccountProfilePage from "./pages/ui/AccountProfilePage";
+import CheckoutPage from "./pages/ui/CheckoutPage";
 
 // Admin: Users
 import UsersList from "./pages/Users/UsersList";
@@ -186,6 +187,14 @@ export default function App() {
               <Route
                 path="/terms-and-conditions"
                 element={<TermsConditionsPage />}
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute redirectTo="/login?next=/checkout">
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                }
               />
 
               {/* ACCOUNT ROUTES GROUPED */}

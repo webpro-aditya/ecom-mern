@@ -1,5 +1,8 @@
 // frontend/src/pages/ui/ProductDetailsPage.tsx
 import React, { useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { addItem } from "../../store/cartSlice";
 import { useParams } from "react-router";
 import { usePublicProduct } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
@@ -10,6 +13,7 @@ const ProductDetailsPage: React.FC = () => {
   const { id = "" } = useParams();
   const { data, loading } = usePublicProduct(id);
   const product = data?.product;
+  const dispatch = useDispatch<AppDispatch>();
 
   const images: string[] = useMemo(() => {
     const imgs = Array.isArray(product?.images) ? product.images : [];
@@ -186,6 +190,34 @@ const ProductDetailsPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
                   disabled={product.type === "variable" && !matchedVariation}
+                  onClick={() => {
+                    if (!product) return;
+                    const variantKey = matchedVariation
+                      ? (matchedVariation.attributes || [])
+                          .map((a: any) => `${a.attribute?.slug || a.attribute?.name}:${a.value}`)
+                          .join("|")
+                      : undefined;
+                    const price = matchedVariation ? Number(matchedVariation.price || 0) : Number(product.price || 0);
+                    const image = images[0] || (import.meta.env.VITE_PLACEHOLDER_IMAGE || "");
+                    dispatch(
+                      addItem({
+                        productId: product._id || id,
+                        name: product.name,
+                        price,
+                        image,
+                        variantKey,
+                        variationId: matchedVariation?._id || matchedVariation?.id,
+                        attributes: matchedVariation
+                          ? Object.fromEntries(
+                              (matchedVariation.attributes || []).map((a: any) => [
+                                a.attribute?.slug || a.attribute?.name,
+                                a.value,
+                              ])
+                            )
+                          : undefined,
+                      })
+                    );
+                  }}
                   className="flex-1 sm:flex-none px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 active:scale-95 transition disabled:opacity-50"
                 >
                   🛒 Add to Cart
