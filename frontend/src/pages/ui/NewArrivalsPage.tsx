@@ -1,10 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { addItem } from "../../store/cartSlice";
 import { usePublicNewArrivals } from "../../hooks/usePublic";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import Preloader from "../../components/ui/Preloader";
 
 const NewArrivalsPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { data, loading } = usePublicNewArrivals(12);
 
   const products = (data?.products || []).map((p, i) => ({
@@ -103,7 +107,18 @@ const NewArrivalsPage: React.FC = () => {
                     </span>
 
                     <button
-                      className="flex items-center justify-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-xl hover:bg-blue-700 active:scale-95 transition-all w-full sm:w-auto">
+                      onClick={() => {
+                        dispatch(
+                          addItem({
+                            productId: String(p.id),
+                            name: p.name,
+                            price: Number(p.price || 0),
+                            image: p.image,
+                          })
+                        );
+                      }}
+                      className="flex items-center justify-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-xl hover:bg-blue-700 active:scale-95 transition-all w-full sm:w-auto"
+                    >
                       🛒 Add to Cart
                     </button>
                   </div>

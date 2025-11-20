@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { loginUser } from "../../store/userSlice";
 import { RootState, AppDispatch } from "../../store";
@@ -13,6 +13,9 @@ const LoginPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { loading } = useSelector((state: RootState) => state.user);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const next = params.get("next") || "/cart";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +28,12 @@ const LoginPage: React.FC = () => {
       const { user } = result.payload;
       if (user.role === "customer") {
         toast.success(`Welcome back, ${user.name}!`);
-        navigate("/account/dashboard", { replace: true });
+        try {
+          // Sync local cart to server upon login
+          const { syncCartToServer } = await import("../../store/cartSlice");
+          await dispatch(syncCartToServer());
+        } catch {}
+        navigate(next || "/cart", { replace: true });
       } else {
         toast.error("This login is for customers. Use admin login for admin/vendor.");
       }

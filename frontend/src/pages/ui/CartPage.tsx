@@ -1,19 +1,19 @@
 import React from "react";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../store";
+import { useNavigate } from "react-router-dom";
+import { syncCartToServer } from "../../store/cartSlice";
+import { updateQty, removeItem } from "../../store/cartSlice";
 
 const CartPage: React.FC = () => {
-  const items = Array.from({ length: 3 }).map((_, i) => ({
-    id: i + 1,
-    name: `Cart Item ${i + 1}`,
-    price: 59.99 + i * 10,
-    qty: 1,
-    image:
-      import.meta.env.VITE_PLACEHOLDER_IMAGE ||
-      "https://via.placeholder.com/400x300.png?text=No+Image",
-  }));
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.user);
+  const items = useSelector((state: RootState) => state.cart.items);
 
-  const subtotal = items.reduce((sum, it) => sum + it.price * it.qty, 0);
+  const subtotal = items.reduce((sum, it) => sum + Number(it.price || 0) * it.qty, 0);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -33,7 +33,7 @@ const CartPage: React.FC = () => {
             <div className="divide-y dark:divide-gray-700">
               {items.map((item) => (
                 <div
-                  key={item.id}
+                  key={item.key}
                   className="
                     p-4 flex flex-col sm:flex-row sm:items-center 
                     gap-4 sm:gap-6
@@ -41,7 +41,7 @@ const CartPage: React.FC = () => {
                 >
                   {/* IMAGE */}
                   <img
-                    src={item.image}
+                    src={item.image || (import.meta.env.VITE_PLACEHOLDER_IMAGE || "https://via.placeholder.com/400x300.png?text=No+Image")}
                     alt={item.name}
                     className="w-full sm:w-24 h-48 sm:h-24 rounded object-cover"
                   />
@@ -61,11 +61,14 @@ const CartPage: React.FC = () => {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-2">
-                      <button className="
+                      <button
+                        onClick={() => dispatch(updateQty({ key: item.key, qty: item.qty - 1 }))}
+                        className="
                         h-8 w-8 rounded bg-gray-100 dark:bg-slate-700 
                         hover:bg-gray-200 dark:hover:bg-slate-600
                         text-gray-800 dark:text-gray-100 transition
-                      ">
+                      "
+                      >
                         -
                       </button>
 
@@ -73,17 +76,20 @@ const CartPage: React.FC = () => {
                         {item.qty}
                       </span>
 
-                      <button className="
+                      <button
+                        onClick={() => dispatch(updateQty({ key: item.key, qty: item.qty + 1 }))}
+                        className="
                         h-8 w-8 rounded bg-gray-100 dark:bg-slate-700 
                         hover:bg-gray-200 dark:hover:bg-slate-600
                         text-gray-800 dark:text-gray-100 transition
-                      ">
+                      "
+                      >
                         +
                       </button>
                     </div>
 
                     {/* Remove Button */}
-                    <button className="
+                    <button onClick={() => dispatch(removeItem({ key: item.key }))} className="
                       text-red-600 hover:text-red-700 
                       dark:text-red-400 dark:hover:text-red-300 
                       font-medium text-sm
@@ -131,7 +137,16 @@ const CartPage: React.FC = () => {
             <button className="
               mt-6 w-full bg-blue-600 text-white py-3 rounded-full 
               hover:bg-blue-700 transition-colors text-sm font-medium
-            ">
+            "
+            onClick={async () => {
+              if (user) {
+                await dispatch(syncCartToServer());
+                navigate("/checkout");
+              } else {
+                navigate("/login?next=/checkout");
+              }
+            }}
+            >
               Proceed to Checkout
             </button>
           </div>

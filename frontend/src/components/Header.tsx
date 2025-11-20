@@ -10,7 +10,7 @@ import { ThemeToggleButton } from "./common/ThemeToggleButton";
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
-  const cartItemCount = 3;
+  const cartItemCount = (useSelector((state: RootState) => state.cart.items) || []).reduce((sum, it) => sum + it.qty, 0);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
