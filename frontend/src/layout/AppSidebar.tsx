@@ -59,7 +59,7 @@ const AppSidebar: React.FC = () => {
           name: "Users",
           subItems: [
             { name: "List", path: "/admin/users" },
-            { name: "Add", path: "/admin/users/add" },
+            { name: "Add", path: "/admin/user/add" },
           ],
         },
         {

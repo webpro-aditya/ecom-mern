@@ -6,6 +6,7 @@ import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import { StatusBadge } from "../../components/badges/StatusBadge";
+import SkeletonRow from "../../components/common/SkeletonRow";
 
 interface ShippingAddress {
   fullName: string;
@@ -56,10 +57,14 @@ export default function SingleOrderView() {
           `${import.meta.env.VITE_API_URL}user/order/${id}`,
           { credentials: "include" }
         );
+
         const data = await res.json();
-        if (!res.ok || !data.orders?.length)
+
+        if (!res.ok || !data.order)
           throw new Error(data.message || "Order not found");
-        setOrder(data.orders[0]);
+
+        setOrder(data.order);
+
       } catch (err: any) {
         setError(err.message || "An error occurred.");
       } finally {
@@ -82,9 +87,7 @@ export default function SingleOrderView() {
         <ComponentCard>
           <div className="p-6 md:p-8">
             {loading ? (
-              <div className="text-center text-slate-500 dark:text-slate-400">
-                Loading order details...
-              </div>
+              Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
             ) : error ? (
               <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20 text-red-700 dark:text-red-300 text-center">
                 {error}
