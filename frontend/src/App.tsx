@@ -121,28 +121,28 @@ export default function App() {
 
               {/* Users */}
               <Route path="users" element={<UsersList />} />
-              <Route path="users/add" element={<UserAdd />} />
-              <Route path="users/:id/edit" element={<UserEdit />} />
+              <Route path="user/add" element={<UserAdd />} />
+              <Route path="user/:id/edit" element={<UserEdit />} />
 
               {/* Banners */}
               <Route path="banners" element={<BannersList />} />
-              <Route path="banners/add" element={<BannerAdd />} />
-              <Route path="banners/:id/edit" element={<BannerEdit />} />
+              <Route path="banner/add" element={<BannerAdd />} />
+              <Route path="banner/:id/edit" element={<BannerEdit />} />
 
               {/* Categories */}
               <Route path="categories" element={<CategoriesList />} />
-              <Route path="categories/add" element={<CategoryAdd />} />
-              <Route path="categories/:id/edit" element={<CategoryEdit />} />
+              <Route path="category/add" element={<CategoryAdd />} />
+              <Route path="category/:id/edit" element={<CategoryEdit />} />
 
               {/* Brands */}
               <Route path="brands" element={<BrandsList />} />
-              <Route path="brands/add" element={<BrandAdd />} />
-              <Route path="brands/:id/edit" element={<BrandEdit />} />
+              <Route path="brand/add" element={<BrandAdd />} />
+              <Route path="brand/:id/edit" element={<BrandEdit />} />
 
               {/* Products */}
               <Route path="products" element={<ProductsList />} />
-              <Route path="products/add" element={<ProductAdd />} />
-              <Route path="products/:id/edit" element={<ProductEdit />} />
+              <Route path="product/add" element={<ProductAdd />} />
+              <Route path="product/:id/edit" element={<ProductEdit />} />
 
               {/* Orders */}
               <Route path="orders" element={<OrdersList />} />

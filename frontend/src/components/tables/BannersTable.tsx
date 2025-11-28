@@ -184,7 +184,7 @@ export default function BannersTable({
                           <td className="p-4">
                             <div className="flex gap-2">
                               <Link
-                                to={`/admin/banners/${banner._id}/edit`}
+                                to={`/admin/banner/${banner._id}/edit`}
                                 title="Edit"
                                 className="p-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-slate-700"
                               >

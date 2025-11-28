@@ -174,7 +174,7 @@ export default function UsersTable({
                 <td className="p-4">
                   <div className="flex gap-2">
                     {/* Add EditIcon and DeleteIcon components here */}
-                    <Link to={`/admin/users/${user._id}/edit`} title="Edit" className="p-1.5">
+                    <Link to={`/admin/user/${user._id}/edit`} title="Edit" className="p-1.5">
                       <EditIcon />
                     </Link>
                      <button 
