@@ -11,6 +11,19 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "vendor", "admin", "delivery"],
       default: "customer",
     },
+    addresses: [
+      {
+        fullName: { type: String, required: true },
+        address: { type: String, required: true },
+        city: { type: String, required: true },
+        state: { type: String, required: true },
+        zip: { type: String, required: true },
+        country: { type: String, required: true },
+        phone: { type: String },
+        isDefault: { type: Boolean, default: false },
+        label: { type: String },
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -30,6 +30,13 @@ const {
   createPayment,
   verifyPayment,
 } = require("../controllers/paymentController");
+const {
+  getMyAddresses,
+  addAddress,
+  updateAddress,
+  deleteAddress,
+  setDefaultAddress,
+} = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -57,5 +64,12 @@ router.put("/order/:orderId/status", authMiddleware, updateOrderStatus);
 // Payments
 router.post("/payments/create", authMiddleware, createPayment);
 router.post("/payments/verify", authMiddleware, verifyPayment);
+
+// Addresses
+router.get("/addresses", authMiddleware, getMyAddresses);
+router.post("/address", authMiddleware, addAddress);
+router.put("/address/:addressId", authMiddleware, updateAddress);
+router.delete("/address/:addressId", authMiddleware, deleteAddress);
+router.put("/address/:addressId/default", authMiddleware, setDefaultAddress);
 
 module.exports = router;
