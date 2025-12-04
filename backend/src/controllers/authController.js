@@ -5,7 +5,7 @@ const BlacklistToken = require("../models/BlacklistToken");
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, phone } = req.body;
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
@@ -15,6 +15,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      phone,
       role: role || "customer",
     });
     await user.save();
@@ -36,7 +37,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email, role: user.role },
+      { id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -55,6 +56,7 @@ exports.login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        phone: user.phone,
       },
     });
   } catch (error) {
@@ -79,7 +81,13 @@ exports.getMe = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user);
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone,
+    });
   } catch (error) {
     console.error("Error in /me:", error);
     res.status(500).json({ message: "Server error" });
@@ -88,7 +96,7 @@ exports.getMe = async (req, res) => {
 
 exports.updateMe = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -96,10 +104,25 @@ exports.updateMe = async (req, res) => {
     }
 
     if (name) user.name = name;
-    if (email) user.email = email;
+    if (email && email !== user.email) {
+      const exists = await User.findOne({ email });
+      if (exists && exists._id.toString() !== user._id.toString()) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+      user.email = email;
+    }
+    if (phone !== undefined) user.phone = phone;
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
+    const desiredNewPassword = newPassword || password;
+    if (desiredNewPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: "Current password required" });
+      }
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Incorrect current password" });
+      }
+      const hashedPassword = await bcrypt.hash(desiredNewPassword, 10);
       user.password = hashedPassword;
     }
 
@@ -111,6 +134,8 @@ exports.updateMe = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
+        phone: user.phone,
       },
     });
   } catch (error) {
