@@ -78,8 +78,8 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
             </svg>
           </button>
 
-          <Link to="/" className="lg:hidden">
-            <img
+          <Link to="/" className="lg:hidden text-3xl font-bold text-gray-800 dark:text-white">
+            {/* <img
               className="dark:hidden"
               src="./images/logo/logo.svg"
               alt="Logo"
@@ -92,7 +92,8 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
               alt="Logo"
               loading="lazy"
               decoding="async"
-            />
+            /> */}
+            ECOM<span class="text-blue-600 dark:text-blue-400">PRO</span>
           </Link>
 
           <button
