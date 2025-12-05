@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Preloader from "../components/ui/Preloader";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { addItem } from "../store/cartSlice";
+import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 // --- Types (unchanged, copy as-is) ---
 interface Banner {
@@ -83,6 +88,7 @@ const HomePage: React.FC = () => {
   const [homeData, setHomeData] = useState<HomeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -317,40 +323,66 @@ const HomePage: React.FC = () => {
                 key={featuredProduct._id}
                 className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
-                <div className="relative">
-                  <img
-                    src={
-                      featuredProduct?.image ||
-                      `${import.meta.env.VITE_BACKEND_URL}${
-                        featuredProduct?.variations[0]?.images[0]
-                      }`
-                    }
-                    alt={featuredProduct.name}
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="absolute top-4 right-4">
-                    <button className="bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:shadow-lg transition-shadow">
-                      ♥️
-                    </button>
+                <Link to={`/product/${featuredProduct._id}`} className="block">
+                  <div className="relative">
+                    <img
+                      src={
+                        featuredProduct?.image ||
+                        `${import.meta.env.VITE_BACKEND_URL}${
+                          featuredProduct?.variations?.[0]?.images?.[0]
+                        }`
+                      }
+                      alt={featuredProduct.name}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-white dark:bg-gray-700 rounded-full p-2 shadow-md">
+                        ♥️
+                      </span>
+                    </div>
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                        -25%
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                      -25%
-                    </span>
-                  </div>
-                </div>
+                </Link>
                 <div className="p-6">
-                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                    {featuredProduct.name}
-                  </h3>
-                  <div className="flex items-center mb-2"></div>
+                  <Link to={`/product/${featuredProduct._id}`} className="block">
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                      {featuredProduct.name}
+                    </h3>
+                  </Link>
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                        ${featuredProduct.variations[0].price}
+                        ${featuredProduct?.variations?.[0]?.price || featuredProduct?.price}
                       </span>
                     </div>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors dark:bg-blue-500 dark:hover:bg-blue-400">
+                    <button
+                      onClick={() => {
+                        const price = Number(
+                          featuredProduct?.variations?.[0]?.price || featuredProduct?.price || 0
+                        );
+                        const image =
+                          featuredProduct?.image ||
+                          (featuredProduct?.variations?.[0]?.images?.[0]
+                            ? `${import.meta.env.VITE_BACKEND_URL}${featuredProduct.variations[0].images[0]}`
+                            : undefined);
+                        const variationId = featuredProduct?.variations?.[0]?._id;
+                        dispatch(
+                          addItem({
+                            productId: featuredProduct._id,
+                            name: featuredProduct.name,
+                            price,
+                            image,
+                            variationId,
+                          })
+                        );
+                        toast.success("Added to cart");
+                      }}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors dark:bg-blue-500 dark:hover:bg-blue-400"
+                    >
                       Add to Cart
                     </button>
                   </div>
